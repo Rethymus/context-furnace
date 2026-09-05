@@ -138,7 +138,7 @@
 
 .panel-label {
   font-size: 12px;
-  color: var(--glass-line);
+  color: #a8a48c; /* --glass-line 调亮至 WCAG AA（≥4.5:1 on --bench） */
   letter-spacing: 0.14em;
   margin-bottom: 6px;
 }

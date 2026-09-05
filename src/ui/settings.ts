@@ -146,6 +146,7 @@ export class SettingsPanel {
           select.appendChild(opt);
         }
         select.value = getLocale();
+        select.setAttribute('aria-label', t('settings.language'));
         select.addEventListener('change', () => {
           if (select.value === 'zh-CN' || select.value === 'en-US') setLocale(select.value);
         });
@@ -178,6 +179,7 @@ export class SettingsPanel {
         input.step = '1';
         input.value = String(this.settings.volume);
         input.dataset.testid = 'volume';
+        input.setAttribute('aria-label', t('settings.volume'));
         input.addEventListener('input', () => {
           this.update({ volume: Number(input.value) });
         });
@@ -201,6 +203,7 @@ export class SettingsPanel {
           select.appendChild(opt);
         }
         select.value = this.settings.motion;
+        select.setAttribute('aria-label', t('settings.motion'));
         select.addEventListener('change', () => {
           this.update({ motion: select.value as MotionSetting });
         });

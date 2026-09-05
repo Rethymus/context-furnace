@@ -577,6 +577,8 @@ export class MachineController {
     round.cycle.textContent = t('cycle.display', { nn: String(this.state.cycle).padStart(2, '0') });
     const loadKey = this.state.act === 1 ? 'load.normal' : this.state.act === 2 ? 'load.high' : 'load.overdrive';
     round.loadLine.textContent = `${t('load.label')}: ${t(loadKey)}`;
+    // §13 E：插头自 Cycle 09 起出现（无提示）
+    round.plug.style.display = this.state.cycle >= 9 ? '' : 'none';
   }
 
   private refreshSelection(): void {
