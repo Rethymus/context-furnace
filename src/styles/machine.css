@@ -1,0 +1,220 @@
+/* DESIGN_SPEC §15.1 institutional laboratory equipment；§4.1 主界面结构。 */
+.stage {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #1a1b16 0%, var(--page) 60%),
+    var(--page);
+}
+
+.machine {
+  width: 100%;
+  max-width: var(--machine-max-w);
+  background: linear-gradient(180deg, var(--machine) 0%, var(--machine-secondary) 78%, var(--machine-shadow) 100%);
+  border-radius: 14px;
+  border: 1px solid var(--machine-shadow);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.18);
+  color: var(--ink);
+  padding: 18px 22px 20px;
+}
+
+.machine-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 2px solid var(--machine-shadow);
+  padding-bottom: 10px;
+}
+
+.model-plate {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.cycle-plate {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted-ink);
+}
+
+.header-tools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.tool-btn {
+  background: none;
+  border: 1px solid var(--machine-shadow);
+  border-radius: 6px;
+  color: var(--ink);
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  min-width: 44px;
+  min-height: 32px;
+}
+
+.gauge-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 6% 6px;
+}
+
+.gauge {
+  text-align: center;
+  min-width: 150px;
+}
+
+.gauge-label {
+  font-size: 13px;
+  color: var(--muted-ink);
+  letter-spacing: 0.1em;
+}
+
+.gauge-value {
+  font-size: var(--fs-gauge);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.gauge-heat .gauge-value {
+  color: var(--heat);
+}
+
+.gauge-fidelity .gauge-value {
+  color: var(--fidelity);
+}
+
+/* 半圆仪表盘 */
+.dial {
+  width: 120px;
+  height: 66px;
+  margin: 4px auto 0;
+}
+
+.dial-arc {
+  fill: none;
+  stroke: var(--glass-line);
+  stroke-width: 3;
+}
+
+.dial-tick {
+  stroke: var(--muted-ink);
+  stroke-width: 1.5;
+}
+
+.dial-needle {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  transform-origin: 60px 60px;
+}
+
+.load-line {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted-ink);
+  padding: 4px 0 10px;
+}
+
+.panel {
+  border: 1px solid var(--glass-line);
+  border-radius: 8px;
+  background: var(--bench);
+  color: var(--paper);
+  margin: 10px 0;
+  padding: 10px 14px;
+}
+
+.panel-label {
+  font-size: 12px;
+  color: var(--glass-line);
+  letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+
+.feed-text {
+  font-size: var(--fs-body);
+  line-height: 1.8;
+  color: var(--paper);
+}
+
+.feed-seg {
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.feed-seg.dim {
+  opacity: 0.38;
+}
+
+.feed-seg.lit {
+  background: rgba(212, 167, 44, 0.28);
+  box-shadow: 0 0 0 1px rgba(212, 167, 44, 0.4);
+}
+
+.output-text {
+  font-size: var(--fs-body);
+  color: var(--paper);
+  min-height: 1.8em;
+}
+
+/* 观察窗 */
+.observation {
+  border: 1px solid var(--glass-line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--glass) 0%, #1b1e19 100%);
+  height: 110px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.observation .glyph {
+  position: absolute;
+  will-change: transform;
+}
+
+.status-line {
+  min-height: 1.6em;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--paper);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+.status-line:empty::before {
+  content: '';
+}
+
+/* 炉膛火焰（D26：heat 连续映射） */
+.furnace {
+  height: 8px;
+  border-radius: 4px;
+  background: #15150f;
+  overflow: hidden;
+  margin-top: 8px;
+  border: 1px solid var(--machine-shadow);
+}
+
+.furnace-glow {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--heat) 0%, #d4622f 60%, var(--warning) 100%);
+  opacity: 0;
+  transform-origin: center;
+}

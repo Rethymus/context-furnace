@@ -1,0 +1,79 @@
+/* DESIGN_SPEC §15：基础排版。 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100dvh; /* §4.3 */
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body); /* 任何正文 ≥ 16px */
+  line-height: var(--lh-body);
+}
+
+/* §15.5 中文排版：禁止 break-all */
+[lang='zh-CN'] body,
+body:has([lang='zh-CN']) {
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* §15.5 英文排版 */
+[lang='en-US'] .reading {
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 62ch;
+}
+
+/* §15.3 仪器标签 monospace */
+.machine-label,
+.gauge-value,
+.btn,
+.track,
+.status-line,
+.tag {
+  font-family: var(--font-mono);
+}
+
+/* §15.6 Sentence case 源码；工业标签大写交给 CSS */
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+button {
+  font: inherit;
+}
+
+img,
+svg {
+  display: block;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* §19 focus visible */
+:focus-visible {
+  outline: 3px solid var(--warning);
+  outline-offset: 2px;
+}

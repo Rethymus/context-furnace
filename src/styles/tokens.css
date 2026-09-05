@@ -1,0 +1,38 @@
+/* DESIGN_SPEC §15.2 Color Tokens（逐字冻结） */
+:root {
+  --page: #0e0f0c;
+  --bench: #22231d;
+
+  --machine: #d8cfb3;
+  --machine-secondary: #c6b994;
+  --machine-shadow: #81775f;
+
+  --ink: #181a16;
+  --muted-ink: #4a493f;
+
+  --paper: #f3ecd9;
+
+  --glass: #252923;
+  --glass-line: #85836f;
+
+  --heat: #a43a2f;
+  --fidelity: #2c625a;
+  --warning: #d4a72c;
+
+  /* §15.3 Typography */
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+    "PingFang SC", "Microsoft YaHei", "Noto Sans Mono CJK SC", monospace;
+  --font-body: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+
+  /* §15.4 字号 */
+  --fs-body: 16px;
+  --lh-body: 1.65;
+  --fs-title: 24px;
+  --fs-title-mobile: 22px;
+  --fs-gauge: 30px;
+  --fs-gauge-mobile: 24px;
+
+  /* §4.3 尺寸 */
+  --machine-max-w: 960px;
+  --machine-ideal-w: 920px;
+}

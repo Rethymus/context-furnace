@@ -1,0 +1,66 @@
+/* DESIGN_SPEC §2.3 / §9（原规格 45）/ §131：Reduced Motion 全覆盖。
+   motion=reduce 时：无指针扫描、无设备震动、无群体位移、火焰不摇曳（D26）。 */
+
+@keyframes needle-sweep {
+  0% { transform: rotate(-90deg); }
+  50% { transform: rotate(90deg); }
+  100% { transform: rotate(-90deg); }
+}
+
+@keyframes furnace-flicker {
+  0%, 100% { transform: scaleY(1); filter: brightness(1); }
+  30% { transform: scaleY(1.12); filter: brightness(1.18); }
+  55% { transform: scaleY(0.94); filter: brightness(0.92); }
+  80% { transform: scaleY(1.06); filter: brightness(1.1); }
+}
+
+@keyframes glyph-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 减少动效：动画全部替换为 opacity/数值/指示灯表达 */
+@media (prefers-reduced-motion: reduce) {
+  .dial-needle {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .furnace-glow {
+    animation: none !important;
+  }
+
+  .toast {
+    transition: none !important;
+  }
+
+  .glyph {
+    animation: glyph-pulse 2.4s ease-in-out infinite !important;
+  }
+}
+
+/* JS 侧 motion=reduce 时会给根节点加 data-motion="reduced"（设置覆盖系统） */
+[data-motion='reduced'] .dial-needle,
+[data-motion='reduced'] .furnace-glow {
+  animation: none !important;
+  transition: none !important;
+}
+
+[data-motion='reduced'] .glyph {
+  animation: glyph-pulse 2.4s ease-in-out infinite !important;
+}
+
+/* 完整动效下的普通过渡 */
+.glyph.fade-swap {
+  animation: fade-in 0.2s ease; /* D25：形状替换 200ms 淡入 */
+}
+
+.ending-banner,
+.result-list {
+  animation: fade-in 0.3s ease;
+}

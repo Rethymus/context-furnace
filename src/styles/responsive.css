@@ -1,0 +1,66 @@
+/* DESIGN_SPEC §4.2：移动端垂直顺序；最低 360px；绝对禁止水平滚动（原规格 §92）。 */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  .stage {
+    padding: 12px 8px;
+    align-items: flex-start;
+  }
+
+  .machine {
+    padding: 12px 12px 14px;
+  }
+
+  .gauge-row {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 8px 0 2px;
+  }
+
+  .gauge {
+    min-width: 120px;
+  }
+
+  .gauge-value {
+    font-size: var(--fs-gauge-mobile);
+  }
+
+  .title-plate {
+    font-size: var(--fs-title-mobile);
+  }
+
+  .control-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* §4.2 顺序：HEADER → HEAT|FIDELITY → FEED → EXTRACT → OUTPUT → CUT TRACK
+     → GAIN → RESET|IGNITE → OBSERVATION → STATUS（DOM 顺序即此序） */
+  .panel-feed {
+    order: 1;
+  }
+
+  .panel-extract {
+    order: 2;
+  }
+
+  .panel-output {
+    order: 3;
+  }
+
+  .control-row {
+    order: 4;
+  }
+
+  .observation {
+    order: 5;
+  }
+
+  .status-line {
+    order: 6;
+  }
+}

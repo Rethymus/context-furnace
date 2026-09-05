@@ -1,0 +1,319 @@
+/* DESIGN_SPEC §6.4 / §7.1：控件尺寸与形态。 */
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 4px;
+}
+
+.btn {
+  border: 1px solid var(--machine-shadow);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #efe8d2 0%, var(--machine-secondary) 100%);
+  color: var(--ink);
+  padding: 10px 22px;
+  min-height: 48px;
+  min-width: 96px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 3px 0 var(--machine-shadow);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--machine-shadow);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #b8452f 0%, var(--heat) 100%);
+  color: var(--paper);
+  border-color: #7d2b20;
+  box-shadow: 0 3px 0 #7d2b20;
+}
+
+/* CUT 轨道（D14：等宽块） */
+.track {
+  display: flex;
+  gap: 3px;
+  padding: 14px 8px 20px;
+  position: relative;
+  touch-action: none;
+}
+
+.track-block {
+  flex: 1 1 0;
+  height: 26px;
+  background: var(--paper);
+  border: 1px solid var(--machine-shadow);
+  border-radius: 2px;
+  min-width: 0;
+}
+
+.track-block.excluded {
+  background: repeating-linear-gradient(
+    45deg,
+    #cfc7ac 0,
+    #cfc7ac 4px,
+    #bdb494 4px,
+    #bdb494 8px
+  );
+  opacity: 0.55;
+}
+
+/* 裁刀：视觉 18×26，hit area 48×48（§6.4） */
+.cutter {
+  position: absolute;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.cutter:focus-visible {
+  outline: 3px solid var(--warning);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.cutter-blade {
+  position: absolute;
+  left: 15px; /* (48−18)/2 */
+  bottom: 2px;
+  width: 18px;
+  height: 26px;
+  background: linear-gradient(180deg, #f4eeda 0%, #cfc7ac 55%, #8d8368 100%);
+  border: 1px solid var(--ink);
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.cutter-blade::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 2px;
+  width: 2px;
+  height: calc(100% - 4px);
+  background: var(--heat);
+  opacity: 0.55;
+}
+
+.cutter.active .cutter-blade::after,
+.cutter:focus-visible .cutter-blade::after {
+  opacity: 1;
+}
+
+.cutter-hint {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #b9b5a0;
+}
+
+/* 边界在轨道两端时提示向内收，避免悬挂裁切 */
+.cutter-left .cutter-hint {
+  transform: translateX(-4px);
+}
+
+.cutter-right .cutter-hint {
+  transform: translateX(calc(-100% + 4px));
+}
+
+/* GAIN 旋钮（§7.1 机械旋钮 + D13 卡位可点 + radiogroup） */
+.gain-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.knob {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a4d44 0%, #22241e 70%);
+  border: 3px solid var(--machine-shadow);
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+}
+
+.knob-marker {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 4px;
+  height: 16px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--warning);
+}
+
+.knob:focus-visible {
+  outline: 3px solid var(--warning);
+  outline-offset: 3px;
+}
+
+.gain-stops {
+  display: flex;
+  gap: 10px;
+}
+
+.gain-stop {
+  width: 44px; /* §7.1 / D13 */
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--machine-shadow);
+  background: var(--machine-secondary);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.gain-stop[aria-checked='true'] {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 0 0 2px var(--warning) inset;
+}
+
+.gain-stop:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* GAIN 解锁提示：1.2 s（§27） */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--glass-line);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+/* 电源插头（结局 E，§13：无 tooltip 无闪烁） */
+.plug {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  width: 48px;
+  height: 48px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted-ink);
+}
+
+/* 设置面板 */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 20;
+}
+
+.dialog {
+  background: var(--machine);
+  border: 1px solid var(--machine-shadow);
+  border-radius: 10px;
+  padding: 18px 20px;
+  width: min(420px, 100%);
+  max-height: 85dvh;
+  overflow: auto;
+  color: var(--ink);
+}
+
+.dialog h2 {
+  margin: 0 0 12px;
+  font-size: var(--fs-title);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--machine-shadow);
+}
+
+.setting-row select,
+.setting-row input[type='range'] {
+  min-height: 44px;
+  font: inherit;
+}
+
+.setting-row input[type='range'] {
+  min-height: auto;
+  accent-color: var(--heat);
+}
+
+.about-text {
+  font-size: 14px;
+  color: var(--muted-ink);
+  line-height: 1.7;
+}
+
+/* 结果页（§14：仅五项） */
+.result-list {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+}
+
+.result-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 4px;
+  border-bottom: 1px dashed var(--machine-shadow);
+  font-family: var(--font-mono);
+}
+
+.ending-banner {
+  text-align: center;
+  padding: 18px 8px 6px;
+}
+
+.ending-banner h2 {
+  font-size: var(--fs-title);
+  margin: 0;
+}
+
+.ending-banner p {
+  color: var(--muted-ink);
+  margin: 6px 0 0;
+}
