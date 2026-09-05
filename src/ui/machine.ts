@@ -127,7 +127,7 @@ export class MachineController {
     subtitle.dataset.testid = 'home-subtitle';
     machine.appendChild(subtitle);
 
-    // 两枚小仪表（§6 首页草图：HEAT / FIDELITY 圆窗）
+    // 两枚小仪表（§6 首页草图：HEAT / FIDELITY 圆窗；§2.2 开机自检的对象）
     const mini = document.createElement('div');
     mini.className = 'gauge-row';
     mini.style.justifyContent = 'center';
@@ -135,8 +135,7 @@ export class MachineController {
       const g = document.createElement('div');
       g.className = 'gauge';
       const dot = document.createElement('div');
-      dot.style.cssText =
-        'width:56px;height:56px;margin:6px auto;border-radius:50%;border:3px solid var(--glass-line);background:var(--glass)';
+      dot.className = 'gauge-dot';
       const label = document.createElement('div');
       label.className = 'gauge-label caps';
       label.textContent = t(key);
@@ -225,16 +224,23 @@ export class MachineController {
     const power = root.querySelector<HTMLButtonElement>('[data-testid="power-on"]');
     if (power) power.disabled = true;
 
-    const done = window.setTimeout(after, BOOT_TOTAL_MS);
     if (this.reduced) {
-      // §2.3：RM 只用 opacity/数值/指示灯
-      window.clearTimeout(done);
+      // §2.3：RM 下状态仅以指示灯/opacity 表达，不做自检扫描
       window.setTimeout(after, 350);
       return;
     }
-    window.setTimeout(() => this.audio.relay(), BOOT_RELAY_MS); // 0–120ms 继电器「咔」
-    void BOOT_SWEEP_DONE_MS;
+    // §2.2 时序：0–120ms 继电器；470–720ms 观察窗亮起（圆窗自检扫描后点亮）；720–950ms 炉光；1150ms 校准完成
+    window.setTimeout(() => this.audio.relay(), BOOT_RELAY_MS);
     window.setTimeout(() => {
+      for (const dot of root.querySelectorAll<HTMLElement>('.gauge-dot')) {
+        dot.classList.add('boot-sweep');
+      }
+    }, BOOT_SWEEP_DONE_MS);
+    window.setTimeout(() => {
+      for (const dot of root.querySelectorAll<HTMLElement>('.gauge-dot')) {
+        dot.classList.remove('boot-sweep');
+        dot.classList.add('lit');
+      }
       const sub = root.querySelector<HTMLElement>('[data-testid="home-subtitle"]');
       if (sub) sub.style.opacity = '1';
     }, BOOT_WINDOW_MS);
@@ -242,7 +248,7 @@ export class MachineController {
       const motto = root.querySelector<HTMLElement>('[data-testid="home-motto"]');
       if (motto) motto.style.color = 'var(--heat)';
     }, BOOT_FURNACE_MS);
-    void done;
+    window.setTimeout(after, BOOT_TOTAL_MS);
   }
 
   // ─────────────────────────────── 教学（§3 / D8 / D35） ───────────────────────────────
@@ -567,12 +573,6 @@ export class MachineController {
     this.updateObservation();
     this.updateFurnace();
     this.announceUnlock();
-
-    if (!this.reduced) {
-      track.refresh();
-    } else {
-      window.setTimeout(() => track.refresh(), 0);
-    }
   }
 
   private renderCycleTexts(): void {

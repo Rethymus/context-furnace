@@ -81,6 +81,34 @@
   letter-spacing: 0.1em;
 }
 
+/* 首页圆窗仪表（§6；§2.2 开机自检对象） */
+.gauge-dot {
+  width: 56px;
+  height: 56px;
+  margin: 6px auto;
+  border-radius: 50%;
+  border: 3px solid var(--glass-line);
+  background: var(--glass);
+}
+
+.gauge-dot.boot-sweep {
+  animation: dot-sweep 0.24s ease-in-out 1;
+}
+
+.gauge-dot.lit {
+  border-color: var(--warning);
+}
+
+@keyframes dot-sweep {
+  0%,
+  100% {
+    background: var(--glass);
+  }
+  50% {
+    background: var(--warning);
+  }
+}
+
 .gauge-value {
   font-size: var(--fs-gauge);
   font-weight: 700;
