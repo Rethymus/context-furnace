@@ -1,0 +1,6 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+docs/media/readme/playwright-video.webm
+*.log
