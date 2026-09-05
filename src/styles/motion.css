@@ -64,3 +64,10 @@
 .result-list {
   animation: fade-in 0.3s ease;
 }
+
+/* D29 冻结开关（仅测试构建启用 ?freeze=1）：停掉一切周期性动画保证快照可复现 */
+[data-freeze='1'] .glyph,
+[data-freeze='1'] .furnace-glow,
+[data-freeze='1'] .dial-needle {
+  animation: none !important;
+}

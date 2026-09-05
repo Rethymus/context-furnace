@@ -1,9 +1,95 @@
 // TEST_MATRIX §3：desktop.spec —— 1440×900 全流程（Path B 脚本）、解锁提示、锁定、FEED 高亮、复制（D14/D16）。
 import { expect, test } from '@playwright/test';
-import { PATH_B_GAIN, T, nextInput, playRound, powerOn, skipTutorial } from './helpers';
+import { PATH_B_GAIN, PATH_C_GAIN, T, nextInput, playRound, powerOn, skipTutorial } from './helpers';
+
+// §136 / §3.2：视觉基线（D27/D28/D29）。仅 Chromium 项目；本地首采自动写入并标记待人工复核。
+test.describe('visual baselines (chromium only, frozen animations)', () => {
+  test.beforeEach(async ({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chromium', 'baselines are desktop-chromium only (D19)');
+  });
+
+  // locale 经 cf.locale 检测链固定；skipTutorial 标记免教学
+  async function frozenPage(page: import('@playwright/test').Page, locale: string): Promise<void> {
+    await page.addInitScript((l) => {
+      localStorage.setItem('cf.locale', l);
+      localStorage.setItem('cf.tutorialSeen', '1');
+    }, locale);
+    await page.goto('/?freeze=1'); // D29
+  }
+
+  test('home-zh / home-en', async ({ page }) => {
+    await frozenPage(page, 'zh-CN');
+    await page.waitForTimeout(600);
+    await expect(page.locator('main.machine')).toHaveScreenshot('home-zh.png');
+    await page.locator(T('locale-toggle')).click();
+    await page.waitForTimeout(400);
+    await expect(page.locator('main.machine')).toHaveScreenshot('home-en.png');
+  });
+
+  test('cycle4-zh / cycle8-en (Path B state)', async ({ page }) => {
+    test.setTimeout(120_000);
+    await frozenPage(page, 'zh-CN');
+    await page.locator(T('power-on')).click();
+    await page.waitForTimeout(1500);
+    for (let c = 1; c <= 3; c++) {
+      await playRound(page, { gain: PATH_B_GAIN(c), leftMoves: 1 });
+      await nextInput(page);
+    }
+    await page.waitForTimeout(500);
+    await expect(page.locator('main.machine')).toHaveScreenshot('cycle4-zh.png');
+    await page.locator(T('locale-toggle')).click();
+    await page.waitForTimeout(500);
+    for (let c = 4; c <= 7; c++) {
+      await playRound(page, { gain: PATH_B_GAIN(c), leftMoves: 1 });
+      await nextInput(page);
+    }
+    await page.waitForTimeout(500);
+    await expect(page.locator('main.machine')).toHaveScreenshot('cycle8-en.png');
+  });
+
+  test('cycle12-zh (Path B state)', async ({ page }) => {
+    test.setTimeout(180_000);
+    await frozenPage(page, 'zh-CN');
+    await page.locator(T('power-on')).click();
+    await page.waitForTimeout(1500);
+    for (let c = 1; c <= 11; c++) {
+      await playRound(page, { gain: PATH_B_GAIN(c), leftMoves: 1 });
+      await nextInput(page);
+    }
+    await page.waitForTimeout(500);
+    await expect(page.locator('main.machine')).toHaveScreenshot('cycle12-zh.png');
+  });
+
+  test('result-peak (Path B ending D)', async ({ page }) => {
+    test.setTimeout(180_000);
+    await frozenPage(page, 'zh-CN');
+    await page.locator(T('power-on')).click();
+    await page.waitForTimeout(1500);
+    for (let c = 1; c <= 12; c++) {
+      await playRound(page, { gain: PATH_B_GAIN(c), leftMoves: 1 });
+      if (c < 12) await nextInput(page);
+    }
+    await page.waitForTimeout(600);
+    await expect(page.locator('main.machine')).toHaveScreenshot('result-peak.png');
+  });
+
+  test('result-stable (Ending C script)', async ({ page }) => {
+    test.setTimeout(180_000);
+    await frozenPage(page, 'zh-CN');
+    await page.locator(T('power-on')).click();
+    await page.waitForTimeout(1500);
+    for (let c = 1; c <= 12; c++) {
+      await playRound(page, { gain: PATH_C_GAIN(c) });
+      if (c < 12) await nextInput(page);
+    }
+    await page.waitForTimeout(600);
+    await expect(page.locator('main.machine')).toHaveScreenshot('result-stable.png');
+  });
+});
 
 test.describe('desktop full run', () => {
   test('home → boot → tutorial → 12 cycles → Peak efficiency ending → results', async ({ page }) => {
+    test.setTimeout(180_000);
     await powerOn(page);
     await page.waitForTimeout(1500);
     await skipTutorial(page);

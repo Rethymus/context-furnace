@@ -55,6 +55,8 @@
 | D40 | 缺口 | Pages URL 未知（用户名与公开时机不可得） | `gh` 可用 → `https://<login>.github.io/context-furnace/` 写入 metadata 与 README Play 链接；不可用 → 保留 `YOUR_GITHUB_PAGES_URL` 占位并列入首次人工会话清单（URL 为部署事实、非创作性文案，不触发 blocker） |
 | D41 | 归一 | 展示面文档把 meta description 列入受检公开面，D34 规定不加 | 维持 D34：index.html **不加** meta description / OG；presentation 测试 P6 断言其**不存在** |
 | D42 | 结构 | 展示层引入新文件与 verify 新项，与 §18.4 冻结结构 / 原 §138 十一项 verify 冲突 | 文件结构修订（新增 README×2、PRESENTATION_SPEC.md、LICENSE、.github/、scripts/、docs/media/、tests/presentation.test.ts，见 §18.4）；verify 扩为 **12 项**（+presentation）；媒体采集走真实 Playwright 流程、禁用状态强制参数（与展示面文档 §19 一致；D29 冻结开关兼容） |
+| D43 | 结构 | 实现期引入测试工具文件，不在 §18.4 清单内 | 追加（均为开发/测试工具，不进生产 bundle）：`vitest.config.ts`（单测仅收 `tests/`，防误收 e2e spec）；`scripts/` 下 `lint-network.mjs`、`lint-placeholders.mjs`、`check-bundle.mjs`、`capture-readme-media.mjs`、`smoke-visual.mjs` 与 `probe-*.mjs`（开发期视觉/行为探查脚本）。§18.4 清单以此为最终口径 |
+| D44 | 缺口 | Playwright 1.63 设备名变更：`Desktop Webkit` 不存在（实为 `Desktop Safari`），误用会使项目回落 chromium | 配置使用 `Desktop Safari`（desktop-webkit）与 `Pixel 7` / `iPhone 14`（移动）；本机 Chromium 经 `CHROMIUM_CHANNEL=chrome` 走系统浏览器（CI 用自带 chromium） |
 
 ---
 

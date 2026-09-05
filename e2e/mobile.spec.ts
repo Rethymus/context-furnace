@@ -36,3 +36,20 @@ test.describe('mobile', () => {
     expect(dbox!.x + dbox!.width).toBeLessThanOrEqual(innerWidth + 1);
   });
 });
+
+// §3.2：settings-mobile 基线（仅 Chromium；D27/D28/D29）
+test.describe('visual baselines (mobile, chromium only)', () => {
+  test('settings-mobile', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile-chromium', 'baselines are mobile-chromium only (D19)');
+    await page.addInitScript(() => {
+      localStorage.setItem('cf.locale', 'zh-CN');
+      localStorage.setItem('cf.tutorialSeen', '1');
+    });
+    await page.goto('/?freeze=1');
+    await page.locator(T('power-on')).click();
+    await page.waitForTimeout(1500);
+    await page.locator(T('settings-btn')).click();
+    await page.waitForTimeout(400);
+    await expect(page.locator(T('settings-dialog'))).toHaveScreenshot('settings-mobile.png');
+  });
+});

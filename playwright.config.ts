@@ -15,6 +15,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: 'list',
+  timeout: 90_000, // WebKit/慢机余量（长流程单测另行加码）
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'retain-on-failure',
@@ -36,7 +37,7 @@ export default defineConfig({
     },
     {
       name: 'desktop-webkit',
-      use: { ...devices['Desktop Webkit'], viewport: { width: 1440, height: 900 } },
+      use: { ...devices['Desktop Safari'], viewport: { width: 1440, height: 900 } },
     },
     {
       name: 'mobile-chromium',

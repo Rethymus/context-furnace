@@ -30,6 +30,13 @@ test.describe('audio', () => {
     await page.goto('/');
     await page.waitForTimeout(400);
     expect(await contexts(page)).toBe(0);
+    // Playwright 的 WebKit 构建不含 Web Audio —— §130 降级路径另有专项测试
+    const hasWebAudio = await page.evaluate(
+      () =>
+        typeof (window as { AudioContext?: unknown }).AudioContext === 'function' ||
+        typeof (window as { webkitAudioContext?: unknown }).webkitAudioContext === 'function',
+    );
+    test.skip(!hasWebAudio, 'engine has no Web Audio; degradation covered by the dedicated test');
     await page.locator(T('power-on')).click();
     await page.waitForTimeout(300);
     expect(await contexts(page)).toBeGreaterThan(0);

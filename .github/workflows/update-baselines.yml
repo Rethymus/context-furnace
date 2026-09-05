@@ -1,0 +1,36 @@
+# D28：Linux（CI 平台）视觉基线生成通道。手动触发后自动提交基线，使 CI 快照比对可用。
+# Windows 基线已在本地首采（PENDING-HUMAN-REVIEW，见 e2e/*-snapshots/）。
+name: Update visual baselines (Linux)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  baselines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Capture Linux baselines
+        run: npx playwright test --project=desktop-chromium --project=mobile-chromium -g "visual baselines|visual baselines (mobile" --update-snapshots
+        env:
+          CI: true
+      - name: Commit baselines
+        run: |
+          git config user.name "baseline-bot"
+          git config user.email "actions@github.com"
+          git add "**-snapshots/**"
+          if git diff --cached --quiet; then
+            echo "No baseline changes"
+          else
+            git commit -m "chore: update Linux visual baselines [baseline-bot]"
+            git push
+          fi

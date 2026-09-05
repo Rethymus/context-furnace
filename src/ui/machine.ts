@@ -63,6 +63,10 @@ export class MachineController {
 
   mount(root: HTMLElement): void {
     this.root = root;
+    // D29：测试冻结开关（仅测试启用；生产无此参数，无行为差异）
+    if (new URLSearchParams(window.location.search).has('freeze')) {
+      document.documentElement.dataset.freeze = '1';
+    }
     this.applySettings(this.settingsPanel.current);
     this.offLocale = onLocaleChange(() => this.onLocaleSwitched());
     this.phaseTo('HOME_OFF'); // §18.5：BOOT → HOME_OFF（页面加载完成）
