@@ -94,32 +94,38 @@ await gifPage.keyboard.press('ArrowLeft');
 await gifPage.waitForTimeout(700);
 await gifPage.locator('.gain-stop[data-value="1"]').click();
 await gifPage.waitForTimeout(800);
+// 机身实测边界仅作存在性校验；GIF 裁全视口（1440×900 → 960×600 恰为 1.6:1 等比），
+// 燃烧态布局增高也不会裁切
+const machineBox = await gifPage.locator('main.machine').boundingBox();
 await gifPage.getByTestId('ignite').click();
 await gifPage.waitForTimeout(2600);
 const videoPath = await gifPage.video()?.path();
 await gifContext.close();
 
-// ffmpeg：取视频末尾 7.5s（分镜段，重编码保证精确 seek）→ 裁剪机身 → 960×600 → 12fps → palette GIF
+// ffmpeg：取视频末尾 7.5s（分镜段，重编码保证精确 seek）→ 全视口等比 960×600 → 12fps → palette GIF
 const rawVideo = videoPath;
 const trimmed = join(OUT, 'readme', 'playwright-video.webm');
 const palette = join(OUT, 'readme', 'palette.png');
 const gif = join(OUT, 'readme', 'gameplay.gif');
-// 机身居中：1440×900 中约 1160×740 → 缩放 960×600
+if (!machineBox) throw new Error('machine element not found for GIF capture');
+const gifScale = 'crop=1440:900:0:0,scale=960:600:flags=lanczos,fps=12';
 execFileSync(ffmpegPath, [
   '-y', '-sseof', '-8.5', '-i', rawVideo, '-t', '7.5',
   '-c:v', 'libvpx', '-b:v', '1M', '-an', trimmed,
 ]);
 execFileSync(ffmpegPath, [
   '-y', '-i', trimmed, '-vf',
-  'crop=1160:740:140:80,scale=960:600:flags=lanczos,fps=12,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle',
+  `${gifScale},split[a][b];[a]palettegen=max_colors=80:stats_mode=single[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`,
   gif,
 ]);
 
-// §22–23：social-preview.png（1280×640，仅用既有视觉资产）
+// §22–23：social-preview.png（1280×640，仅用既有视觉资产；纯色底消除拼缝）
 const spContext = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' });
 const spPage = await spContext.newPage();
 await spPage.goto(BASE);
 await spPage.waitForTimeout(400);
+await spPage.addStyleTag({ content: 'body{background:#0E0F0C !important}' });
+await spPage.waitForTimeout(120);
 await spPage.locator('main.machine').screenshot({ path: join(OUT, 'sp-raw.png') });
 await spContext.close();
 execFileSync(ffmpegPath, [
