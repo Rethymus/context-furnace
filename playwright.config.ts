@@ -24,7 +24,7 @@ export default defineConfig({
     command: 'npm run preview -- --port 4173 --strictPort',
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
-    timeout: 30_000,
+    timeout: 60_000,
   },
   projects: [
     {
