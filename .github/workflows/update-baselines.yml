@@ -20,7 +20,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - name: Capture Linux baselines
-        run: npx playwright test --project=desktop-chromium --project=mobile-chromium -g "visual baselines|visual baselines (mobile" --update-snapshots
+        run: npx playwright test --project=desktop-chromium --project=mobile-chromium -g "visual baselines" --update-snapshots
         env:
           CI: true
       - name: Commit baselines
