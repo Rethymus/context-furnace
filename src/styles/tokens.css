@@ -1,5 +1,8 @@
-/* DESIGN_SPEC §15.2 Color Tokens（逐字冻结） */
+/* DESIGN_SPEC §15.2 Color Tokens（逐字冻结，两外观共用）
+   + UI_CONTRACT §4 修订 v3：暖中性色阶 / 材质层 / 动效 token（浅色缺省覆盖，深色为基础外观）。
+   组件一律引用本文件的 token；禁止在组件样式里写颜色/时长字面量。 */
 :root {
+  /* ── §15.2 冻结语义色 ── */
   --page: #0e0f0c;
   --bench: #22231d;
 
@@ -19,14 +22,14 @@
   --fidelity: #2c625a;
   --warning: #d4a72c;
 
-  /* §15.3 Typography */
+  /* ── §15.3 Typography ── */
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
     "PingFang SC", "Microsoft YaHei", "Noto Sans Mono CJK SC", monospace;
   --font-body: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
   /* UI_CONTRACT §1.1：标题强调（系统楷体栈，无下载） */
   --font-title: "Kaiti SC", "STKaiti", "KaiTi", "DFKai-SB", serif;
 
-  /* §15.4 字号 */
+  /* ── §15.4 字号 ── */
   --fs-body: 16px;
   --lh-body: 1.65;
   --fs-title: 24px;
@@ -34,7 +37,147 @@
   --fs-gauge: 30px;
   --fs-gauge-mobile: 24px;
 
-  /* §4.3 尺寸 */
+  /* ── §4.3 尺寸 ── */
   --machine-max-w: 960px;
   --machine-ideal-w: 920px;
+
+  /* ════ UI_CONTRACT §4.2 暖中性阶（n0 最深 → n9 最浅；深色外观为基底） ════ */
+  --n0: #0e0f0c;
+  --n1: #16170f;
+  --n2: #1b1e19;
+  --n3: #252923;
+  --n4: #33342c;
+  --n5: #4a493f;
+  --n6: #6e6c5e;
+  --n7: #85836f;
+  --n8: #b9b4a2;
+  --n9: #f3ecd9;
+
+  /* 表面（模式可变；--page/--bench 冻结值仅作深色别名的来源） */
+  --surface-page: #0e0f0c;
+  --surface-bench-hi: #171812;
+  --surface-bench-lo: #0e0f0c;
+
+  /* 环境光场（供 backdrop 采样；静态、确定性） */
+  --glow-warm: rgba(164, 58, 47, 0.16);
+  --glow-cool: rgba(44, 98, 90, 0.10);
+  --glow-neutral: rgba(212, 167, 44, 0.07);
+
+  /* 台面文字（暗底浅字 / 浅底深字） */
+  --bench-ink: #f0e9d8;
+  --bench-ink-soft: rgba(243, 236, 217, 0.82);
+
+  /* 纸面文字三阶（vibrancy label hierarchy；浅色见 media 覆盖） */
+  --ink-soft: #4a493f;
+  --ink-faint: #44433a;
+
+  /* ── UI_CONTRACT §4.3 材质层（深色外观值） ── */
+  --mat-paper: rgba(243, 236, 217, 0.8);
+  --mat-paper-strong: rgba(245, 239, 224, 0.9);
+  --mat-glass: rgba(22, 24, 19, 0.78);
+  --mat-chrome: rgba(28, 30, 24, 0.86);
+  --glass-ink: #f3ecd9;
+  --glass-ink-soft: rgba(243, 236, 217, 0.72);
+
+  --blur-panel: 22px;
+  --blur-glass: 18px;
+  --blur-sheet: 10px;
+  --saturate-panel: 1.35;
+  --saturate-glass: 1.2;
+
+  /* 发丝边 / 内高光 / 阴影 */
+  --hairline-color: rgba(243, 236, 217, 0.16);
+  --hairline-strong: rgba(243, 236, 217, 0.24);
+  --edge-highlight: inset 0 1px 0 rgba(255, 250, 235, 0.28);
+  --edge-highlight-soft: inset 0 1px 0 rgba(255, 250, 235, 0.12);
+  --shadow-panel: 0 18px 40px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-float: 0 24px 60px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* 焦点环（§19；两外观 ≥3:1） */
+  --focus: var(--warning);
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  /* 派生交互色（UI_CONTRACT §4：按压/遮罩/状态文字/弧轨） */
+  --heat-press: #7d2b20;
+  --heat-bright: #c14a38;
+  --heat-tint: rgba(164, 58, 47, 0.13);
+  --ink-line: rgba(24, 26, 22, 0.35);
+  --hatch-a: #e4dcc4;
+  --hatch-b: #cfc7ac;
+  --warning-ring: rgba(212, 167, 44, 0.55);
+  --scrim: rgba(8, 9, 7, 0.5);
+  --amber-text: #d4a72c;
+  --arc-track: #a89f88; /* 仪表面弧槽（装饰性，非信息载体；值弧+数字承载信息） */
+
+  /* ── UI_CONTRACT §4.5 动效 token（SwiftUI spring 映射） ── */
+  --spring-smooth: cubic-bezier(0.32, 0.72, 0, 1); /* 临界阻尼：sheet/仪表 */
+  --spring-snap: cubic-bezier(0.34, 1.3, 0.64, 1); /* 轻过冲：按压回弹/裁刀 */
+  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1); /* 过冲：toast/浮层 */
+
+  --t-press-in: 90ms;
+  --t-press-out: 340ms;
+  --t-move: 380ms;
+  --t-gauge: 550ms;
+  --t-overlay: 420ms;
+  --t-overlay-out: 200ms;
+  --t-toast-in: 420ms;
+  --t-toast-out: 240ms;
+  --t-mount: 220ms;
+
+  --press-scale: 0.97;
+  --press-scale-large: 0.985;
+
+  /* 兼容别名（旧样式引用处收敛用） */
+  --focus-ring-color: var(--focus);
+}
+
+/* ── 浅色外观（系统跟随；无系统偏好时保持深色基底，UI_CONTRACT §4.4） ── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --n0: #26251f;
+    --n1: #33322c;
+    --n2: #4a493f;
+    --n3: #6e6c5e;
+    --n4: #85806f;
+    --n5: #a8a293;
+    --n6: #c9c4b4;
+    --n7: #ddd9cc;
+    --n8: #efece2;
+    --n9: #faf7ee;
+
+    --surface-page: #e7e4da;
+    --surface-bench-hi: #f2f0e7;
+    --surface-bench-lo: #e2dfd3;
+
+    --glow-warm: rgba(164, 58, 47, 0.12);
+    --glow-cool: rgba(44, 98, 90, 0.09);
+    --glow-neutral: rgba(212, 167, 44, 0.12);
+
+    --bench-ink: #26251f;
+    --bench-ink-soft: rgba(38, 37, 31, 0.72);
+
+    /* 浅色下纸面材质更透、玻璃面加厚（HIG：同档材质按外观调填充） */
+    --mat-paper: rgba(252, 249, 240, 0.74);
+    --mat-paper-strong: rgba(253, 251, 245, 0.88);
+    --mat-glass: rgba(255, 253, 246, 0.72);
+    --mat-chrome: rgba(252, 250, 243, 0.85);
+    --glass-ink: #26251f;
+    --glass-ink-soft: rgba(38, 37, 31, 0.66);
+
+    --hairline-color: rgba(40, 38, 30, 0.16);
+    --hairline-strong: rgba(40, 38, 30, 0.24);
+    --edge-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --edge-highlight-soft: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    --shadow-panel: 0 18px 40px rgba(74, 66, 46, 0.16), 0 2px 6px rgba(74, 66, 46, 0.1);
+    --shadow-float: 0 24px 60px rgba(74, 66, 46, 0.22), 0 4px 12px rgba(74, 66, 46, 0.12);
+
+    --focus: #8f6400;
+
+    --heat-press: #7d2b20;
+    --scrim: rgba(40, 38, 30, 0.32);
+    --amber-text: #755200;
+    --arc-track: #c9c2ac;
+    --ink-faint: #55544a;
+  }
 }

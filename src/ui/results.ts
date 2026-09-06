@@ -122,7 +122,7 @@ export function renderResults(root: HTMLElement, state: GameState, callbacks: Re
   copyBtn.dataset.testid = 'copy';
   copyBtn.textContent = t('result.copy');
   const copied = document.createElement('span');
-  copied.className = 'status-line';
+  copied.className = 'status-line mat-glass';
   copied.dataset.testid = 'copied';
   copied.style.display = 'none';
   // D16：成功显示 1.2s；失败静默降级

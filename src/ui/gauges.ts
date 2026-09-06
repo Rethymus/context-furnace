@@ -11,7 +11,7 @@ export interface Gauge {
 // 值弧归一化：pathLength=100 → dashoffset = 100 − value
 export function createGauge(labelKey: I18nKey, ariaKey: I18nKey, cssClass: string, reduced: () => boolean): Gauge {
   const root = document.createElement('section');
-  root.className = `gauge ${cssClass}`;
+  root.className = `gauge mat-paper ${cssClass}`; // UI_CONTRACT §4.3 纸面材质层
 
   const label = document.createElement('div');
   label.className = 'gauge-label caps';

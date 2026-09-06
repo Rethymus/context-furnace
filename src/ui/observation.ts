@@ -36,7 +36,8 @@ function shapeNode(shape: Shape): SVGSVGElement {
   svg.setAttribute('viewBox', '0 0 14 14');
   const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   p.setAttribute('fill', 'none');
-  p.setAttribute('stroke', '#c9c6b2');
+  // currentColor 随 .mat-glass 的 glass-ink token 走，浅/深外观自动反色（UI_CONTRACT §4.4）
+  p.setAttribute('stroke', 'currentColor');
   p.setAttribute('stroke-width', '1.4');
   switch (shape) {
     case 'circle':
@@ -98,7 +99,7 @@ export interface ObservationHandle {
 
 export function createObservation(reduced: () => boolean): ObservationHandle {
   const root = document.createElement('div');
-  root.className = 'observation';
+  root.className = 'observation mat-glass'; // UI_CONTRACT §4.3 玻璃材质层
   root.setAttribute('aria-hidden', 'true'); // §10.5
   root.dataset.testid = 'observation';
 

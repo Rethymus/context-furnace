@@ -162,7 +162,7 @@ export class MachineController {
   private localeToggleBtn(): HTMLButtonElement {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'tool-btn';
+    btn.className = 'tool-btn mat-chrome'; // UI_CONTRACT §4.3
     btn.dataset.testid = 'locale-toggle';
     btn.textContent = t('home.localeToggle');
     btn.addEventListener('click', () => {
@@ -174,7 +174,7 @@ export class MachineController {
   private settingsBtn(): HTMLButtonElement {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'tool-btn';
+    btn.className = 'tool-btn mat-chrome'; // UI_CONTRACT §4.3
     btn.dataset.testid = 'settings-btn';
     btn.setAttribute('aria-label', t('settings.title'));
     btn.textContent = '⚙';
@@ -293,7 +293,7 @@ export class MachineController {
     machine.appendChild(controlRow);
 
     const hint = document.createElement('div');
-    hint.className = 'status-line';
+    hint.className = 'status-line mat-glass'; // UI_CONTRACT §4.3 玻璃材质层
     hint.dataset.testid = 'tutorial-hint';
     machine.appendChild(hint);
 
@@ -352,7 +352,7 @@ export class MachineController {
 
   private panel(labelKey: Parameters<typeof t>[0], testid: string): { wrap: HTMLElement; body: HTMLElement; label: HTMLElement } {
     const wrap = document.createElement('section');
-    wrap.className = `panel ${testid}`;
+    wrap.className = `panel mat-paper ${testid}`; // UI_CONTRACT §4.3 纸面材质层
     wrap.dataset.testid = testid;
     const label = document.createElement('div');
     label.className = 'panel-label caps';
@@ -507,7 +507,7 @@ export class MachineController {
 
     // STATUS
     const status = document.createElement('div');
-    status.className = 'status-line';
+    status.className = 'status-line mat-glass'; // UI_CONTRACT §4.3 玻璃材质层
     status.dataset.testid = 'status';
     machine.appendChild(status);
 
@@ -644,7 +644,7 @@ export class MachineController {
     const key = max === 1 ? 'gain.unlock1' : max === 2 ? 'gain.unlock2' : 'gain.unlock3';
     this.audio.relay();
     const toast = document.createElement('div');
-    toast.className = 'toast';
+    toast.className = 'toast mat-chrome'; // UI_CONTRACT §4.3 最厚档材质
     toast.dataset.testid = 'gain-unlock-toast';
     toast.textContent = t(key);
     document.body.appendChild(toast);

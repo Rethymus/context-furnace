@@ -83,7 +83,7 @@ export class SettingsPanel {
     backdrop.className = 'dialog-backdrop';
     backdrop.dataset.testid = 'settings-dialog';
     const dialog = document.createElement('div');
-    dialog.className = 'dialog';
+    dialog.className = 'dialog mat-paper-thick'; // UI_CONTRACT §4.3 厚纸面材质
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-label', t('settings.title'));
     backdrop.appendChild(dialog);
@@ -116,13 +116,16 @@ export class SettingsPanel {
   }
 
   close(): void {
-    if (!this.backdrop) return;
-    this.backdrop.remove();
+    const backdrop = this.backdrop;
+    if (!backdrop) return;
     this.backdrop = null;
     this.rows = null;
     document.removeEventListener('keydown', this.onKeydown);
     this.offLocale?.();
     this.offLocale = null;
+    // D3：即时卸载。曾尝试 220ms 退场动画 + 定时器卸载，但渲染节流（并行负载下的
+    // WebKit 移动仿真）会把定时器拖到秒级以上，浮层滞留 DOM——确定性优先，见 UI_CONTRACT §4.6
+    backdrop.remove();
   }
 
   private renderRows(): void {
