@@ -1,4 +1,4 @@
-/* UI_CONTRACT v3 §3 MOBILE：<760px 单列。顺序 仪表→原料→截取→成品→增益→按钮→观察窗→消息。 */
+/* 移动端（<760px）单列：侧栏（仪表→增益→按钮）提前，主链随后；§4.2 绝对禁止水平滚动。 */
 html,
 body {
   overflow-x: hidden;
@@ -7,11 +7,12 @@ body {
 
 @media (max-width: 760px) {
   .stage {
-    padding: 14px 10px;
+    padding: 14px 10px 32px;
   }
 
-  .panel-dark {
+  .machine-panel {
     padding: 14px;
+    border-radius: 14px;
   }
 
   .workspace {
@@ -29,6 +30,11 @@ body {
     gap: 8px;
   }
 
+  .gauge-dial {
+    width: 100%;
+    max-width: 116px;
+  }
+
   .side-actions {
     flex-direction: row;
   }
@@ -44,12 +50,68 @@ body {
     padding: 10px 14px;
   }
 
+  .machine-plaque {
+    padding: 26px 22px 24px;
+  }
+
   .title-plate {
     font-size: clamp(32px, 9vw, 40px);
   }
 
+  .home-subtitle {
+    font-size: 12px;
+  }
+
   .machine-header {
     flex-wrap: wrap;
-    row-gap: 4px;
+    row-gap: 6px;
+  }
+
+  .machine-header.has-cycle {
+    grid-template-columns: auto 1fr auto;
+    column-gap: 8px;
+  }
+
+  .model-plate {
+    font-size: 13px;
+  }
+
+  .cycle-plate {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .observation {
+    height: 84px;
+  }
+
+  .result-card {
+    padding: 14px 16px 16px;
+  }
+
+  .ending-wrap .gauge-row {
+    gap: 14px;
+  }
+
+  .dialog {
+    padding: 16px;
+  }
+
+  .setting-row select {
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  .setting-row input[type='range'] {
+    width: 130px;
+  }
+
+  /* 窄屏：雕印 LEFT/RIGHT 内移避免边缘裁切 */
+  .cutter-left .cutter-hint {
+    transform: translateX(10px);
+  }
+
+  .cutter-right .cutter-hint {
+    transform: translateX(calc(-100% - 10px));
   }
 }

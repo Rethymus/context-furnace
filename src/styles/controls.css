@@ -1,20 +1,22 @@
-/* UI_CONTRACT v3 §4：控件形态。 */
+/* 控件形态 — 概念板：奶油纸面按钮、红色主行动、深炭次级、纸面裁刀轨道、机械 GAIN。 */
+
+/* ── 按钮 ── */
 .btn {
-  border: 1px solid #b0a88f;
-  border-radius: var(--r-card);
-  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r-btn);
+  background: linear-gradient(180deg, #fbf6e7 0%, #f1ead4 100%);
   color: var(--ink);
-  padding: 10px 22px;
+  padding: 11px 22px;
   min-height: 48px;
   min-width: 96px;
   cursor: pointer;
   font-size: 16px;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: 0 3px 0 rgba(122, 106, 74, 0.45);
 }
 
 .btn:active:not(:disabled) {
   transform: translateY(2px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 0 rgba(122, 106, 74, 0.45);
 }
 
 .btn:disabled {
@@ -22,7 +24,7 @@
   cursor: not-allowed;
 }
 
-/* 右列动作栈：入炉主导（h56 全宽），复原次级（幽灵） */
+/* 右列动作栈：入炉主导（h56 全宽），复原次级 */
 .side-actions {
   display: flex;
   flex-direction: column;
@@ -30,64 +32,88 @@
 }
 
 .btn-primary {
-  background: var(--heat);
-  color: var(--paper);
-  border-color: #7d2b20;
-  box-shadow: 0 4px 0 #7d2b20;
-  min-height: 52px;
+  background: linear-gradient(180deg, #b2453a 0%, var(--heat) 100%);
+  color: #f9f4e4;
+  border-color: var(--heat-deep);
+  box-shadow: 0 4px 0 var(--heat-deep);
+  min-height: 56px;
   width: 100%;
   font-weight: 700;
   font-size: 17px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
+}
+
+.btn-primary:active:not(:disabled) {
+  box-shadow: 0 2px 0 var(--heat-deep);
+}
+
+/* 深炭次级强按钮（NEXT INPUT / 结局重开） */
+.btn-dark {
+  background: linear-gradient(180deg, var(--coal-hi) 0%, var(--coal) 100%);
+  color: var(--on-coal);
+  border-color: var(--coal-deep);
+  box-shadow: 0 3px 0 var(--coal-deep);
+}
+
+.btn-dark:active:not(:disabled) {
+  box-shadow: 0 1px 0 var(--coal-deep);
 }
 
 .btn-ghost {
   background: transparent;
-  border: 1px solid var(--panel-line);
-  color: var(--on-panel);
+  border: 1px solid #a89a76;
+  color: var(--ink-soft);
   box-shadow: none;
   min-height: 44px;
   width: 100%;
 }
 
-/* 首页主按钮（居中独立） */
-.machine[data-testid='home'] .btn-primary {
-  display: block;
-  margin: 4px auto 10px;
-  min-width: 180px;
-  width: auto;
+.btn-ghost:active:not(:disabled) {
+  transform: none;
 }
 
-/* CUT 轨道（暗面上纸条块） */
+/* 首页电源钮（奶油大按钮，概念板 01） */
+.btn-power {
+  display: block;
+  margin: 26px auto 0;
+  min-width: 200px;
+  min-height: 56px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+}
+
+/* ── CUT 轨道（面板上的纸条槽 + 红色裁刀） ── */
 .track {
   display: flex;
   gap: 3px;
-  padding: 12px 8px 18px;
+  padding: 14px 8px 20px;
   position: relative;
   touch-action: none;
 }
 
 .track-block {
   flex: 1 1 0;
-  height: 26px;
-  background: var(--paper);
-  border: 1px solid rgba(0, 0, 0, 0.35);
-  border-radius: 2px;
+  height: 28px;
+  background: linear-gradient(180deg, #fbf6e7 0%, #efe8d0 100%);
+  border: 1px solid rgba(90, 78, 52, 0.45);
+  border-radius: 3px;
   min-width: 0;
 }
 
 .track-block.excluded {
   background: repeating-linear-gradient(
     45deg,
-    #6d6a5a 0,
-    #6d6a5a 4px,
-    #565347 4px,
-    #565347 8px
+    rgba(112, 100, 74, 0.45) 0,
+    rgba(112, 100, 74, 0.45) 4px,
+    rgba(112, 100, 74, 0.12) 4px,
+    rgba(112, 100, 74, 0.12) 8px
   );
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
-/* 裁刀：红色竖柄 + 顶部圆钮（视觉 18×26 / hit 48×48） */
+/* 裁刀：红色滑轨手柄（视觉柄 18×26 / hit 48×48，§6.4） */
 .cutter {
   position: absolute;
   top: 0;
@@ -109,26 +135,27 @@
 
 .cutter-cap {
   position: absolute;
-  left: 9px;
-  top: 0;
-  width: 30px;
+  left: 10px;
+  top: 2px;
+  width: 28px;
   height: 12px;
   border-radius: 6px;
   background: linear-gradient(180deg, #d86a56 0%, var(--heat) 100%);
-  border: 1px solid #7d2b20;
+  border: 1px solid var(--heat-deep);
   pointer-events: none;
 }
 
 .cutter-blade {
   position: absolute;
   left: 15px;
-  bottom: 2px;
+  bottom: 4px;
   width: 18px;
-  height: 26px;
+  height: 28px;
   background: linear-gradient(180deg, #c14a38 0%, var(--heat) 70%);
-  border: 1px solid #7d2b20;
-  border-radius: 2px;
+  border: 1px solid var(--heat-deep);
+  border-radius: 3px;
   pointer-events: none;
+  box-shadow: 0 3px 6px rgba(90, 30, 20, 0.35);
 }
 
 .cutter.active .cutter-blade,
@@ -139,12 +166,12 @@
 .cutter-hint {
   position: absolute;
   left: 50%;
-  top: -4px;
+  top: -6px;
   transform: translateX(-50%);
   font-family: var(--font-mono);
   font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--on-panel-dim);
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
 }
 
 .cutter-left .cutter-hint {
@@ -155,34 +182,35 @@
   transform: translateX(calc(-100% + 4px));
 }
 
-/* GAIN：旋钮视觉 + 卡位 radiogroup */
+/* ── GAIN：机械旋钮 + 纸面卡位（radiogroup；§7.1 / D13） ── */
 .gain-cluster {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
+  gap: 10px;
 }
 
 .gain-knob {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   margin: 2px auto 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #4a4e44 0%, #1f211d 75%);
-  border: 2px solid var(--panel-line);
+  background: radial-gradient(circle at 35% 30%, #4a463a 0%, #211f19 78%);
+  border: 2px solid #17150f;
+  box-shadow: 0 6px 14px rgba(50, 40, 22, 0.45), inset 0 1px 0 rgba(228, 222, 203, 0.18);
   position: relative;
 }
 
 .gain-pointer {
   position: absolute;
   left: 50%;
-  top: 5px;
+  top: 6px;
   width: 4px;
-  height: 18px;
+  height: 19px;
   margin-left: -2px;
   border-radius: 2px;
   background: var(--warning);
-  transform-origin: 2px 27px;
+  transform-origin: 2px 28px;
   transform: rotate(var(--knob-rot, -60deg));
 }
 
@@ -193,45 +221,60 @@
 }
 
 .gain-stop {
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  border: 1px solid var(--panel-line);
-  background: #23261f;
-  color: var(--on-panel);
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  border: 1px solid var(--paper-edge);
+  background: linear-gradient(180deg, #fbf6e7 0%, #efe8d0 100%);
+  color: var(--ink);
   font-family: var(--font-mono);
   font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 2px 0 rgba(122, 106, 74, 0.4);
 }
 
 .gain-stop[aria-checked='true'] {
-  background: var(--heat);
-  color: var(--paper);
-  border-color: #7d2b20;
-  box-shadow: 0 0 0 2px rgba(212, 167, 44, 0.5) inset;
+  background: linear-gradient(180deg, #b2453a 0%, var(--heat) 100%);
+  color: #f9f4e4;
+  border-color: var(--heat-deep);
+  box-shadow: 0 2px 0 var(--heat-deep);
 }
 
 .gain-stop:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* GAIN 解锁提示 */
+/* GAIN 解锁提示（纸面 toast） */
 .toast {
   position: fixed;
   left: 50%;
   bottom: 36px;
   transform: translateX(-50%);
-  background: var(--panel);
-  color: var(--on-panel);
-  border: 1px solid var(--panel-line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--paper-edge);
   border-radius: 8px;
-  padding: 8px 18px;
+  padding: 10px 18px;
   font-family: var(--font-mono);
   font-size: 14px;
   opacity: 0;
   pointer-events: none;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-float);
+}
+
+.toast::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--heat);
+  flex: 0 0 auto;
 }
 
 .toast.show {
@@ -239,7 +282,7 @@
   transition: opacity 0.2s ease;
 }
 
-/* 电源插头（结局 E） */
+/* 电源插头（结局 E，§13：无提示） */
 .plug {
   position: absolute;
   right: 14px;
@@ -249,14 +292,18 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--on-panel-dim);
+  color: #6b6350;
 }
 
-/* 设置面板（纸面弹窗） */
+.plug:hover {
+  color: var(--ink-soft);
+}
+
+/* ── 设置面板（深炭面板 — 概念板 11） ── */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(28, 30, 25, 0.55);
+  background: rgba(18, 16, 12, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,21 +312,24 @@
 }
 
 .dialog {
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--paper-edge);
-  border-radius: var(--r-card);
-  padding: 18px 20px;
-  width: min(420px, 100%);
+  background: linear-gradient(180deg, var(--coal-hi) 0%, var(--coal) 100%);
+  color: var(--on-coal);
+  border: 1px solid var(--coal-edge);
+  border-radius: 14px;
+  padding: 20px 24px;
+  width: min(440px, 100%);
   max-height: 85dvh;
   overflow: auto;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-float), inset 0 1px 0 rgba(228, 222, 203, 0.08);
 }
 
 .dialog h2 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   font-size: var(--fs-title);
   font-family: var(--font-title);
+  letter-spacing: 0.1em;
+  color: #f0e9d6;
+  text-align: center;
 }
 
 .setting-row {
@@ -287,23 +337,67 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px dashed var(--paper-edge);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(228, 222, 203, 0.14);
 }
 
-.setting-row select,
-.setting-row input[type='range'] {
+.setting-row > span {
+  color: var(--on-coal);
+}
+
+.setting-row select {
+  appearance: none;
   min-height: 44px;
+  min-width: 132px;
   font: inherit;
+  font-size: 15px;
+  color: var(--on-coal);
+  background: #1d1b16 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23b3ac97' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat right 12px center;
+  border: 1px solid var(--coal-line);
+  border-radius: 8px;
+  padding: 8px 32px 8px 14px;
+  cursor: pointer;
+}
+
+.setting-row select option {
+  background: #1d1b16;
+  color: var(--on-coal);
 }
 
 .setting-row input[type='range'] {
   min-height: auto;
   accent-color: var(--heat);
+  width: 170px;
+}
+
+.setting-row .btn {
+  min-height: 44px;
+  min-width: 96px;
+}
+
+.setting-row .btn:disabled {
+  opacity: 0.4;
 }
 
 .about-text {
   font-size: 14px;
-  color: #6a6450;
-  line-height: 1.7;
+  color: var(--on-coal-dim);
+  line-height: 1.75;
+  margin: 14px 0 4px;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  width: 44px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.dialog {
+  position: relative;
 }

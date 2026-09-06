@@ -1,22 +1,52 @@
-/* UI_CONTRACT v3 §2：设计 Tokens（概念图 2026-09-06-e1a7） */
+/* 设计 Tokens — 概念板 12 屏（2026-09-07 批准概念方向）。
+   暖纸台面 + 奶油烤漆机面板 + 白纸卡 + 红/绿仪表 + 深炭铭牌。
+   --heat / --fidelity / --warning 沿用 DESIGN_SPEC §15.2 冻结色。 */
 :root {
-  --bg: #BCB4A3;
-  --bg-deep: #ACA392;
-  --panel: #2e312b;
-  --panel-edge: #1f211d;
-  --panel-line: #4a4e44;
-  --paper: #f7f2e4;
-  --paper-edge: #d8d2c0;
-  --ink: #1c1e19;
-  --on-panel: #d6d1c0;
-  --on-panel-dim: #a9a493;
+  /* 台面（desk） */
+  --desk-hi: #c6bca7;
+  --desk: #b6ab94;
+  --desk-deep: #a2977f;
+  --desk-ink: #3a3527;
+
+  /* 机面板（烤漆奶油，DESIGN_SPEC §15.2 --machine 域） */
+  --machine-hi: #e0d6bc;
+  --machine: #d5c9ab;
+  --machine-lo: #c8bb9b;
+  --machine-edge: #ac9f7d;
+  --machine-line: #bfb392;
+
+  /* 纸卡 */
+  --paper: #f7f2e2;
+  --paper-edge: #c9bfa2;
+  --ink: #22201a;
+  --ink-soft: #55503c;
+
+  /* 深炭面（铭牌 / 设置 / 观察窗 / 结局） */
+  --coal-hi: #2d2b24;
+  --coal: #262420;
+  --coal-deep: #1c1a16;
+  --coal-edge: #45423a;
+  --coal-line: #3c3931;
+  --on-coal: #e4decb;
+  --on-coal-dim: #b3ac97;
+
+  /* 指标与行动色（§15.2 冻结） */
   --heat: #a43a2f;
+  --heat-deep: #7c2a20;
   --heat-bright: #c0503f;
-  --fidelity: #3e7a6b;
-  --fidelity-bright: #4e9683;
+  --fidelity: #2c625a;
+  --fidelity-bright: #47847a;
   --warning: #d4a72c;
+
+  /* 半径 / 阴影 / 时序 */
   --r-panel: 18px;
-  --r-card: 8px;
+  --r-card: 10px;
+  --r-btn: 10px;
+  --shadow-panel: 0 26px 48px rgba(56, 46, 28, 0.32), 0 6px 14px rgba(56, 46, 28, 0.18);
+  --shadow-card: 0 2px 0 rgba(122, 106, 74, 0.22), 0 10px 22px rgba(70, 58, 38, 0.14);
+  --shadow-float: 0 14px 34px rgba(30, 25, 15, 0.4);
+  --t-mount: 220ms;
+  --spring-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
     "PingFang SC", "Microsoft YaHei", "Noto Sans Mono CJK SC", monospace;
