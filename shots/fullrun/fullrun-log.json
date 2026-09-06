@@ -1,0 +1,227 @@
+{
+  "log": {
+    "rounds": [
+      {
+        "cycle": 1,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 0
+        },
+        "domHeatBefore": 52,
+        "domHeatAfter": 50,
+        "domFidBefore": 100,
+        "domFidAfter": 100,
+        "expHeatAfter": 50,
+        "expFidAfter": 100,
+        "expCutDamage": 0,
+        "expHeatGain": 10
+      },
+      {
+        "cycle": 2,
+        "dom": {
+          "total": 6,
+          "cut": 6,
+          "gain": 0
+        },
+        "domHeatBefore": 50,
+        "domHeatAfter": 48,
+        "domFidBefore": 100,
+        "domFidAfter": 100,
+        "expHeatAfter": 48,
+        "expFidAfter": 100,
+        "expCutDamage": 0,
+        "expHeatGain": 10
+      },
+      {
+        "cycle": 3,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 0
+        },
+        "domHeatBefore": 48,
+        "domHeatAfter": 46,
+        "domFidBefore": 100,
+        "domFidAfter": 100,
+        "expHeatAfter": 46,
+        "expFidAfter": 100,
+        "expCutDamage": 0,
+        "expHeatGain": 10
+      },
+      {
+        "cycle": 4,
+        "dom": {
+          "total": 6,
+          "cut": 6,
+          "gain": 0
+        },
+        "domHeatBefore": 46,
+        "domHeatAfter": 44,
+        "domFidBefore": 100,
+        "domFidAfter": 100,
+        "expHeatAfter": 44,
+        "expFidAfter": 100,
+        "expCutDamage": 0,
+        "expHeatGain": 10
+      },
+      {
+        "cycle": 5,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 1
+        },
+        "domHeatBefore": 44,
+        "domHeatAfter": 43,
+        "domFidBefore": 100,
+        "domFidAfter": 99,
+        "expHeatAfter": 43,
+        "expFidAfter": 99,
+        "expCutDamage": 0,
+        "expHeatGain": 14
+      },
+      {
+        "cycle": 6,
+        "dom": {
+          "total": 8,
+          "cut": 8,
+          "gain": 1
+        },
+        "domHeatBefore": 43,
+        "domHeatAfter": 42,
+        "domFidBefore": 99,
+        "domFidAfter": 98,
+        "expHeatAfter": 42,
+        "expFidAfter": 98,
+        "expCutDamage": 0,
+        "expHeatGain": 14
+      },
+      {
+        "cycle": 7,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 2
+        },
+        "domHeatBefore": 42,
+        "domHeatAfter": 46,
+        "domFidBefore": 98,
+        "domFidAfter": 92,
+        "expHeatAfter": 46,
+        "expFidAfter": 92,
+        "expCutDamage": 0,
+        "expHeatGain": 19
+      },
+      {
+        "cycle": 8,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 2
+        },
+        "domHeatBefore": 46,
+        "domHeatAfter": 50,
+        "domFidBefore": 92,
+        "domFidAfter": 86,
+        "expHeatAfter": 50,
+        "expFidAfter": 86,
+        "expCutDamage": 0,
+        "expHeatGain": 19
+      },
+      {
+        "cycle": 9,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 3
+        },
+        "domHeatBefore": 50,
+        "domHeatAfter": 57,
+        "domFidBefore": 86,
+        "domFidAfter": 74,
+        "expHeatAfter": 57,
+        "expFidAfter": 74,
+        "expCutDamage": 0,
+        "expHeatGain": 25
+      },
+      {
+        "cycle": 10,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 3
+        },
+        "domHeatBefore": 57,
+        "domHeatAfter": 64,
+        "domFidBefore": 74,
+        "domFidAfter": 62,
+        "expHeatAfter": 64,
+        "expFidAfter": 62,
+        "expCutDamage": 0,
+        "expHeatGain": 25
+      },
+      {
+        "cycle": 11,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 3
+        },
+        "domHeatBefore": 64,
+        "domHeatAfter": 71,
+        "domFidBefore": 62,
+        "domFidAfter": 50,
+        "expHeatAfter": 71,
+        "expFidAfter": 50,
+        "expCutDamage": 0,
+        "expHeatGain": 25
+      },
+      {
+        "cycle": 12,
+        "dom": {
+          "total": 7,
+          "cut": 7,
+          "gain": 3
+        },
+        "domHeatBefore": 71,
+        "domHeatAfter": 78,
+        "domFidBefore": 50,
+        "domFidAfter": 38,
+        "expHeatAfter": 78,
+        "expFidAfter": 38,
+        "expCutDamage": 0,
+        "expHeatGain": 25
+      }
+    ],
+    "mismatches": [],
+    "stats": [
+      "最高炉温 78",
+      "最终保真度 38",
+      "平均切除比例 0%",
+      "最高增益 3",
+      "设备状态 效率标兵"
+    ],
+    "expectedStats": {
+      "peakHeat": 78,
+      "avgCutPct": 0,
+      "highestGain": 3,
+      "endingReached": "效率标兵\n\n本周期燃烧效率创下新高。"
+    },
+    "endingText": "效率标兵\n\n本周期燃烧效率创下新高。"
+  },
+  "logE": {
+    "rounds": 8,
+    "ending": "设备已停止工作",
+    "plugVisibleAtC09": true
+  },
+  "logS": {
+    "languageSwitch": "zh-CN",
+    "soundToggledTo": "关",
+    "volumeSet": "30",
+    "motionSet": "full",
+    "replayDisabledAtHome": false,
+    "escapeClosed": true,
+    "headerLocaleToggledToEn": "en-US"
+  }
+}

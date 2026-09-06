@@ -225,3 +225,20 @@ cutter-hint 9→10px；设置关闭钮改 44×44 右上角紧凑芯片（文本/
 逐帧翻转）+ 中间 webm 600k → **3.33MB 达标**；细颗粒振幅 0.07→0.05（dither 职能不受影响，全档指标不变）。
 **对比度**：check-contrast 32/32 PASS（重跑）。**单测**：316 passed。**展示测试**：15/15。
 **基线**：win32 基线随本次重采（PENDING-HUMAN-REVIEW）；Linux 套走 update-baselines.yml（baseline-bot）。
+
+### 4.10 全功能流程走查记录（2026-09-06，本地后台）
+
+- **新增探针**：`scripts/probe-fullrun.mjs`（D43 类）——两条真实玩家路径：
+  ① 完整 12 周期通关（全选 + 按 §27 时刻表用最高档）→ 结局 D；② 快进 8 轮进 C09 → 拔插头 → 结局 E；
+  ③ 设置面板五项功能操作。每周期从 DOM 读 {total, cut, gain, heat, fidelity}，
+  与 `vite.ssrLoadModule` 直读 `src/game` 冻结数据表、按 §9 公式**独立重算**的期望链逐轮对照。
+- **数值机器对照**：**12/12 轮零偏差**（heat/fidelity 链）；结局 D 统计三方一致
+  （DOM=重算=截图：peak 78 / fidelity 38 / 平均切除 0% / 最高增益 3）；
+  结局 E 数据正确（peakHeat 52 = 初始值、fidelity 100）。
+- **发现并修复 1 个边缘缺陷**：C09 解锁 toast（§27，挂 body）的 1.2s 退场可跨过 phase 卸载边界
+  ——拔插头立即结算时，结算页残留半透明 toast（自动化 400ms 内点击才触发；人手速难撞上）。
+  修复：`showEnding()` 即时移除现存 `.toast`（确定性优先，同 §4.8 settings.close 先例；
+  §27 显示时长不变）。修复后走查 + 截图复核：残影消除，12/12 对照依旧零偏差。
+- **设置走查**：语言切换（面板 select + 页眉 toggle → html lang）、声音开关、音量、动效档、
+  重播教学（HOME_OFF 可用，符合 D12）、Escape 关闭——全部符合 §17.1/D3/D12。
+- 结局 A/B/C 路径由 e2e `endings.spec.ts` 持续覆盖（verify 项）。

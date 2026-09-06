@@ -771,6 +771,10 @@ export class MachineController {
     assertTransition(this.state.phase, 'ENDING');
     this.state = { ...this.state, phase: 'ENDING', ending };
 
+    // 结局语境不残留悬浮提示：toast 挂在 body 上（§27/D16），其 1.2s 退场定时器
+    // 可能跨过 phase 卸载边界（如 C09 解锁 toast 退场中拔插头）——确定性优先，即时移除
+    document.querySelectorAll('.toast').forEach((t) => t.remove());
+
     if (ending === 'E') {
       this.audio.relay(); // §13：立即「咔」
     } else {
