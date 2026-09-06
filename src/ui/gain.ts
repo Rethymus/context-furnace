@@ -20,9 +20,18 @@ export function createGain(opts: GainOpts): GainHandle {
   root.className = 'gain-cluster';
 
   const label = document.createElement('div');
-  label.className = 'gauge-label caps';
+  label.className = 'panel-label caps';
   label.textContent = t('gain.label');
   root.appendChild(label);
+
+  // UI_CONTRACT v3 §4：旋钮视觉（72px 深底圆 + 指针 −60°..+60°；交互仍由卡位承担）
+  const knob = document.createElement('div');
+  knob.className = 'gain-knob';
+  knob.setAttribute('aria-hidden', 'true');
+  const pointer = document.createElement('span');
+  pointer.className = 'gain-pointer';
+  knob.appendChild(pointer);
+  root.appendChild(knob);
 
   const stops = document.createElement('div');
   stops.className = 'gain-stops';
@@ -57,6 +66,7 @@ export function createGain(opts: GainOpts): GainHandle {
   function refresh(): void {
     const value = get();
     const max = getMax();
+    knob.style.setProperty('--knob-rot', `${-60 + value * 40}deg`);
     for (const btn of stopButtons) {
       const v = Number(btn.dataset.value);
       btn.disabled = v > max;

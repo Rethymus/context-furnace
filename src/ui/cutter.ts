@@ -40,6 +40,9 @@ export function createCutTrack(opts: CutTrackOpts): CutTrackHandle {
     const blade = document.createElement('span');
     blade.className = 'cutter-blade';
     btn.appendChild(blade);
+    const cap = document.createElement('span');
+    cap.className = 'cutter-cap';
+    btn.appendChild(cap);
     const hint = document.createElement('span');
     hint.className = 'cutter-hint caps';
     hint.textContent = which === 'left' ? t('cutter.left') : t('cutter.right');

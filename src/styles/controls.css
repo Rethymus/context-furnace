@@ -1,56 +1,20 @@
-/* UI_CONTRACT §1.2 控件形态 + §4 修订 v3：按压反馈对 / 槽弹簧 / 浮层入场 / toast 弹簧。
-   所有动效参数取自 tokens.css（§4.5），RM/freeze 下全局关闭（motion.css）。 */
-.control-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-}
-
-/* ── M2：桌面悬停命中态（hover:hover + pointer:fine；材质面用背景位移，
-      不用 filter——filter 会为 backdrop-filter 建立新的采样根，破坏毛玻璃；
-      background-color 已列入各 transition 清单，悬停过渡独立计时） ── */
-@media (hover: hover) and (pointer: fine) {
-  .btn:hover:not(:disabled) {
-    background: var(--mat-paper-strong);
-  }
-
-  .btn-primary:hover:not(:disabled) {
-    background: var(--heat-hover);
-  }
-
-  .gain-stop:hover:not(:disabled) {
-    background: var(--mat-paper-strong);
-  }
-
-  .tool-btn:hover {
-    background: var(--mat-chrome-hover);
-  }
-}
-
-/* ── 按钮：静止↔按下成对定义（attack 90ms / release 340ms 弹簧） ── */
+/* UI_CONTRACT v3 §4：控件形态。 */
 .btn {
-  border: 1px solid var(--hairline-strong);
-  border-radius: 6px;
-  background: var(--mat-paper);
+  border: 1px solid #b0a88f;
+  border-radius: var(--r-card);
+  background: var(--paper);
   color: var(--ink);
   padding: 10px 22px;
   min-height: 48px;
   min-width: 96px;
   cursor: pointer;
   font-size: 16px;
-  box-shadow: var(--edge-highlight), 0 3px 8px rgba(0, 0, 0, 0.28);
-  transition:
-    transform var(--t-press-in) var(--spring-smooth),
-    box-shadow var(--t-press-in) var(--spring-smooth),
-    filter var(--t-press-in) var(--spring-smooth),
-    background-color var(--t-hover) ease;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(var(--press-scale-large)) translateY(1px);
-  box-shadow: var(--edge-highlight), 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition-duration: var(--t-press-out);
-  transition-timing-function: var(--spring-snap);
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .btn:disabled {
@@ -58,62 +22,47 @@
   cursor: not-allowed;
 }
 
-/* 材质不叠材质（HIG）：对话框内按钮改用内嵌中性芯片，与厚纸面区分 */
-.dialog .btn {
-  background: rgba(40, 38, 30, 0.06);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-}
-
-/* M2：关闭钮——紧凑方形（44×44 命中），右上角悬浮；沿用内嵌芯片语言 */
-.dialog {
-  position: relative;
-}
-
-.dialog-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  min-width: 44px;
-  min-height: 44px;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  font-size: 22px;
-  line-height: 1;
-  color: var(--ink-soft);
+/* 右列动作栈：入炉主导（h56 全宽），复原次级（幽灵） */
+.side-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .btn-primary {
   background: var(--heat);
   color: var(--paper);
-  border-color: var(--heat-press, #7d2b20);
-  box-shadow: 0 3px 0 var(--heat-press, #7d2b20);
-  /* §7：ROUND_EDITING 中的主导行动 */
-  padding: 12px 30px;
+  border-color: #7d2b20;
+  box-shadow: 0 4px 0 #7d2b20;
+  min-height: 52px;
+  width: 100%;
   font-weight: 700;
-}
-
-.btn-primary:active:not(:disabled) {
-  box-shadow: 0 1px 0 var(--heat-press, #7d2b20);
-  filter: brightness(0.94);
+  font-size: 17px;
+  letter-spacing: 0.12em;
 }
 
 .btn-ghost {
   background: transparent;
-  border-color: var(--hairline-strong);
-  color: var(--bench-ink);
+  border: 1px solid var(--panel-line);
+  color: var(--on-panel);
   box-shadow: none;
-  -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(var(--saturate-glass));
-  backdrop-filter: blur(var(--blur-glass)) saturate(var(--saturate-glass));
+  min-height: 44px;
+  width: 100%;
 }
 
-/* ── CUT 轨道（D14：等宽块，纸条语言；竹简槽） ── */
+/* 首页主按钮（居中独立） */
+.machine[data-testid='home'] .btn-primary {
+  display: block;
+  margin: 4px auto 10px;
+  min-width: 180px;
+  width: auto;
+}
+
+/* CUT 轨道（暗面上纸条块） */
 .track {
   display: flex;
   gap: 3px;
-  padding: 14px 8px 20px;
+  padding: 12px 8px 18px;
   position: relative;
   touch-action: none;
 }
@@ -122,7 +71,7 @@
   flex: 1 1 0;
   height: 26px;
   background: var(--paper);
-  border: 1px solid var(--ink-line);
+  border: 1px solid rgba(0, 0, 0, 0.35);
   border-radius: 2px;
   min-width: 0;
 }
@@ -130,98 +79,74 @@
 .track-block.excluded {
   background: repeating-linear-gradient(
     45deg,
-    var(--hatch-a) 0,
-    var(--hatch-a) 4px,
-    var(--hatch-b) 4px,
-    var(--hatch-b) 8px
+    #6d6a5a 0,
+    #6d6a5a 4px,
+    #565347 4px,
+    #565347 8px
   );
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
-/* 裁刀：红色滑套手柄（视觉 18×26，hit area 48×48，§6.4）。
-   槽弹簧：transform 位移 300ms 轻过冲弹簧（compositor-only，UI_CONTRACT §4.6 M2；
-   animating left 在负载下丢帧 ~50% vs transform ~1%，web.dev 实测）；
-   拖拽中（.active）关闭过渡以跟随手指；位移 px 由 refresh() 设置（resize 重算）。 */
+/* 裁刀：红色竖柄 + 顶部圆钮（视觉 18×26 / hit 48×48） */
 .cutter {
   position: absolute;
   top: 0;
-  left: 0;
   width: 48px;
   height: 48px;
+  margin-left: -24px;
   background: none;
   border: none;
   padding: 0;
   cursor: grab;
   touch-action: none;
-  will-change: transform;
-  transition: transform var(--t-move) var(--spring-snap);
-}
-
-.cutter.active {
-  transition: none;
 }
 
 .cutter:focus-visible {
-  outline: var(--focus-width) solid var(--focus);
-  outline-offset: var(--focus-offset);
+  outline: 3px solid var(--warning);
+  outline-offset: 2px;
   border-radius: 4px;
+}
+
+.cutter-cap {
+  position: absolute;
+  left: 9px;
+  top: 0;
+  width: 30px;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #d86a56 0%, var(--heat) 100%);
+  border: 1px solid #7d2b20;
+  pointer-events: none;
 }
 
 .cutter-blade {
   position: absolute;
-  left: 15px; /* (48−18)/2 */
+  left: 15px;
   bottom: 2px;
   width: 18px;
   height: 26px;
-  background: linear-gradient(180deg, var(--heat-bright) 0%, var(--heat) 70%);
-  border: 1px solid var(--heat-press, #7d2b20);
+  background: linear-gradient(180deg, #c14a38 0%, var(--heat) 70%);
+  border: 1px solid #7d2b20;
   border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); /* M2：收窄投影，避免溢出轨道纸面 */
   pointer-events: none;
-  transform-origin: 50% 100%;
-  transition: transform var(--t-press-out) var(--spring-snap);
-}
-
-.cutter:active .cutter-blade {
-  transform: scaleY(0.9);
-  transition-duration: var(--t-press-in);
-}
-
-.cutter-blade::after {
-  content: '';
-  position: absolute;
-  left: 3px;
-  right: 3px;
-  top: 4px;
-  height: 3px;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(243, 236, 217, 0.85) 0,
-    rgba(243, 236, 217, 0.85) 2px,
-    transparent 2px,
-    transparent 4px
-  );
 }
 
 .cutter.active .cutter-blade,
 .cutter:focus-visible .cutter-blade {
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.35),
-    0 0 0 2px var(--warning);
+  box-shadow: 0 0 0 2px var(--warning);
 }
 
 .cutter-hint {
   position: absolute;
   left: 50%;
-  top: -3px;
+  top: -4px;
   transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.1em;
-  color: var(--ink-soft);
+  color: var(--on-panel-dim);
 }
 
-/* 边界在轨道两端时提示向内收，避免悬挂裁切 */
 .cutter-left .cutter-hint {
   transform: translateX(-4px);
 }
@@ -230,48 +155,60 @@
   transform: translateX(calc(-100% + 4px));
 }
 
-/* ── GAIN 卡位（UI_CONTRACT §1.2：纸片 chips，radiogroup；按压反馈对） ── */
+/* GAIN：旋钮视觉 + 卡位 radiogroup */
 .gain-cluster {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.gain-knob {
+  width: 64px;
+  height: 64px;
+  margin: 2px auto 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a4e44 0%, #1f211d 75%);
+  border: 2px solid var(--panel-line);
+  position: relative;
+}
+
+.gain-pointer {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 4px;
+  height: 18px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--warning);
+  transform-origin: 2px 27px;
+  transform: rotate(var(--knob-rot, -60deg));
 }
 
 .gain-stops {
   display: flex;
   gap: 10px;
+  justify-content: center;
 }
 
 .gain-stop {
-  width: 44px; /* §7.1 / D13 */
+  width: 44px;
   height: 44px;
   border-radius: 6px;
-  border: 1px solid var(--hairline-strong);
-  background: var(--mat-paper);
-  color: var(--ink);
+  border: 1px solid var(--panel-line);
+  background: #23261f;
+  color: var(--on-panel);
   font-family: var(--font-mono);
   font-size: 16px;
   cursor: pointer;
-  box-shadow: var(--edge-highlight), 0 2px 5px rgba(0, 0, 0, 0.28);
-  transition:
-    transform var(--t-press-in) var(--spring-smooth),
-    box-shadow var(--t-press-in) var(--spring-smooth),
-    background-color var(--t-hover) ease;
-}
-
-.gain-stop:active:not(:disabled) {
-  transform: scale(var(--press-scale));
-  box-shadow: var(--edge-highlight), 0 1px 2px rgba(0, 0, 0, 0.3);
-  transition-duration: var(--t-press-out);
-  transition-timing-function: var(--spring-snap);
 }
 
 .gain-stop[aria-checked='true'] {
   background: var(--heat);
   color: var(--paper);
-  border-color: var(--heat-press, #7d2b20);
-  box-shadow: 0 0 0 2px var(--warning-ring) inset;
+  border-color: #7d2b20;
+  box-shadow: 0 0 0 2px rgba(212, 167, 44, 0.5) inset;
 }
 
 .gain-stop:disabled {
@@ -279,33 +216,30 @@
   cursor: not-allowed;
 }
 
-/* ── GAIN 解锁提示：toast 弹簧入场（§27 显示 1.2 s 由 JS 控制） ── */
+/* GAIN 解锁提示 */
 .toast {
   position: fixed;
   left: 50%;
   bottom: 36px;
-  transform: translateX(-50%) translateY(16px) scale(0.96);
+  transform: translateX(-50%);
+  background: var(--panel);
+  color: var(--on-panel);
+  border: 1px solid var(--panel-line);
   border-radius: 8px;
   padding: 8px 18px;
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--glass-ink);
   opacity: 0;
   pointer-events: none;
-  transition:
-    transform var(--t-toast-out) var(--spring-smooth),
-    opacity var(--t-toast-out) ease;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
 }
 
 .toast.show {
   opacity: 1;
-  transform: translateX(-50%) translateY(0) scale(1);
-  transition:
-    transform var(--t-toast-in) var(--spring-bouncy),
-    opacity calc(var(--t-toast-in) * 0.5) ease;
+  transition: opacity 0.2s ease;
 }
 
-/* ── 电源插头（结局 E，§13：无 tooltip 无闪烁；按压反馈对） ── */
+/* 电源插头（结局 E） */
 .plug {
   position: absolute;
   right: 14px;
@@ -315,60 +249,31 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--bench-ink-soft);
-  transition: transform var(--t-press-out) var(--spring-snap);
+  color: var(--on-panel-dim);
 }
 
-.plug:active {
-  transform: scale(var(--press-scale));
-  transition-duration: var(--t-press-in);
-}
-
-/* ── 设置面板：浮层入场（backdrop 模糊 + sheet 曲线；D3 Escape 关闭不变） ── */
-/* 入场（420ms sheet 曲线）；退场为即时卸载（settings.ts，确定性优先） */
+/* 设置面板（纸面弹窗） */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
-  background: var(--scrim, rgba(8, 9, 7, 0.5));
+  background: rgba(28, 30, 25, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
   z-index: 20;
-  /* MDN overscroll-behavior 惯用法：overflow:hidden 使遮罩成为「恒在边界」的滚动容器，
-     contain 截断链条 → 浮层打开期间台面不被滚穿（.dialog 内的 contain 见下） */
-  overflow: hidden;
-  overscroll-behavior: contain;
-  /* MDN overscroll-behavior 见 .dialog（滚动容器本体）；backdrop 仅承载模糊遮罩 */
-  -webkit-backdrop-filter: blur(var(--blur-sheet)) saturate(1.15);
-  backdrop-filter: blur(var(--blur-sheet)) saturate(1.15);
-  animation: overlay-in var(--t-overlay) var(--spring-smooth);
 }
 
 .dialog {
+  background: var(--paper);
   color: var(--ink);
-  border-radius: 10px;
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r-card);
   padding: 18px 20px;
   width: min(420px, 100%);
   max-height: 85dvh;
   overflow: auto;
-  /* MDN overscroll-behavior 只对滚动容器生效：滚动发生在 .dialog，
-     链条在这里截断，不传给台面（UI_CONTRACT §4.1 研究落点，M2 修正挂载位置） */
-  overscroll-behavior: contain;
-  animation: sheet-in var(--t-overlay) var(--spring-smooth);
-}
-
-@keyframes overlay-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes sheet-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.96);
-  }
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
 }
 
 .dialog h2 {
@@ -383,33 +288,13 @@
   justify-content: space-between;
   gap: 12px;
   padding: 8px 0;
-  border-bottom: 1px dashed var(--hairline-strong);
+  border-bottom: 1px dashed var(--paper-edge);
 }
 
 .setting-row select,
 .setting-row input[type='range'] {
   min-height: 44px;
   font: inherit;
-}
-
-/* M2：select 去原生外观，统一为纸面芯片（材质不叠材质 → 实心内嵌） */
-.setting-row select {
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 6px;
-  border: 1px solid var(--hairline-strong);
-  background-color: rgba(40, 38, 30, 0.06);
-  color: var(--ink);
-  padding: 0 30px 0 10px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a493f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  cursor: pointer;
-}
-
-.setting-row select:focus-visible {
-  outline: var(--focus-width) solid var(--focus);
-  outline-offset: var(--focus-offset);
 }
 
 .setting-row input[type='range'] {
@@ -419,39 +304,6 @@
 
 .about-text {
   font-size: 14px;
-  color: var(--ink-soft);
+  color: #6a6450;
   line-height: 1.7;
-}
-
-/* ── 结果页（§14：仅五项） ── */
-.result-list {
-  list-style: none;
-  margin: 12px 0;
-  padding: 0;
-}
-
-.result-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 8px 4px;
-  border-bottom: 1px dashed var(--hairline-strong);
-  font-family: var(--font-mono);
-}
-
-.ending-banner {
-  text-align: center;
-  padding: 18px 8px 6px;
-}
-
-.ending-banner h2 {
-  font-size: var(--fs-title);
-  margin: 0;
-  font-family: var(--font-title);
-}
-
-.ending-banner p {
-  color: var(--bench-ink);
-  opacity: 0.75;
-  margin: 6px 0 0;
 }

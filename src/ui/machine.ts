@@ -350,9 +350,9 @@ export class MachineController {
     this.loadRound();
   }
 
-  private panel(labelKey: Parameters<typeof t>[0], testid: string): { wrap: HTMLElement; body: HTMLElement; label: HTMLElement } {
+  private panel(labelKey: Parameters<typeof t>[0], testid: string, onDark = false): { wrap: HTMLElement; body: HTMLElement; label: HTMLElement } {
     const wrap = document.createElement('section');
-    wrap.className = `panel mat-paper ${testid}`; // UI_CONTRACT §4.3 纸面材质层
+    wrap.className = `panel ${testid}${onDark ? ' on-dark' : ''}`; // UI_CONTRACT v3 §4 纸卡/暗面
     wrap.dataset.testid = testid;
     const label = document.createElement('div');
     label.className = 'panel-label caps';
@@ -403,10 +403,6 @@ export class MachineController {
     const fidelityGauge = createGauge('gauge.fidelity', 'meter.fidelity.aria', 'gauge-fidelity', () => this.reduced);
     heatGauge.root.dataset.testid = 'gauge-heat';
     fidelityGauge.root.dataset.testid = 'gauge-fidelity';
-    const gaugeChips = document.createElement('div');
-    gaugeChips.className = 'gauge-chips';
-    gaugeChips.append(heatGauge.root, fidelityGauge.root);
-
     // §2.2 开机自检扫描：仅本次开机后的第一个周期执行一次
     const applyGaugeValues = (): void => {
       heatGauge.set(this.state.heat);
@@ -425,39 +421,42 @@ export class MachineController {
     loadLine.dataset.testid = 'load-line';
     machine.appendChild(loadLine);
 
-    // BOARD：ROW1 原料 | 成品
-    const board = document.createElement('div');
-    board.className = 'board';
-    const row1 = document.createElement('div');
-    row1.className = 'board-row';
+    // UI_CONTRACT v3 §3：深炭黑面板 + 左主右辅双栏
+    const darkPanel = document.createElement('div');
+    darkPanel.className = 'panel-dark';
+    darkPanel.dataset.testid = 'panel-dark';
+    const workspace = document.createElement('div');
+    workspace.className = 'workspace';
+    const colMain = document.createElement('div');
+    colMain.className = 'col-main';
+    const colSide = document.createElement('div');
+    colSide.className = 'col-side';
 
-    // FEED
+    // FEED（左列·纸卡）
     const feedPanel = this.panel('panel.feed', 'panel-feed');
     const feedText = document.createElement('p');
     feedText.className = 'feed-text reading';
     feedText.dataset.testid = 'feed';
     feedPanel.body.appendChild(feedText);
-    row1.appendChild(feedPanel.wrap);
+    colMain.appendChild(feedPanel.wrap);
 
-    // OUTPUT
+    // EXTRACT（左列·面板上直接承载）
+    const extractPanel = this.panel('panel.extract', 'panel-extract', true);
+    colMain.appendChild(extractPanel.wrap);
+
+    // OUTPUT（左列·纸卡，红竖条）
     const outputPanel = this.panel('panel.output', 'panel-output');
     const output = document.createElement('p');
     output.className = 'output-text reading';
     output.dataset.testid = 'output';
     outputPanel.body.appendChild(output);
-    row1.appendChild(outputPanel.wrap);
-    board.appendChild(row1);
+    colMain.appendChild(outputPanel.wrap);
 
-    // EXTRACT（全宽）
-    const extractPanel = this.panel('panel.extract', 'panel-extract');
-    board.appendChild(extractPanel.wrap);
-    machine.appendChild(board);
+    workspace.append(colMain, colSide);
+    darkPanel.appendChild(workspace);
+    machine.appendChild(darkPanel);
 
-    // CONTROLS（左）＋ 仪表芯片（右）
-    const lowerRow = document.createElement('div');
-    lowerRow.className = 'lower-row';
-    const controlRow = document.createElement('div');
-    controlRow.className = 'control-row';
+    // ACTIONS（右列底部）
     const resetBtn = document.createElement('button');
     resetBtn.type = 'button';
     resetBtn.className = 'btn btn-ghost';
@@ -485,13 +484,18 @@ export class MachineController {
     igniteBtn.dataset.testid = 'ignite';
     igniteBtn.textContent = t('btn.ignite');
     igniteBtn.addEventListener('click', () => this.ignite());
-    controlRow.append(resetBtn, gain.root, igniteBtn);
-    lowerRow.append(controlRow, gaugeChips);
-    machine.appendChild(lowerRow);
+    const sideActions = document.createElement('div');
+    sideActions.className = 'side-actions';
+    sideActions.append(igniteBtn, resetBtn);
 
-    // OBSERVATION + 炉口视窗（ROUND_BURNING 状态沟通，UI_CONTRACT §1.2）
+    const gaugePair = document.createElement('div');
+    gaugePair.className = 'gauge-pair';
+    gaugePair.append(heatGauge.root, fidelityGauge.root);
+    colSide.append(gaugePair, gain.root, sideActions);
+
+    // OBSERVATION + 炉口视窗（ROUND_BURNING 状态沟通）
     const observation = createObservation(() => this.reduced);
-    machine.appendChild(observation.root);
+    darkPanel.appendChild(observation.root);
     const furnaceCard = document.createElement('div');
     furnaceCard.className = 'furnace-card';
     furnaceCard.dataset.testid = 'furnace-card';
@@ -503,13 +507,13 @@ export class MachineController {
     flame.dataset.testid = 'furnace-glow';
     furnaceCard.append(tape, flame);
     furnaceCard.style.display = 'none';
-    machine.appendChild(furnaceCard);
+    darkPanel.appendChild(furnaceCard);
 
     // STATUS
     const status = document.createElement('div');
-    status.className = 'status-line mat-glass'; // UI_CONTRACT §4.3 玻璃材质层
+    status.className = 'status-line';
     status.dataset.testid = 'status';
-    machine.appendChild(status);
+    darkPanel.appendChild(status);
 
     // 结局 E 插头（§13：Cycle 09 起，无提示）
     const plug = document.createElement('button');
@@ -521,7 +525,7 @@ export class MachineController {
       '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5V7zM12 16v5"/></svg>';
     plug.style.display = 'none';
     plug.addEventListener('click', () => this.unplug());
-    machine.appendChild(plug);
+    darkPanel.appendChild(plug);
 
     stage.appendChild(machine);
     root.appendChild(stage);
