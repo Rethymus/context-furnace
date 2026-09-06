@@ -1,27 +1,20 @@
-/* DESIGN_SPEC §15.1 institutional laboratory equipment；§4.1 主界面结构。 */
+/* UI_CONTRACT §1：暗色台面 + 纸片布局。 */
 .stage {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 28px 18px;
   background:
-    radial-gradient(120% 90% at 50% 0%, #1a1b16 0%, var(--page) 60%),
+    radial-gradient(130% 100% at 50% 0%, #171812 0%, var(--page) 62%),
     var(--page);
 }
 
+/* 容器（非机身）：纸片直接铺在台面上 */
 .machine {
   width: 100%;
   max-width: var(--machine-max-w);
-  background: linear-gradient(180deg, var(--machine) 0%, var(--machine-secondary) 78%, var(--machine-shadow) 100%);
-  border-radius: 14px;
-  border: 1px solid var(--machine-shadow);
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.55),
-    inset 0 2px 0 rgba(255, 255, 255, 0.35),
-    inset 0 -6px 12px rgba(0, 0, 0, 0.18);
-  color: var(--ink);
-  padding: 18px 22px 20px;
+  padding: 6px 2px;
 }
 
 .machine-header {
@@ -29,20 +22,23 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 2px solid var(--machine-shadow);
+  border-bottom: 1px solid rgba(133, 131, 111, 0.45);
   padding-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .model-plate {
   font-family: var(--font-mono);
   font-weight: 700;
   letter-spacing: 0.14em;
+  color: var(--paper);
 }
 
 .cycle-plate {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--muted-ink);
+  color: var(--paper);
+  opacity: 0.85;
 }
 
 .header-tools {
@@ -52,10 +48,10 @@
 }
 
 .tool-btn {
-  background: none;
-  border: 1px solid var(--machine-shadow);
+  background: rgba(243, 236, 217, 0.06);
+  border: 1px solid rgba(133, 131, 111, 0.6);
   border-radius: 6px;
-  color: var(--ink);
+  color: var(--paper);
   padding: 4px 8px;
   cursor: pointer;
   font-family: var(--font-mono);
@@ -63,56 +59,228 @@
   min-height: 32px;
 }
 
-.gauge-row {
+/* ── 首页（概念 01：暗场 + 标题字块 + 红色启动） ── */
+.machine[data-testid='home'] {
+  text-align: center;
+  padding-top: 8vh;
+}
+
+.title-plate {
+  font-family: var(--font-title);
+  font-size: clamp(38px, 6vw, 56px);
+  color: var(--paper);
+  margin: 0 0 6px;
+  letter-spacing: 0.06em;
+}
+
+.home-subtitle {
+  color: var(--muted-ink);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  margin: 0 0 26px;
+  font-size: 15px;
+}
+
+.home-motto {
+  color: var(--muted-ink);
+  margin: 10px 0 0;
+  font-size: 15px;
+}
+
+.boot-line {
+  min-height: 1.6em;
+  margin: 8px 0 0;
+  color: var(--warning);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.machine.boot-pulse .title-plate {
+  animation: title-pulse 0.4s ease-in-out 1;
+}
+
+@keyframes title-pulse {
+  50% {
+    transform: scale(1.03);
+    filter: brightness(1.25);
+  }
+}
+
+/* ── 周期布局（UI_CONTRACT §1.3） ── */
+.load-line {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--paper);
+  opacity: 0.7;
+  padding: 2px 0 10px;
+}
+
+.board {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.board-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.board-row .panel-feed {
+  flex: 1.35 1 0;
+}
+
+.board-row .panel-output {
+  flex: 1 1 0;
+}
+
+/* 纸卡：表面语言（轻微旋转的拼贴感） */
+.panel {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid rgba(24, 26, 22, 0.28);
+  border-radius: 4px;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  margin: 0;
+  padding: 12px 16px 14px;
+}
+
+.panel-feed {
+  transform: rotate(-0.35deg);
+}
+
+.panel-output {
+  transform: rotate(0.3deg);
+}
+
+.panel-extract {
+  transform: rotate(0.18deg);
+}
+
+.panel-label {
+  font-size: 12px;
+  color: #55544a;
+  letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+
+.feed-text,
+.output-text {
+  font-size: var(--fs-body);
+  line-height: 1.8;
+  color: var(--ink);
+  min-height: 1.8em;
+  margin: 0;
+}
+
+.feed-seg {
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  border-radius: 1px;
+  padding: 0 1px;
+}
+
+.feed-seg.dim {
+  opacity: 0.32;
+}
+
+.feed-seg.lit {
+  background: rgba(164, 58, 47, 0.13);
+  box-shadow: inset 0 -2px 0 var(--heat);
+}
+
+/* ── 下排：行动簇 + 仪表芯片 ── */
+.lower-row {
+  display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 24px;
-  padding: 14px 6% 6px;
+  gap: 18px;
+  padding: 14px 2px 4px;
+}
+
+.control-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.gauge-chips {
+  display: flex;
+  gap: 12px;
 }
 
 .gauge {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid rgba(24, 26, 22, 0.28);
+  border-radius: 4px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
   text-align: center;
-  min-width: 150px;
+  min-width: 132px;
+  padding: 8px 12px 10px;
+}
+
+.gauge-heat {
+  transform: rotate(-0.4deg);
+}
+
+.gauge-fidelity {
+  transform: rotate(0.35deg);
 }
 
 .gauge-label {
-  font-size: 13px;
-  color: var(--muted-ink);
+  font-size: 12px;
+  color: rgba(243, 236, 217, 0.82); /* 暗底浅字（AA） */
   letter-spacing: 0.1em;
 }
 
-/* 首页圆窗仪表（§6；§2.2 开机自检对象） */
-.gauge-dot {
-  width: 56px;
+.gauge .gauge-label {
+  color: #55544a; /* 纸面芯片内用深字 */
+}
+
+.gauge-arc {
+  width: 108px;
   height: 56px;
-  margin: 6px auto;
-  border-radius: 50%;
-  border: 3px solid var(--glass-line);
-  background: var(--glass);
+  margin: 2px auto 0;
 }
 
-.gauge-dot.boot-sweep {
-  animation: dot-sweep 0.24s ease-in-out 1;
+.gauge-arc-bg {
+  fill: none;
+  stroke: #d9d2bc;
+  stroke-width: 9;
+  stroke-linecap: round;
 }
 
-.gauge-dot.lit {
-  border-color: var(--warning);
+.gauge-arc-fg {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
 }
 
-@keyframes dot-sweep {
-  0%,
-  100% {
-    background: var(--glass);
-  }
-  50% {
-    background: var(--warning);
-  }
+.gauge-heat .gauge-arc-fg {
+  stroke: var(--heat);
+}
+
+.gauge-fidelity .gauge-arc-fg {
+  stroke: var(--fidelity);
+}
+
+.gauge-needle {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  transform-origin: 60px 56px;
 }
 
 .gauge-value {
-  font-size: var(--fs-gauge);
+  font-size: 24px;
   font-weight: 700;
   line-height: 1.1;
+  margin-top: 4px;
 }
 
 .gauge-heat .gauge-value {
@@ -123,90 +291,15 @@
   color: var(--fidelity);
 }
 
-/* 半圆仪表盘 */
-.dial {
-  width: 120px;
-  height: 66px;
-  margin: 4px auto 0;
-}
-
-.dial-arc {
-  fill: none;
-  stroke: var(--glass-line);
-  stroke-width: 3;
-}
-
-.dial-tick {
-  stroke: var(--muted-ink);
-  stroke-width: 1.5;
-}
-
-.dial-needle {
-  stroke: var(--ink);
-  stroke-width: 2.5;
-  transform-origin: 60px 60px;
-}
-
-.load-line {
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--muted-ink);
-  padding: 4px 0 10px;
-}
-
-.panel {
-  border: 1px solid var(--glass-line);
-  border-radius: 8px;
-  background: var(--bench);
-  color: var(--paper);
-  margin: 10px 0;
-  padding: 10px 14px;
-}
-
-.panel-label {
-  font-size: 12px;
-  color: #a8a48c; /* --glass-line 调亮至 WCAG AA（≥4.5:1 on --bench） */
-  letter-spacing: 0.14em;
-  margin-bottom: 6px;
-}
-
-.feed-text {
-  font-size: var(--fs-body);
-  line-height: 1.8;
-  color: var(--paper);
-}
-
-.feed-seg {
-  transition: background-color 0.15s ease, opacity 0.15s ease;
-  border-radius: 2px;
-  padding: 0 1px;
-}
-
-.feed-seg.dim {
-  opacity: 0.38;
-}
-
-.feed-seg.lit {
-  background: rgba(212, 167, 44, 0.28);
-  box-shadow: 0 0 0 1px rgba(212, 167, 44, 0.4);
-}
-
-.output-text {
-  font-size: var(--fs-body);
-  color: var(--paper);
-  min-height: 1.8em;
-}
-
-/* 观察窗 */
+/* ── 观察窗 / 炉口 / 状态 ── */
 .observation {
-  border: 1px solid var(--glass-line);
-  border-radius: 8px;
+  border: 1px solid rgba(133, 131, 111, 0.5);
+  border-radius: 6px;
   background: linear-gradient(180deg, var(--glass) 0%, #1b1e19 100%);
-  height: 110px;
+  height: 104px;
   position: relative;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .observation .glyph {
@@ -214,35 +307,48 @@
   will-change: transform;
 }
 
+.furnace-card {
+  margin-top: 12px;
+  height: 120px;
+  border-radius: 6px;
+  border: 1px solid rgba(133, 131, 111, 0.5);
+  background:
+    radial-gradient(90% 120% at 50% 110%, rgba(212, 98, 47, 0.5) 0%, rgba(164, 58, 47, 0.24) 40%, #100f0c 78%),
+    #100f0c;
+  position: relative;
+  overflow: hidden;
+}
+
+.furnace-tape {
+  position: absolute;
+  left: 50%;
+  top: 26px;
+  width: 58%;
+  height: 30px;
+  transform: translateX(-50%) rotate(-1.2deg);
+  background: var(--paper);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+
+.furnace-flame {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--heat) 0%, #d4622f 45%, var(--warning) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
 .status-line {
-  min-height: 1.6em;
-  margin-top: 8px;
+  min-height: 1.7em;
+  margin-top: 12px;
   font-size: 14px;
   color: var(--paper);
   background: var(--glass);
-  border: 1px solid var(--glass-line);
+  border: 1px solid rgba(133, 131, 111, 0.5);
   border-radius: 6px;
-  padding: 4px 10px;
+  padding: 5px 12px;
 }
 
 .status-line:empty::before {
   content: '';
-}
-
-/* 炉膛火焰（D26：heat 连续映射） */
-.furnace {
-  height: 8px;
-  border-radius: 4px;
-  background: #15150f;
-  overflow: hidden;
-  margin-top: 8px;
-  border: 1px solid var(--machine-shadow);
-}
-
-.furnace-glow {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(90deg, var(--heat) 0%, #d4622f 60%, var(--warning) 100%);
-  opacity: 0;
-  transform-origin: center;
 }

@@ -13,3 +13,7 @@
 ## 变更记录
 
 - 2026-09-06（clean-correction 复盘后重采 home-zh/home-en）：为贴合原规格 §2.2「开机时两仪表自检扫描」，首页圆窗仪表增加自检亮起并进入 lit 状态；boot 动画结束后圆窗描边为 --warning 色。旧基线（深色圆窗）由本规格贴合修正取代。
+
+## 变更记录（2026-09-06 续）
+
+- 全量重采：EXECUTION CONTRACT v1.0 §4 冻结禁止旧视觉家族（beige 仪表盘/半圆机械表盘/黑色堆叠卡），依 UI_CONTRACT.md（P3，含 STATE IMPLEMENTATION TABLE）重实现为纸片拼贴系统；全部 8 张基线随之更新。

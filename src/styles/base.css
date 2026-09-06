@@ -1,4 +1,4 @@
-/* DESIGN_SPEC §15：基础排版。 */
+/* UI_CONTRACT §1：纸片拼贴视觉系统。暗色台面 + 米色纸卡 + 红色主行动。 */
 *,
 *::before,
 *::after {
@@ -14,7 +14,7 @@ body {
 body {
   min-height: 100dvh; /* §4.3 */
   background: var(--page);
-  color: var(--ink);
+  color: var(--paper);
   font-family: var(--font-body);
   font-size: var(--fs-body); /* 任何正文 ≥ 16px */
   line-height: var(--lh-body);

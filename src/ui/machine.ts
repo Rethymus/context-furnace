@@ -31,7 +31,6 @@ import { effectiveReducedMotion, SettingsPanel, type Settings } from './settings
 const BOOT_TOTAL_MS = 1150;
 const BOOT_RELAY_MS = 120;
 const BOOT_SWEEP_DONE_MS = 470;
-const BOOT_WINDOW_MS = 720;
 const BOOT_FURNACE_MS = 950;
 const FEEDBACK_TOTAL_MS = 950;
 const FEEDBACK_SINK_MS = 140;
@@ -49,6 +48,7 @@ export class MachineController {
   private lastMachineMessage: MachineMessageId | null = null;
   private lastReserve = false;
   private announcedGain = 0;
+  private pendingBootSweep = true;
   private round: Round | null = null;
   private offLocale: (() => void) | null = null;
 
@@ -115,51 +115,34 @@ export class MachineController {
 
     const title = document.createElement('h1');
     title.className = 'title-plate';
-    title.style.textAlign = 'center';
     title.dataset.testid = 'home-title';
     machine.appendChild(title);
 
     const subtitle = document.createElement('p');
-    subtitle.className = 'caps';
-    subtitle.style.textAlign = 'center';
-    subtitle.style.color = 'var(--muted-ink)';
-    subtitle.style.letterSpacing = '0.2em';
+    subtitle.className = 'home-subtitle caps';
     subtitle.dataset.testid = 'home-subtitle';
     machine.appendChild(subtitle);
-
-    // 两枚小仪表（§6 首页草图：HEAT / FIDELITY 圆窗；§2.2 开机自检的对象）
-    const mini = document.createElement('div');
-    mini.className = 'gauge-row';
-    mini.style.justifyContent = 'center';
-    for (const key of ['gauge.heat', 'gauge.fidelity'] as const) {
-      const g = document.createElement('div');
-      g.className = 'gauge';
-      const dot = document.createElement('div');
-      dot.className = 'gauge-dot';
-      const label = document.createElement('div');
-      label.className = 'gauge-label caps';
-      label.textContent = t(key);
-      g.append(dot, label);
-      mini.appendChild(g);
-    }
-    machine.appendChild(mini);
 
     const power = document.createElement('button');
     power.type = 'button';
     power.className = 'btn btn-primary';
     power.dataset.testid = 'power-on';
     power.style.display = 'block';
-    power.style.margin = '14px auto';
-    power.style.minWidth = '160px';
+    power.style.margin = '16px auto 10px';
+    power.style.minWidth = '170px';
     power.textContent = t('home.power');
     power.addEventListener('click', () => this.powerOn());
     machine.appendChild(power);
 
     const motto = document.createElement('p');
-    motto.style.textAlign = 'center';
-    motto.style.color = 'var(--muted-ink)';
+    motto.className = 'home-motto';
     motto.dataset.testid = 'home-motto';
     machine.appendChild(motto);
+
+    const bootLine = document.createElement('p');
+    bootLine.className = 'boot-line caps';
+    bootLine.dataset.testid = 'boot-line';
+    machine.appendChild(bootLine);
 
     stage.appendChild(machine);
     root.appendChild(stage);
@@ -169,9 +152,6 @@ export class MachineController {
       subtitle.textContent = t('home.subtitle');
       power.textContent = t('home.power');
       motto.textContent = t('home.motto');
-      const labels = mini.querySelectorAll<HTMLElement>('.gauge-label');
-      labels[0]!.textContent = t('gauge.heat');
-      labels[1]!.textContent = t('gauge.fidelity');
     };
     texts();
     this.homeTexts = texts;
@@ -229,25 +209,22 @@ export class MachineController {
       window.setTimeout(after, 350);
       return;
     }
-    // §2.2 时序：0–120ms 继电器；470–720ms 观察窗亮起（圆窗自检扫描后点亮）；720–950ms 炉光；1150ms 校准完成
+    // §2.2 时序：0–120ms 继电器；470–720ms 观察窗亮起（纸卡脉冲）；720–950ms 炉光（徽记色）；950–1150ms 校准完成
     window.setTimeout(() => this.audio.relay(), BOOT_RELAY_MS);
     window.setTimeout(() => {
-      for (const dot of root.querySelectorAll<HTMLElement>('.gauge-dot')) {
-        dot.classList.add('boot-sweep');
-      }
+      const card = root.querySelector<HTMLElement>('main.machine');
+      if (card) card.classList.add('boot-pulse');
     }, BOOT_SWEEP_DONE_MS);
     window.setTimeout(() => {
-      for (const dot of root.querySelectorAll<HTMLElement>('.gauge-dot')) {
-        dot.classList.remove('boot-sweep');
-        dot.classList.add('lit');
-      }
-      const sub = root.querySelector<HTMLElement>('[data-testid="home-subtitle"]');
-      if (sub) sub.style.opacity = '1';
-    }, BOOT_WINDOW_MS);
-    window.setTimeout(() => {
+      const card = root.querySelector<HTMLElement>('main.machine');
+      if (card) card.classList.remove('boot-pulse');
       const motto = root.querySelector<HTMLElement>('[data-testid="home-motto"]');
       if (motto) motto.style.color = 'var(--heat)';
     }, BOOT_FURNACE_MS);
+    window.setTimeout(() => {
+      const line = root.querySelector<HTMLElement>('[data-testid="boot-line"]');
+      if (line) line.textContent = t('boot.calibrationComplete');
+    }, 950);
     window.setTimeout(after, BOOT_TOTAL_MS);
   }
 
@@ -421,22 +398,38 @@ export class MachineController {
     header.append(model, headerRight);
     machine.appendChild(header);
 
-    // GAUGES
-    const gaugeRow = document.createElement('div');
-    gaugeRow.className = 'gauge-row';
+    // GAUGES（UI_CONTRACT §1.2 弧形进度芯片）
     const heatGauge = createGauge('gauge.heat', 'meter.heat.aria', 'gauge-heat', () => this.reduced);
     const fidelityGauge = createGauge('gauge.fidelity', 'meter.fidelity.aria', 'gauge-fidelity', () => this.reduced);
     heatGauge.root.dataset.testid = 'gauge-heat';
     fidelityGauge.root.dataset.testid = 'gauge-fidelity';
-    heatGauge.set(this.state.heat);
-    fidelityGauge.set(this.state.fidelity);
-    gaugeRow.append(heatGauge.root, fidelityGauge.root);
-    machine.appendChild(gaugeRow);
+    const gaugeChips = document.createElement('div');
+    gaugeChips.className = 'gauge-chips';
+    gaugeChips.append(heatGauge.root, fidelityGauge.root);
+
+    // §2.2 开机自检扫描：仅本次开机后的第一个周期执行一次
+    const applyGaugeValues = (): void => {
+      heatGauge.set(this.state.heat);
+      fidelityGauge.set(this.state.fidelity);
+    };
+    if (this.pendingBootSweep) {
+      this.pendingBootSweep = false;
+      heatGauge.sweepTest(applyGaugeValues);
+      fidelityGauge.sweepTest(applyGaugeValues);
+    } else {
+      applyGaugeValues();
+    }
 
     const loadLine = document.createElement('div');
     loadLine.className = 'load-line caps';
     loadLine.dataset.testid = 'load-line';
     machine.appendChild(loadLine);
+
+    // BOARD：ROW1 原料 | 成品
+    const board = document.createElement('div');
+    board.className = 'board';
+    const row1 = document.createElement('div');
+    row1.className = 'board-row';
 
     // FEED
     const feedPanel = this.panel('panel.feed', 'panel-feed');
@@ -444,11 +437,7 @@ export class MachineController {
     feedText.className = 'feed-text reading';
     feedText.dataset.testid = 'feed';
     feedPanel.body.appendChild(feedText);
-    machine.appendChild(feedPanel.wrap);
-
-    // EXTRACT
-    const extractPanel = this.panel('panel.extract', 'panel-extract');
-    machine.appendChild(extractPanel.wrap);
+    row1.appendChild(feedPanel.wrap);
 
     // OUTPUT
     const outputPanel = this.panel('panel.output', 'panel-output');
@@ -456,14 +445,22 @@ export class MachineController {
     output.className = 'output-text reading';
     output.dataset.testid = 'output';
     outputPanel.body.appendChild(output);
-    machine.appendChild(outputPanel.wrap);
+    row1.appendChild(outputPanel.wrap);
+    board.appendChild(row1);
 
-    // CONTROLS
+    // EXTRACT（全宽）
+    const extractPanel = this.panel('panel.extract', 'panel-extract');
+    board.appendChild(extractPanel.wrap);
+    machine.appendChild(board);
+
+    // CONTROLS（左）＋ 仪表芯片（右）
+    const lowerRow = document.createElement('div');
+    lowerRow.className = 'lower-row';
     const controlRow = document.createElement('div');
     controlRow.className = 'control-row';
     const resetBtn = document.createElement('button');
     resetBtn.type = 'button';
-    resetBtn.className = 'btn';
+    resetBtn.className = 'btn btn-ghost';
     resetBtn.dataset.testid = 'reset';
     resetBtn.textContent = t('btn.reset');
     resetBtn.addEventListener('click', () => {
@@ -489,18 +486,24 @@ export class MachineController {
     igniteBtn.textContent = t('btn.ignite');
     igniteBtn.addEventListener('click', () => this.ignite());
     controlRow.append(resetBtn, gain.root, igniteBtn);
-    machine.appendChild(controlRow);
+    lowerRow.append(controlRow, gaugeChips);
+    machine.appendChild(lowerRow);
 
-    // OBSERVATION + FURNACE
+    // OBSERVATION + 炉口视窗（ROUND_BURNING 状态沟通，UI_CONTRACT §1.2）
     const observation = createObservation(() => this.reduced);
     machine.appendChild(observation.root);
-    const furnace = document.createElement('div');
-    furnace.className = 'furnace';
-    const glow = document.createElement('div');
-    glow.className = 'furnace-glow';
-    glow.dataset.testid = 'furnace-glow';
-    furnace.appendChild(glow);
-    machine.appendChild(furnace);
+    const furnaceCard = document.createElement('div');
+    furnaceCard.className = 'furnace-card';
+    furnaceCard.dataset.testid = 'furnace-card';
+    furnaceCard.setAttribute('aria-hidden', 'true');
+    const tape = document.createElement('div');
+    tape.className = 'furnace-tape';
+    const flame = document.createElement('div');
+    flame.className = 'furnace-flame';
+    flame.dataset.testid = 'furnace-glow';
+    furnaceCard.append(tape, flame);
+    furnaceCard.style.display = 'none';
+    machine.appendChild(furnaceCard);
 
     // STATUS
     const status = document.createElement('div');
@@ -541,7 +544,9 @@ export class MachineController {
       heatGauge,
       fidelityGauge,
       observation,
-      glow,
+      flame,
+      furnaceCard,
+      machineEl: machine,
       output,
       status,
       cycle,
@@ -622,10 +627,10 @@ export class MachineController {
   private updateFurnace(): void {
     const round = this.round;
     if (!round) return;
-    round.glow.style.opacity = String(Math.max(0, Math.min(100, this.state.heat)) / 100);
-    round.glow.style.animation = '';
+    round.flame.style.opacity = String(Math.max(0, Math.min(100, this.state.heat)) / 100);
+    round.flame.style.animation = '';
     if (!this.reduced && this.state.heat > 0) {
-      round.glow.style.animation = 'furnace-flicker 1.6s ease-in-out infinite';
+      round.flame.style.animation = 'furnace-flicker 1.6s ease-in-out infinite';
     }
     this.audio.setHeatResonance(this.state.heat >= 90); // §102
   }
@@ -674,7 +679,8 @@ export class MachineController {
     round.ignite.disabled = true;
     round.gain.refresh();
     this.audio.ignite(result.heatGain); // §100
-    if (!this.reduced) round.ignite.classList.add('pressed');
+    round.machineEl.classList.add('burning');
+    round.furnaceCard.style.display = '';
 
     const heatIntermediate = prev.heat - decay; // 140–300ms 先扣耗散
     const finish = window.setTimeout(() => this.afterBurn(result), FEEDBACK_TOTAL_MS);
@@ -682,14 +688,14 @@ export class MachineController {
 
     window.setTimeout(() => {
       round.heatGauge.set(heatIntermediate);
-      round.glow.style.opacity = String(Math.max(0, heatIntermediate) / 100);
+      round.flame.style.opacity = String(Math.max(0, heatIntermediate) / 100);
     }, FEEDBACK_SINK_MS);
 
     window.setTimeout(() => {
       round.heatGauge.set(this.state.heat); // 300–600ms HEAT 上升
-      round.glow.style.opacity = String(this.state.heat / 100);
+      round.flame.style.opacity = String(this.state.heat / 100);
       if (!this.reduced) {
-        round.glow.style.animation = 'furnace-flicker 0.4s ease-in-out 3';
+        round.flame.style.animation = 'furnace-flicker 0.4s ease-in-out 3';
       }
     }, FEEDBACK_HEAT_DONE_MS - 100);
 
@@ -705,7 +711,11 @@ export class MachineController {
   }
 
   private afterBurn(result: ReturnType<typeof computeRound>): void {
-    this.round?.ignite.classList.remove('pressed');
+    const round = this.round;
+    if (round) {
+      round.machineEl.classList.remove('burning');
+      round.furnaceCard.style.display = 'none';
+    }
     this.phaseTo('ROUND_RESULT'); // §18.5：反馈动画完成 → ROUND_RESULT
     const ending = evaluateEnding(this.state);
     if (ending) {
@@ -885,7 +895,9 @@ interface Round {
   heatGauge: Gauge;
   fidelityGauge: Gauge;
   observation: ObservationHandle;
-  glow: HTMLElement;
+  flame: HTMLElement;
+  furnaceCard: HTMLElement;
+  machineEl: HTMLElement;
   output: HTMLElement;
   status: HTMLElement;
   cycle: HTMLElement;

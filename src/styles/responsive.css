@@ -1,4 +1,5 @@
-/* DESIGN_SPEC §4.2：移动端垂直顺序；最低 360px；绝对禁止水平滚动（原规格 §92）。 */
+/* UI_CONTRACT §1.3 移动变体：单列堆叠；最低 360px；绝对禁止水平滚动（原规格 §92）。
+   注：仪表芯片随行动簇容器堆叠（DOM 属于 lower-row），位于面板之后、观察窗之前。 */
 html,
 body {
   overflow-x: hidden;
@@ -7,60 +8,44 @@ body {
 
 @media (max-width: 760px) {
   .stage {
-    padding: 12px 8px;
+    padding: 14px 10px;
     align-items: flex-start;
   }
 
   .machine {
-    padding: 12px 12px 14px;
-  }
-
-  .gauge-row {
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 8px 0 2px;
-  }
-
-  .gauge {
-    min-width: 120px;
-  }
-
-  .gauge-value {
-    font-size: var(--fs-gauge-mobile);
+    padding: 2px 0;
   }
 
   .title-plate {
-    font-size: var(--fs-title-mobile);
+    font-size: clamp(32px, 9vw, 40px);
+  }
+
+  .board-row {
+    flex-direction: column;
+  }
+
+  .board-row .panel-feed,
+  .board-row .panel-output {
+    flex: 1 1 auto;
+  }
+
+  /* 仪表芯片先于行动簇 */
+  .lower-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .gauge-chips {
+    justify-content: space-around;
+  }
+
+  .gauge {
+    flex: 1 1 0;
+    max-width: 176px;
   }
 
   .control-row {
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  /* §4.2 顺序：HEADER → HEAT|FIDELITY → FEED → EXTRACT → OUTPUT → CUT TRACK
-     → GAIN → RESET|IGNITE → OBSERVATION → STATUS（DOM 顺序即此序） */
-  .panel-feed {
-    order: 1;
-  }
-
-  .panel-extract {
-    order: 2;
-  }
-
-  .panel-output {
-    order: 3;
-  }
-
-  .control-row {
-    order: 4;
-  }
-
-  .observation {
-    order: 5;
-  }
-
-  .status-line {
-    order: 6;
   }
 }
