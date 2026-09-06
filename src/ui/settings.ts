@@ -83,7 +83,7 @@ export class SettingsPanel {
     backdrop.className = 'dialog-backdrop';
     backdrop.dataset.testid = 'settings-dialog';
     const dialog = document.createElement('div');
-    dialog.className = 'dialog mat-paper-thick'; // UI_CONTRACT §4.3 厚纸面材质
+    dialog.className = 'dialog'; // 深炭设置面板（概念板 11）
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-label', t('settings.title'));
     backdrop.appendChild(dialog);

@@ -1,12 +1,6 @@
-/* DESIGN_SPEC §2.3 / §131：Reduced Motion 全覆盖；UI_CONTRACT §4.6 动效层。
+/* DESIGN_SPEC §2.3 / §131：Reduced Motion 全覆盖；动效层。
    RM/motion=reduce/`?freeze=1`（D29 测试基础设施）三者下，一切动画与过渡关闭，
    状态仅以 opacity、数值、指示灯表达。 */
-
-@keyframes needle-sweep {
-  0% { transform: rotate(-90deg); }
-  50% { transform: rotate(90deg); }
-  100% { transform: rotate(-90deg); }
-}
 
 @keyframes furnace-flicker {
   0%, 100% { transform: scaleY(1); filter: brightness(1); }
@@ -25,7 +19,7 @@
   to { opacity: 1; }
 }
 
-/* 周期装载（UI_CONTRACT §4.6）：面板 220ms 淡入上升 4px */
+/* 周期装载：面板 220ms 淡入上升 4px */
 @keyframes mount-rise {
   from {
     opacity: 0;
@@ -37,10 +31,8 @@
   }
 }
 
-/* 推石 shake：指数衰减 x(t)=A·e^(−t/τ)·sin(2πft)（UI_CONTRACT §4.6；M2 依研究重校参）
-   A=5px（峰值 ≈3.5px @53ms）、f=3.5Hz、τ=200ms、480ms（≈1.7 周期）。
-   M1 的 f≈18Hz 违反 60fps 抗混叠约束（可见动效 f≤6Hz，Apple 惯例 <6Hz，
-   高频质感交给触感而非视觉）——正负交替关键帧按新曲线取点（正弦相位 = 冲击响应） */
+/* 推石 shake：指数衰减 x(t)=A·e^(−t/τ)·sin(2πft)
+   A=5px、f=3.5Hz、τ=200ms、480ms（≈1.7 周期）；仅伴随 IGNITE 反馈窗口 */
 @keyframes press-shake {
   0% { transform: translateX(0); }
   11% { transform: translateX(3.53px); }
@@ -54,8 +46,6 @@
   100% { transform: translateX(0); }
 }
 
-/* §8.3：shake 仅伴随 IGNITE 反馈窗口（.burning 由 ignite()/afterBurn() 控制），
-   挂在 .machine 自身，避免与装载动画（.machine > *）互相重触发 */
 .machine.burning {
   animation: press-shake 480ms cubic-bezier(0.36, 0, 0.64, 1) 1;
 }

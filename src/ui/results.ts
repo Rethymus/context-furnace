@@ -91,6 +91,7 @@ export function buildCopyText(state: GameState): string {
 // §14.1：结果页仅五项，不显示分数/星级/排名（§84）
 export function renderResults(root: HTMLElement, state: GameState, callbacks: ResultsCallbacks): void {
   const wrap = document.createElement('div');
+  wrap.className = 'result-card';
   wrap.dataset.testid = 'results';
 
   const list = document.createElement('ul');
@@ -122,7 +123,7 @@ export function renderResults(root: HTMLElement, state: GameState, callbacks: Re
   copyBtn.dataset.testid = 'copy';
   copyBtn.textContent = t('result.copy');
   const copied = document.createElement('span');
-  copied.className = 'status-line mat-glass';
+  copied.className = 'copied-chip';
   copied.dataset.testid = 'copied';
   copied.style.display = 'none';
   // D16：成功显示 1.2s；失败静默降级
@@ -159,7 +160,7 @@ export function renderResults(root: HTMLElement, state: GameState, callbacks: Re
 
   const restartBtn = document.createElement('button');
   restartBtn.type = 'button';
-  restartBtn.className = 'btn';
+  restartBtn.className = 'btn btn-dark';
   restartBtn.dataset.testid = 'restart';
   restartBtn.textContent = t('result.restart');
   restartBtn.addEventListener('click', callbacks.onRestart);

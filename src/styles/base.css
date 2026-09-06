@@ -1,5 +1,5 @@
-/* UI_CONTRACT §1 纸片拼贴视觉系统 + §4 修订 v3 材质层工具类。
-   台面（模式可变）+ 米色纸卡（半透明毛玻璃）+ 红色主行动。 */
+/* 全局基础层：盒模型、排版规则、焦点环、无障碍工具类。
+   表面与控件样式由 machine.css / controls.css 承担。 */
 *,
 *::before,
 *::after {
@@ -18,8 +18,8 @@ body {
 
 body {
   min-height: 100dvh; /* §4.3 */
-  background: var(--surface-page);
-  color: var(--bench-ink);
+  background: var(--desk);
+  color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--fs-body); /* 任何正文 ≥ 16px */
   line-height: var(--lh-body);
@@ -47,8 +47,7 @@ body:has([lang='zh-CN']) {
 .gauge-value,
 .btn,
 .track,
-.status-line,
-.tag {
+.status-line {
   font-family: var(--font-mono);
 }
 
@@ -79,90 +78,8 @@ svg {
   border: 0;
 }
 
-/* ── UI_CONTRACT §4.3 可复用材质层 ─────────────────────────────
-   纸面材质：半透明纸填充 + 真实屏幕采样模糊 + 发丝边 + 顶部内高光 + 环境投影。
-   同档材质在两外观下渲染一致（填充不透明度按外观调，HIG materials）。 */
-.mat-paper,
-.mat-paper-thick,
-.mat-glass,
-.mat-chrome {
-  border: 1px solid var(--hairline-color);
-}
-
-/* 玻璃面在浅色台面上边界更弱：升一档发丝边（M2 视觉复核） */
-.mat-glass,
-.mat-chrome {
-  border-color: var(--hairline-strong);
-}
-
-.mat-paper {
-  background: var(--mat-paper);
-  -webkit-backdrop-filter: blur(var(--blur-panel)) saturate(var(--saturate-panel));
-  backdrop-filter: blur(var(--blur-panel)) saturate(var(--saturate-panel));
-  box-shadow: var(--edge-highlight), var(--shadow-panel);
-}
-
-.mat-paper-thick {
-  background: var(--mat-paper-strong);
-  -webkit-backdrop-filter: blur(26px) saturate(var(--saturate-panel));
-  backdrop-filter: blur(26px) saturate(var(--saturate-panel));
-  box-shadow: var(--edge-highlight), var(--shadow-panel);
-}
-
-.mat-glass {
-  background: var(--mat-glass);
-  -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(var(--saturate-glass));
-  backdrop-filter: blur(var(--blur-glass)) saturate(var(--saturate-glass));
-  box-shadow: var(--edge-highlight-soft), var(--shadow-panel);
-  color: var(--glass-ink);
-}
-
-.mat-chrome {
-  background: var(--mat-chrome);
-  -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(var(--saturate-glass));
-  backdrop-filter: blur(var(--blur-glass)) saturate(var(--saturate-glass));
-  box-shadow: var(--edge-highlight), var(--shadow-float);
-}
-
-/* 老引擎兜底：无 backdrop-filter 时用不透明实底（分外观 token，M2 修复：
-   浅色下原 --glass 深实底与浅色 --glass-ink 深字叠加不可读） */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .mat-paper,
-  .mat-paper-thick {
-    background: var(--fallback-paper);
-  }
-
-  .mat-glass,
-  .mat-chrome {
-    background: var(--fallback-glass);
-  }
-}
-
-/* Reduce Transparency 降级（HIG Materials 行为，OS 级无障碍偏好，非游戏设置项）：
-   材质退化为不透明系统背景色，等效老引擎兜底 */
-@media (prefers-reduced-transparency: reduce) {
-  .mat-paper,
-  .mat-paper-thick {
-    background: var(--fallback-paper);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  .mat-glass,
-  .mat-chrome {
-    background: var(--fallback-glass);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  .dialog-backdrop {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-}
-
-/* §19 focus visible：统一焦点环 token（UI_CONTRACT §4.2） */
+/* §19 focus visible：统一焦点环 */
 :focus-visible {
-  outline: var(--focus-width) solid var(--focus);
-  outline-offset: var(--focus-offset);
+  outline: 3px solid var(--warning);
+  outline-offset: 2px;
 }

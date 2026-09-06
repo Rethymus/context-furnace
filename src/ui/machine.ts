@@ -95,7 +95,7 @@ export class MachineController {
     if (!root) return;
     root.textContent = '';
     const stage = document.createElement('div');
-    stage.className = 'stage';
+    stage.className = 'stage stage--home';
 
     const machine = document.createElement('main');
     machine.className = 'machine';
@@ -113,36 +113,43 @@ export class MachineController {
     header.append(model, tools);
     machine.appendChild(header);
 
+    // 深炭铭牌（概念板 01：暗色铭牌承载标题）
+    const plaque = document.createElement('div');
+    plaque.className = 'machine-plaque';
+    const plaqueModel = document.createElement('div');
+    plaqueModel.className = 'plaque-model caps';
+    plaqueModel.textContent = t('home.model');
     const title = document.createElement('h1');
     title.className = 'title-plate';
     title.dataset.testid = 'home-title';
-    machine.appendChild(title);
-
     const subtitle = document.createElement('p');
     subtitle.className = 'home-subtitle caps';
     subtitle.dataset.testid = 'home-subtitle';
-    machine.appendChild(subtitle);
+    plaque.append(plaqueModel, title, subtitle);
+    machine.appendChild(plaque);
+
+    const homeBody = document.createElement('div');
+    homeBody.className = 'home-body';
+    homeBody.appendChild(plaque);
 
     const power = document.createElement('button');
     power.type = 'button';
-    power.className = 'btn btn-primary';
+    power.className = 'btn btn-power';
     power.dataset.testid = 'power-on';
-    power.style.display = 'block';
-    power.style.margin = '16px auto 10px';
-    power.style.minWidth = '170px';
     power.textContent = t('home.power');
     power.addEventListener('click', () => this.powerOn());
-    machine.appendChild(power);
+    homeBody.appendChild(power);
 
     const motto = document.createElement('p');
     motto.className = 'home-motto';
     motto.dataset.testid = 'home-motto';
-    machine.appendChild(motto);
+    homeBody.appendChild(motto);
 
     const bootLine = document.createElement('p');
     bootLine.className = 'boot-line caps';
     bootLine.dataset.testid = 'boot-line';
-    machine.appendChild(bootLine);
+    homeBody.appendChild(bootLine);
+    machine.appendChild(homeBody);
 
     stage.appendChild(machine);
     root.appendChild(stage);
@@ -162,7 +169,7 @@ export class MachineController {
   private localeToggleBtn(): HTMLButtonElement {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'tool-btn mat-chrome'; // UI_CONTRACT §4.3
+    btn.className = 'tool-btn';
     btn.dataset.testid = 'locale-toggle';
     btn.textContent = t('home.localeToggle');
     btn.addEventListener('click', () => {
@@ -174,7 +181,7 @@ export class MachineController {
   private settingsBtn(): HTMLButtonElement {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'tool-btn mat-chrome'; // UI_CONTRACT §4.3
+    btn.className = 'tool-btn';
     btn.dataset.testid = 'settings-btn';
     btn.setAttribute('aria-label', t('settings.title'));
     btn.textContent = '⚙';
@@ -219,7 +226,7 @@ export class MachineController {
       const card = root.querySelector<HTMLElement>('main.machine');
       if (card) card.classList.remove('boot-pulse');
       const motto = root.querySelector<HTMLElement>('[data-testid="home-motto"]');
-      if (motto) motto.style.color = 'var(--heat)';
+      if (motto) motto.classList.add('motto-lit');
     }, BOOT_FURNACE_MS);
     window.setTimeout(() => {
       const line = root.querySelector<HTMLElement>('[data-testid="boot-line"]');
@@ -236,6 +243,7 @@ export class MachineController {
   }
 
   private tutorialTrack: CutTrackHandle | null = null;
+  private tutorialSel = { left: 0, right: 2 };
   private tutorialEls: {
     hint: HTMLElement;
     output: HTMLElement;
@@ -250,7 +258,7 @@ export class MachineController {
     const stage = document.createElement('div');
     stage.className = 'stage';
     const machine = document.createElement('main');
-    machine.className = 'machine';
+    machine.className = 'machine machine--tutorial';
 
     const header = document.createElement('div');
     header.className = 'machine-header';
@@ -264,6 +272,10 @@ export class MachineController {
     header.append(model, tools);
     machine.appendChild(header);
 
+    const panelWrap = document.createElement('div');
+    panelWrap.className = 'machine-panel';
+    machine.appendChild(panelWrap);
+
     const feedPanel = this.panel('panel.feed', 'panel-feed');
     const feedText = document.createElement('p');
     feedText.className = 'feed-text reading';
@@ -271,15 +283,15 @@ export class MachineController {
     feedPanel.body.appendChild(feedText);
 
     const extractPanel = this.panel('panel.extract', 'panel-extract');
-    machine.appendChild(feedPanel.wrap);
-    machine.appendChild(extractPanel.wrap);
+    panelWrap.appendChild(feedPanel.wrap);
+    panelWrap.appendChild(extractPanel.wrap);
 
     const outputPanel = this.panel('panel.output', 'panel-output');
     const output = document.createElement('p');
     output.className = 'output-text reading';
     output.dataset.testid = 'output';
     outputPanel.body.appendChild(output);
-    machine.appendChild(outputPanel.wrap);
+    panelWrap.appendChild(outputPanel.wrap);
 
     const controlRow = document.createElement('div');
     controlRow.className = 'control-row';
@@ -290,12 +302,12 @@ export class MachineController {
     ignite.textContent = t('btn.ignite');
     ignite.addEventListener('click', () => this.finishTutorial());
     controlRow.appendChild(ignite);
-    machine.appendChild(controlRow);
+    panelWrap.appendChild(controlRow);
 
     const hint = document.createElement('div');
-    hint.className = 'status-line mat-glass'; // UI_CONTRACT §4.3 玻璃材质层
+    hint.className = 'tutorial-note';
     hint.dataset.testid = 'tutorial-hint';
-    machine.appendChild(hint);
+    panelWrap.appendChild(hint);
 
     stage.appendChild(machine);
     root.appendChild(stage);
@@ -304,16 +316,34 @@ export class MachineController {
     const texts = TUTORIAL_CARD.segments.map((s) => (locale === 'zh-CN' ? s.zh : s.en));
     feedText.textContent = texts.join('');
 
+    // 教学选区（D8：本地状态，不影响任何游戏数值）；OUTPUT 实时跟随
+    this.tutorialSel = { left: 0, right: TUTORIAL_CARD.segments.length - 1 };
     this.tutorialTrack = createCutTrack({
       segmentCount: TUTORIAL_CARD.segments.length,
-      getSelection: () => ({ left: 0, right: 2 }),
-      setSelection: () => {},
+      getSelection: () => ({ ...this.tutorialSel }),
+      setSelection: (left, right) => {
+        this.tutorialSel = { left, right };
+        this.updateTutorialOutput();
+      },
       onTick: () => this.audio.cutterTick(1),
     });
     extractPanel.body.appendChild(this.tutorialTrack.root);
     this.tutorialEls = { hint, output, ignite };
 
     this.showTutorialStep(0);
+  }
+
+  // 教学成品预览（§6.5 引号规则；随裁刀实时更新）
+  private updateTutorialOutput(): void {
+    const els = this.tutorialEls;
+    if (!els) return;
+    const locale = getLocale();
+    const sep = locale === 'zh-CN' ? '' : ' ';
+    const joined = TUTORIAL_CARD.segments
+      .slice(this.tutorialSel.left, this.tutorialSel.right + 1)
+      .map((s) => (locale === 'zh-CN' ? s.zh : s.en))
+      .join(sep);
+    els.output.textContent = locale === 'zh-CN' ? `「${joined}」` : `“${joined}”`;
   }
 
   // §3 Step 1–5：高亮引导，不锁输入（D35）
@@ -323,13 +353,7 @@ export class MachineController {
     const hints = [t('tutorial.step1'), t('tutorial.step2'), t('tutorial.step3'), t('tutorial.step4')];
     els.hint.textContent = hints[Math.min(step, 3)] ?? '';
     this.tutorialTrack?.setHighlighted(step === 0 ? 0 : step === 1 ? 1 : null);
-    const texts = TUTORIAL_CARD.segments.map((s) => (getLocale() === 'zh-CN' ? s.zh : s.en));
-    if (step >= 2) {
-      const locale = getLocale();
-      const sep = locale === 'zh-CN' ? '' : ' ';
-      const joined = texts.slice(0, 3).join(sep);
-      els.output.textContent = locale === 'zh-CN' ? `「${joined}」` : `“${joined}”`;
-    }
+    this.updateTutorialOutput();
   }
 
   private finishTutorial(): void {
@@ -381,7 +405,7 @@ export class MachineController {
 
     // HEADER
     const header = document.createElement('div');
-    header.className = 'machine-header';
+    header.className = 'machine-header has-cycle';
     const model = document.createElement('div');
     model.className = 'model-plate caps';
     model.textContent = t('home.model');
@@ -421,9 +445,9 @@ export class MachineController {
     loadLine.dataset.testid = 'load-line';
     machine.appendChild(loadLine);
 
-    // UI_CONTRACT v3 §3：深炭黑面板 + 左主右辅双栏
+    // 机面板（概念板 06：奶油烤漆承载全部工作区）
     const darkPanel = document.createElement('div');
-    darkPanel.className = 'panel-dark';
+    darkPanel.className = 'machine-panel';
     darkPanel.dataset.testid = 'panel-dark';
     const workspace = document.createElement('div');
     workspace.className = 'workspace';
@@ -648,7 +672,7 @@ export class MachineController {
     const key = max === 1 ? 'gain.unlock1' : max === 2 ? 'gain.unlock2' : 'gain.unlock3';
     this.audio.relay();
     const toast = document.createElement('div');
-    toast.className = 'toast mat-chrome'; // UI_CONTRACT §4.3 最厚档材质
+    toast.className = 'toast';
     toast.dataset.testid = 'gain-unlock-toast';
     toast.textContent = t(key);
     document.body.appendChild(toast);
@@ -745,10 +769,11 @@ export class MachineController {
     if (!round) return;
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'btn';
+    btn.className = 'btn btn-dark';
     btn.dataset.testid = 'next';
     btn.style.display = 'block';
-    btn.style.margin = '10px auto 0';
+    btn.style.margin = '12px auto 0';
+    btn.style.minWidth = '200px';
     btn.textContent = t('btn.next');
     btn.addEventListener('click', () => {
       btn.remove();
@@ -795,9 +820,9 @@ export class MachineController {
     if (!root) return;
     root.textContent = '';
     const stage = document.createElement('div');
-    stage.className = 'stage';
+    stage.className = `stage stage--ending ending-${ending.toLowerCase()}`;
     const machine = document.createElement('main');
-    machine.className = 'machine';
+    machine.className = 'machine machine--ending';
     stage.appendChild(machine);
     root.appendChild(stage);
 
@@ -813,18 +838,21 @@ export class MachineController {
     header.append(model, tools);
     machine.appendChild(header);
 
+    const endWrap = document.createElement('div');
+    endWrap.className = 'ending-wrap';
+    machine.appendChild(endWrap);
+
     // §13 E：所有仪表 → 0、火焰熄灭（在收尾画面上体现）
+    renderEndingBanner(endWrap, ending, ending === 'E'); // E 无正文（§13）
     const gaugeRow = document.createElement('div');
     gaugeRow.className = 'gauge-row';
     const heatGauge = createGauge('gauge.heat', 'meter.heat.aria', 'gauge-heat', () => this.reduced);
     const fidelityGauge = createGauge('gauge.fidelity', 'meter.fidelity.aria', 'gauge-fidelity', () => this.reduced);
     gaugeRow.append(heatGauge.root, fidelityGauge.root);
-    machine.appendChild(gaugeRow);
-
-    renderEndingBanner(machine, ending, ending === 'E'); // E 无正文（§13）
+    endWrap.appendChild(gaugeRow);
 
     const resultState: GameState = { ...this.state, heat: ending === 'E' ? 0 : this.state.heat };
-    renderResults(machine, resultState, { onRestart: () => this.restart() });
+    renderResults(endWrap, resultState, { onRestart: () => this.restart() });
     this.applyHomeTextsRef = () => {
       const list = machine.querySelectorAll<HTMLElement>('.result-list li > span:first-child');
       const keys: Array<Parameters<typeof t>[0]> = [

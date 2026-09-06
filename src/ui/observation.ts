@@ -99,7 +99,7 @@ export interface ObservationHandle {
 
 export function createObservation(reduced: () => boolean): ObservationHandle {
   const root = document.createElement('div');
-  root.className = 'observation mat-glass'; // UI_CONTRACT §4.3 玻璃材质层
+  root.className = 'observation';
   root.setAttribute('aria-hidden', 'true'); // §10.5
   root.dataset.testid = 'observation';
 
