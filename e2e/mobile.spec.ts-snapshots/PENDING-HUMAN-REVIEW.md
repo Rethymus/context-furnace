@@ -17,3 +17,8 @@
 ## 变更记录（2026-09-06 续）
 
 - 全量重采：EXECUTION CONTRACT v1.0 §4 冻结禁止旧视觉家族（beige 仪表盘/半圆机械表盘/黑色堆叠卡），依 UI_CONTRACT.md（P3，含 STATE IMPLEMENTATION TABLE）重实现为纸片拼贴系统；全部 8 张基线随之更新。
+
+## 变更记录（2026-09-06 M2）
+
+- 重采 settings-mobile（win32）：设置浮层 M2 改版——关闭钮 44×44 右上角紧凑芯片、select 自绘纸面芯片、
+  浮层填充降为半透明纸玻璃、遮罩防滚穿。同 desktop M2 材质变更。PENDING-HUMAN-REVIEW 不变。

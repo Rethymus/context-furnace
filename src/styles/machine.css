@@ -27,6 +27,18 @@
     radial-gradient(30% 26% at 10% 32%, var(--glow-neutral) 0%, transparent 70%);
 }
 
+/* 台面纹理层（UI_CONTRACT §4.9）：细颗粒（纸纹/dither）+ 大尺度斑驳（毛玻璃可采样）。
+   两层共用一个伪元素；振幅已在 token 内固定（slope 0.07 / 0.10），两外观共用 */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--noise-broad), var(--noise-fine);
+  background-repeat: repeat, repeat;
+}
+
 /* 容器（非机身）：纸片直接铺在台面上 */
 .machine {
   position: relative;
@@ -66,6 +78,7 @@
 }
 
 .tool-btn {
+  position: relative; /* 为 ::after 命中区扩展建立定位上下文 */
   border-radius: 6px;
   color: var(--bench-ink);
   padding: 4px 8px;
@@ -77,7 +90,16 @@
   box-shadow: var(--edge-highlight-soft), 0 1px 4px rgba(0, 0, 0, 0.22);
   transition:
     transform var(--t-press-in) var(--spring-smooth),
-    box-shadow var(--t-press-in) var(--spring-smooth);
+    box-shadow var(--t-press-in) var(--spring-smooth),
+    background-color var(--t-hover) ease;
+}
+
+/* 命中区扩展（UI_CONTRACT M2）：视觉保持紧凑（32px 高），
+   纵向 ±6px 达到 44px 命中——与裁刀「视觉 18 / 命中 48」同一模式 */
+.tool-btn::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
 }
 
 .tool-btn:active {
@@ -244,11 +266,11 @@
 }
 
 .gauge-heat {
-  transform: rotate(-0.4deg);
+  transform: rotate(-0.22deg); /* M2：0.4→0.22，降低旋转带来的底边错位（拼贴感保留） */
 }
 
 .gauge-fidelity {
-  transform: rotate(0.35deg);
+  transform: rotate(0.18deg); /* M2：0.35→0.18 */
 }
 
 .gauge-label {

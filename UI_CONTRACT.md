@@ -124,43 +124,52 @@ ROW5    [ 状态条 ]（+ 炉口视窗仅 ROUND_BURNING）
 - 测试：Playwright 缺省 light → 8 张基线重采为浅色外观（PENDING-HUMAN-REVIEW）；深色外观以
   `scripts/smoke-visual.mjs` 扩展的 `colorScheme:'dark'` 截图做人工复核项，**首个人工会话必须复核两套**。
 
-### 4.5 动效 token（`tokens.css` 集中管理）
+### 4.5 动效 token（`tokens.css` 集中管理；M2 依研究重校）
 
 ```text
-弹簧  --spring-smooth: cubic-bezier(0.32, 0.72, 0, 1)      ← iOS sheet 族，临界阻尼
-      --spring-snap:   cubic-bezier(0.34, 1.30, 0.64, 1)   ← 轻过冲 ≈ .snappy(bounce .15)
-      --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1)   ← 过冲 ≈ .bouncy(bounce .3)
-时长  --press-in 90ms / --press-out 340ms / --dur-move 380ms
-      --dur-gauge 550ms / --dur-overlay 420ms / --dur-toast-in 480ms / --dur-toast-out 240ms
+弹簧  --spring-smooth: cubic-bezier(0.32, 0.72, 0, 1)      ← iOS sheet 族曲线（社区正典：chakra/yamada/nacos 等设计系统同名 token）
+      --spring-snap:   cubic-bezier(0.34, 1.30, 0.64, 1)   ← 轻过冲，介于 .snappy(ζ.85→0.63%) 与手电 squish(ζ.4→25%) 之间
+      --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1)   ← 过冲 ≈ .bouncy(bounce .3→4.6%)
+时长  --t-press-in 90ms（WWDC803「按下即时高亮」，attack≤120ms）
+      --t-press-out 340ms（Apple 释放 300–500ms 带内）
+      --t-move 300ms（M2：380→300，对齐 Apple 抽屉释放 response .3/ζ.8；interactiveSpring 参照）
+      --t-gauge 550ms / --t-overlay 420ms / --t-toast-in 420ms / --t-toast-out 240ms
+      --t-mount 220ms / --t-hover 120ms（悬停色彩过渡，仅桌面 fine pointer）
 按压  --press-scale: 0.97（大面积 0.985）
+依据  SwiftUI spring 实测参数（WWDC23/10156 + fluid-interfaces 样板）：.smooth=(.5,ζ1)、
+      .snappy=(.5,ζ.85)、.bouncy=(.5,ζ.7)；interactiveSpring=(.15,ζ.86)≈110ms 收敛；
+      CSS transition 的 reversing-shortening 提供重定目标近似（CSS Transitions §3），
+      transform/opacity 走 compositor（web.dev：left 动画负载下丢帧 ~50% vs transform ~1%）
 ```
 
-### 4.6 交互效果映射（与既有规格时序共存）
+### 4.6 交互效果映射（与既有规格时序共存；M2 修订处标注）
 
 | 效果 | 落点 | 约束 |
 |---|---|---|
 | 按压反馈对 | `.btn` / `.btn-primary` / `.gain-stop` / `.tool-btn` / `.cutter` / 插头 | 静止↔按下成对定义；attack 90ms、release 340ms 弹簧；`:disabled` 不参与 |
-| 竹简槽弹簧 | `.cutter` 的 `left` 位移（拖拽中 `.active` 关闭 transition） | 380ms `--spring-snap`；键盘/点轨/拖拽释放均有回弹；RM/冻结关闭 |
-| 浮层入场 | 设置对话框 backdrop 淡入 + dialog `translateY(18px) scale(0.96)→1` 420ms sheet 曲线 | D3 Escape 行为不变；关闭为**即时卸载**——退场动画的定时器卸载在渲染节流（并行负载下 WebKit 移动仿真）下不可靠，确定性优先 |
-| 推石 shake | `.machine.burning` 480ms 指数衰减水平 shake | 仅完整动效；RM（§2.3 明确禁设备震动）与 `?freeze=1` 关闭；§8.3 时序窗口不动 |
-| toast 弹簧入场 | GAIN 解锁 toast：`translateY(16px)→0` + `--spring-bouncy` 480ms；退场 240ms 下沉淡出 | §27 1.2 s 显示时长不变（D16「已复制」同构造） |
+| 悬停命中态（M2） | 同上（`hover:hover and pointer:fine`） | 背景色位移（--heat-hover/--mat-paper-strong/--mat-chrome-hover），120ms；**不用 filter**（会为 backdrop-filter 建采样根） |
+| 竹简槽弹簧 | `.cutter` 的 **transform 位移**（M2：left→transform，compositor-only；位移 px 由 refresh() 计算 + ResizeObserver 重算，顺带修正 %left 相对 padding-box 的 ≤8px 边缘偏差） | 300ms `--spring-snap`；键盘/点轨/拖拽释放均有回弹；RM/冻结关闭 |
+| 浮层入场 | 设置对话框 backdrop 淡入 + dialog `translateY(18px) scale(0.96)→1` 420ms sheet 曲线 | D3 Escape 行为不变；关闭为**即时卸载**（确定性优先）；M2：backdrop `overflow:hidden + overscroll-behavior:contain`（MDN 浮层防滚穿惯用法）+ `.dialog` 滚动容器本体 contain |
+| 推石 shake | `.machine.burning` 480ms 指数衰减水平 shake | **M2 重参**：A=5px（峰值≈3.5px）、f=3.5Hz、τ=200ms、正弦相位（冲击响应）；M1 的 f≈18Hz 违反 60fps 抗混叠约束（可见动效 f≤6Hz，Apple 高频质感交给触觉而非视觉） |
+| toast 弹簧入场 | GAIN 解锁 toast：`translateY(16px)→0` + `--spring-bouncy` 420ms；退场 240ms 下沉淡出 | §27 1.2s 显示时长不变（D16「已复制」同构造） |
 | 周期装载 | `.machine` 子面板 220ms 淡入上升 4px | RM/冻结关闭 |
 
 **统一禁用面**：`[data-motion='reduced']`、`prefers-reduced-motion: reduce`、`[data-freeze='1']`
 三者下，以上全部动画/过渡关闭（保留 opacity/数值/指示灯表达）；`?freeze=1` 扩展为全局
 `transition/animation: none`（D29 测试基础设施硬化，生产无此参数）。
 
-### 4.7 长周期优化路线图（后续会话按此推进，逐阶段可验证）
+### 4.7 长周期优化路线图（后续会话按此推进，逐阶段可验证；M2 细化）
 
 | 阶段 | 内容 | 验收 |
 |---|---|---|
-| M1（本次） | 色阶 + 材质层 + 双外观 + backdrop 采样 + §4.6 全部动效 + 对比度脚本 + 基线/README 媒体重采 | verify 12 项绿；contrast 记录全 AA；截图人工可读性复核（PENDING-HUMAN-REVIEW） |
-| M2 | 焦点/命中态统一审计：全部可交互件 press 对齐、focus ring 一致性、44/48px 目标复核 | accessibility.spec 绿 + 新增 smoke 截图 |
-| M3 | 深色外观正式基线（需 Playwright 项目扩展或独立采集通道）→ 人工复核后并入 D28 双套体系 | 深色 8 张基线 + CI Linux 通道 |
-| M4 | 环境光场随局内状态演化的确定性模型（固定种子，冻结开关覆盖） | D29 确定性 + 快照稳定 |
-| M5 | 性能预算复核：backdrop 层面积/数量、低端设备帧率抽查 | idle CPU ≈ 0（§6 性能断言） |
+| M1（2026-09-06） | 色阶 + 材质层 + 双外观 + backdrop 采样 + §4.6 动效 + 对比度脚本 + 基线/README 媒体重采 | verify 12 项绿；contrast 全 AA；截图人工可读性复核（PENDING-HUMAN-REVIEW） |
+| M2（2026-09-06，本次） | 材质真实化（台面纹理 + 参数重校 + 量化探针）、焦点/命中态统一（44px 命中、hover、focus、发丝边）、裁刀 transform 迁移、shake 重参、对话框/表单控件统一、降级路径修复 | verify 全绿；matmetrics 探针（glassVisibility 0.3→≥4.5 两外观）；contrast 全 AA；基线重采 PENDING-HUMAN-REVIEW |
+| M3 | 深色外观正式基线（Playwright `colorScheme:'dark'` 项目通道）→ 人工复核后并入 D28 双套体系 | 深色 8 张基线 + CI Linux 通道 |
+| M4 | 环境光场随局内状态演化的确定性模型（固定种子 + freeze 覆盖；热值→暖光强度/半径、fidelity→冷光）；「液态玻璃」评估点：折射/透镜（SVG backdrop-filter displacement）仅 Chromium 支持，跨浏览器不一致 → 只允许落地**通用子集**（边缘渐变高光带 + 双层阴影），禁止 Chromium-only 形变 | D29 确定性 + 快照稳定；两外观视觉复核 |
+| M5 | 性能预算复核：backdrop 层面积/数量（材质不叠材质审计）、低端设备帧率抽查、`prefers-reduced-transparency` 真机验证 | idle CPU ≈ 0（§6 性能断言）；帧率抽查记录 |
+| M6 | 键盘/焦点遍历全路径走查（Tab 序、焦点环在拼贴旋转件上的可见性）、RTL 复核 | accessibility.spec 绿 + 焦点路径截图集 |
 
-> M2–M5 为方向授权，每次实施仍须逐条对照 §2 禁止清单并在本文件补记执行情况；
+> M3–M6 为方向授权，每次实施仍须逐条对照 §2 禁止清单并在本文件补记执行情况；
 > 涉及快照/基线的变更一律按 D27/D28 标记 PENDING-HUMAN-REVIEW，不得声称"UI 已确认"。
 
 ### 4.8 M1 执行记录（2026-09-06）
@@ -182,3 +191,37 @@ ROW5    [ 状态条 ]（+ 炉口视窗仅 ROUND_BURNING）
 - **README 媒体**：`npm run capture:readme` 重录（gif 3.93 MiB ≤ 4 MiB，其余达标）。
 - **备注**：`capture-readme-media.mjs` 采到的是 Cycle 03 结算态（脚本既有行为，与
   PRESENTATION_SPEC §15「Cycle 04」存在既有偏差），本次不修改采集脚本，留待人工裁决。
+
+### 4.9 M2 执行记录（2026-09-06）——材质真实化 + 命中态统一
+
+**研究发现（两轮外部调研，Apple 一手来源为主）→ 落地参数**：
+
+| 研究结论 | 落地 |
+|---|---|
+| Apple 材质厚度阶梯按**填充不透明度**定义（regular 光 0.5–0.7/暗 0.5–0.72、thick 0.75–0.9，社区逆向一致）；saturate 140–180% | mat-paper 光 0.74→**0.62**、thick 0.88→**0.76**、saturate 1.35→**1.4**；深色 mat-glass 黑基 0.58/chrome 0.66 入带 |
+| 高斯模糊对高频内容衰减 exp(−0.5(2πfσ)²)：22px blur 下周期 ≲100px 成分几乎消失 → **静态光滑台面上的 backdrop-filter 数学上不可见**（M1 遗留问题的学科证明） | 台面新增两层确定性 SVG fractalNoise（`--noise-fine` 细颗粒 dither + `--noise-broad` 周期≈118px 大尺度斑驳，模糊后存活 ~50%）；光场对比 ×1.3 |
+| backdrop 根：**filter 会为后代 backdrop-filter 建立采样根**（MDN） | hover 用背景色位移，不用 filter |
+| overscroll-behavior 只对滚动容器生效；浮层防滚穿惯用法 = 遮罩 `overflow:hidden + contain` | 修正 M1 挂错位置（原挂在非滚动遮罩上）；`.dialog` 与遮罩双 contain |
+| Reduce Transparency 是 Apple 材质的官方降级路径（退化为不透明系统背景） | `@media (prefers-reduced-transparency: reduce)` 渐进增强（OS 级偏好，非游戏设置项）；顺带修复 M1 兜底用深色 `--glass` 实底在浅色外观与浅色 `--glass-ink` 深字叠加不可读的潜在 bug（分外观 `--fallback-*` token） |
+| 弹簧一手参数（WWDC23/10156）：.smooth=(.5,ζ1)/.snappy=(.5,ζ.85)/.bouncy=(.5,ζ.7)；interactiveSpring=(.15,ζ.86)；抽屉释放 (response .3, ζ.8)；WWDC803「按下即时高亮」 | --spring-smooth 验证为社区正典保留；--t-move 380→300ms；press 对已合规 |
+| 可见动效频率 ≤6Hz（60fps 抗混叠；Apple 高频质感交触觉） | shake M1 的 18Hz 重参为 **3.5Hz/A5/τ200ms** |
+| `left` 动画负载下丢帧 ~50% vs transform ~1%（web.dev 实测） | 裁刀槽弹簧 left→**transform**（px 由 JS 计算 + ResizeObserver 重算），并修正 %left 的 ≤8px 边缘对齐偏差 |
+
+**量化验证（`scripts/probe-matmetrics.mjs`，新增 D43 类探针）**：
+
+| 指标 | M1 | M2 | 含义 |
+|---|---|---|---|
+| glassVisibility（浅） | ≈0.3 | **5.68** | backdrop 开/关逐像素差 → 毛玻璃可见度 |
+| glassVisibility（深） | ≈0.3 | **4.54** | 同上 |
+| separationFeed（浅） | 6.17 | **11.19** | 面板/台面亮度分离度 |
+| separationGlass（深） | 2.19 | **5.57** | 玻璃条/台面分离度 |
+
+**其余落地**：tool-btn 命中区 32→44px（`::after` 扩展，视觉保持紧凑——与裁刀 48 命中/18 视觉同模式）；
+cutter-hint 9→10px；设置关闭钮改 44×44 右上角紧凑芯片（文本/aria 不变）；select 去原生外观统一纸面芯片
+（自绘 chevron）；hover 命中态（桌面 only）；裁刀套投影收窄；暖光斑去品红倾向（hue 向橙 +14）；
+仪表旋转 0.4/0.35°→0.22/0.18°（底边对齐）；玻璃面发丝边升 `--hairline-strong`。
+**媒体预算修正**：材质细节使 GIF 压缩率下降（4.47MB > 4MiB 预算）；采集脚本（D43 工具，规格仅冻结
+960×600/12fps/≤7.5s/≤4MB）改用**全片单一调色板**（原逐帧 `stats_mode=single` 使静态区域量化噪声
+逐帧翻转）+ 中间 webm 600k → **3.33MB 达标**；细颗粒振幅 0.07→0.05（dither 职能不受影响，全档指标不变）。
+**对比度**：check-contrast 32/32 PASS（重跑）。**单测**：316 passed。**展示测试**：15/15。
+**基线**：win32 基线随本次重采（PENDING-HUMAN-REVIEW）；Linux 套走 update-baselines.yml（baseline-bot）。

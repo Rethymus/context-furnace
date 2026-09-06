@@ -89,6 +89,12 @@ svg {
   border: 1px solid var(--hairline-color);
 }
 
+/* 玻璃面在浅色台面上边界更弱：升一档发丝边（M2 视觉复核） */
+.mat-glass,
+.mat-chrome {
+  border-color: var(--hairline-strong);
+}
+
 .mat-paper {
   background: var(--mat-paper);
   -webkit-backdrop-filter: blur(var(--blur-panel)) saturate(var(--saturate-panel));
@@ -118,22 +124,40 @@ svg {
   box-shadow: var(--edge-highlight), var(--shadow-float);
 }
 
-/* 老引擎兜底：无 backdrop-filter 时提升填充不透明度，保证可读性 */
+/* 老引擎兜底：无 backdrop-filter 时用不透明实底（分外观 token，M2 修复：
+   浅色下原 --glass 深实底与浅色 --glass-ink 深字叠加不可读） */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .mat-paper {
-    background: var(--paper);
-  }
-
+  .mat-paper,
   .mat-paper-thick {
-    background: var(--paper);
+    background: var(--fallback-paper);
   }
 
-  .mat-glass {
-    background: var(--glass);
-  }
-
+  .mat-glass,
   .mat-chrome {
-    background: var(--glass);
+    background: var(--fallback-glass);
+  }
+}
+
+/* Reduce Transparency 降级（HIG Materials 行为，OS 级无障碍偏好，非游戏设置项）：
+   材质退化为不透明系统背景色，等效老引擎兜底 */
+@media (prefers-reduced-transparency: reduce) {
+  .mat-paper,
+  .mat-paper-thick {
+    background: var(--fallback-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .mat-glass,
+  .mat-chrome {
+    background: var(--fallback-glass);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .dialog-backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 

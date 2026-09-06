@@ -6,6 +6,27 @@
   gap: 16px;
 }
 
+/* ── M2：桌面悬停命中态（hover:hover + pointer:fine；材质面用背景位移，
+      不用 filter——filter 会为 backdrop-filter 建立新的采样根，破坏毛玻璃；
+      background-color 已列入各 transition 清单，悬停过渡独立计时） ── */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(:disabled) {
+    background: var(--mat-paper-strong);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--heat-hover);
+  }
+
+  .gain-stop:hover:not(:disabled) {
+    background: var(--mat-paper-strong);
+  }
+
+  .tool-btn:hover {
+    background: var(--mat-chrome-hover);
+  }
+}
+
 /* ── 按钮：静止↔按下成对定义（attack 90ms / release 340ms 弹簧） ── */
 .btn {
   border: 1px solid var(--hairline-strong);
@@ -21,7 +42,8 @@
   transition:
     transform var(--t-press-in) var(--spring-smooth),
     box-shadow var(--t-press-in) var(--spring-smooth),
-    filter var(--t-press-in) var(--spring-smooth);
+    filter var(--t-press-in) var(--spring-smooth),
+    background-color var(--t-hover) ease;
 }
 
 .btn:active:not(:disabled) {
@@ -42,6 +64,25 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* M2：关闭钮——紧凑方形（44×44 命中），右上角悬浮；沿用内嵌芯片语言 */
+.dialog {
+  position: relative;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink-soft);
 }
 
 .btn-primary {
@@ -98,20 +139,22 @@
 }
 
 /* 裁刀：红色滑套手柄（视觉 18×26，hit area 48×48，§6.4）。
-   槽弹簧：left 位移 380ms 轻过冲弹簧（UI_CONTRACT §4.6）；
-   拖拽中（.active）关闭过渡以跟随手指。 */
+   槽弹簧：transform 位移 300ms 轻过冲弹簧（compositor-only，UI_CONTRACT §4.6 M2；
+   animating left 在负载下丢帧 ~50% vs transform ~1%，web.dev 实测）；
+   拖拽中（.active）关闭过渡以跟随手指；位移 px 由 refresh() 设置（resize 重算）。 */
 .cutter {
   position: absolute;
   top: 0;
+  left: 0;
   width: 48px;
   height: 48px;
-  margin-left: -24px;
   background: none;
   border: none;
   padding: 0;
   cursor: grab;
   touch-action: none;
-  transition: left var(--t-move) var(--spring-snap);
+  will-change: transform;
+  transition: transform var(--t-move) var(--spring-snap);
 }
 
 .cutter.active {
@@ -133,7 +176,7 @@
   background: linear-gradient(180deg, var(--heat-bright) 0%, var(--heat) 70%);
   border: 1px solid var(--heat-press, #7d2b20);
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); /* M2：收窄投影，避免溢出轨道纸面 */
   pointer-events: none;
   transform-origin: 50% 100%;
   transition: transform var(--t-press-out) var(--spring-snap);
@@ -163,17 +206,17 @@
 .cutter.active .cutter-blade,
 .cutter:focus-visible .cutter-blade {
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.35),
     0 0 0 2px var(--warning);
 }
 
 .cutter-hint {
   position: absolute;
   left: 50%;
-  top: -2px;
+  top: -3px;
   transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--ink-soft);
 }
@@ -214,7 +257,7 @@
   transition:
     transform var(--t-press-in) var(--spring-smooth),
     box-shadow var(--t-press-in) var(--spring-smooth),
-    background-color var(--t-press-in) var(--spring-smooth);
+    background-color var(--t-hover) ease;
 }
 
 .gain-stop:active:not(:disabled) {
@@ -292,8 +335,11 @@
   justify-content: center;
   padding: 16px;
   z-index: 20;
-  /* MDN overscroll-behavior：防止面板内滚动链到台面 */
+  /* MDN overscroll-behavior 惯用法：overflow:hidden 使遮罩成为「恒在边界」的滚动容器，
+     contain 截断链条 → 浮层打开期间台面不被滚穿（.dialog 内的 contain 见下） */
+  overflow: hidden;
   overscroll-behavior: contain;
+  /* MDN overscroll-behavior 见 .dialog（滚动容器本体）；backdrop 仅承载模糊遮罩 */
   -webkit-backdrop-filter: blur(var(--blur-sheet)) saturate(1.15);
   backdrop-filter: blur(var(--blur-sheet)) saturate(1.15);
   animation: overlay-in var(--t-overlay) var(--spring-smooth);
@@ -306,6 +352,9 @@
   width: min(420px, 100%);
   max-height: 85dvh;
   overflow: auto;
+  /* MDN overscroll-behavior 只对滚动容器生效：滚动发生在 .dialog，
+     链条在这里截断，不传给台面（UI_CONTRACT §4.1 研究落点，M2 修正挂载位置） */
+  overscroll-behavior: contain;
   animation: sheet-in var(--t-overlay) var(--spring-smooth);
 }
 
@@ -341,6 +390,26 @@
 .setting-row input[type='range'] {
   min-height: 44px;
   font: inherit;
+}
+
+/* M2：select 去原生外观，统一为纸面芯片（材质不叠材质 → 实心内嵌） */
+.setting-row select {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 6px;
+  border: 1px solid var(--hairline-strong);
+  background-color: rgba(40, 38, 30, 0.06);
+  color: var(--ink);
+  padding: 0 30px 0 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234a493f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+}
+
+.setting-row select:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
 }
 
 .setting-row input[type='range'] {

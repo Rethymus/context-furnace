@@ -58,10 +58,17 @@
   --surface-bench-hi: #171812;
   --surface-bench-lo: #0e0f0c;
 
-  /* 环境光场（供 backdrop 采样；静态、确定性） */
-  --glow-warm: rgba(164, 58, 47, 0.16);
-  --glow-cool: rgba(44, 98, 90, 0.10);
-  --glow-neutral: rgba(212, 167, 44, 0.07);
+  /* 环境光场（供 backdrop 采样；静态、确定性；M2 提高对比让玻璃有色彩可采） */
+  --glow-warm: rgba(178, 84, 44, 0.2);
+  --glow-cool: rgba(44, 98, 90, 0.12);
+  --glow-neutral: rgba(212, 167, 44, 0.09);
+
+  /* 台面纹理（UI_CONTRACT §4.9）：确定性 SVG fractalNoise（D29 兼容，无网络）。
+     feColorMatrix 末行把噪声 R 通道映射到 alpha、RGB 恒为白（slope = 最大叠加幅度）：
+     细颗粒 = 台面纸纹/dither；大尺度（周期 ≈118px）经 22px 高斯模糊后存活 ~50%
+     振幅（衰减 exp(−0.5(2πσf)²)），让毛玻璃读得出背后层次 */
+  --noise-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch' seed='20260906'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.05 0 0 0 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --noise-broad: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0085' numOctaves='2' stitchTiles='stitch' seed='20260907'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.10 0 0 0 0'/%3E%3C/filter%3E%3Crect width='520' height='520' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* 台面文字（暗底浅字 / 浅底深字） */
   --bench-ink: #f0e9d8;
@@ -74,22 +81,26 @@
   /* ── UI_CONTRACT §4.3 材质层（深色外观值） ── */
   --mat-paper: rgba(243, 236, 217, 0.8);
   --mat-paper-strong: rgba(245, 239, 224, 0.9);
-  --mat-glass: rgba(22, 24, 19, 0.78);
-  --mat-chrome: rgba(28, 30, 24, 0.86);
+  --mat-glass: rgba(50, 52, 43, 0.58);
+  --mat-chrome: rgba(52, 54, 44, 0.66);
   --glass-ink: #f3ecd9;
   --glass-ink-soft: rgba(243, 236, 217, 0.72);
+  /* 降级实底（老引擎 @supports / prefers-reduced-transparency；分外观取值，
+     M2 修复：原浅色下深实底 --glass 与浅色 --glass-ink 深字叠加不可读） */
+  --fallback-paper: #f3ecd9;
+  --fallback-glass: #252923;
 
   --blur-panel: 22px;
   --blur-glass: 18px;
   --blur-sheet: 10px;
-  --saturate-panel: 1.35;
-  --saturate-glass: 1.2;
+  --saturate-panel: 1.4;
+  --saturate-glass: 1.25;
 
-  /* 发丝边 / 内高光 / 阴影 */
-  --hairline-color: rgba(243, 236, 217, 0.16);
-  --hairline-strong: rgba(243, 236, 217, 0.24);
-  --edge-highlight: inset 0 1px 0 rgba(255, 250, 235, 0.28);
-  --edge-highlight-soft: inset 0 1px 0 rgba(255, 250, 235, 0.12);
+  /* 发丝边 / 内高光 / 阴影（M2 重校：深色玻璃靠提亮+发丝边与台面分离） */
+  --hairline-color: rgba(243, 236, 217, 0.2);
+  --hairline-strong: rgba(243, 236, 217, 0.28);
+  --edge-highlight: inset 0 1px 0 rgba(255, 250, 235, 0.34);
+  --edge-highlight-soft: inset 0 1px 0 rgba(255, 250, 235, 0.16);
   --shadow-panel: 0 18px 40px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
   --shadow-float: 0 24px 60px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.4);
 
@@ -98,9 +109,11 @@
   --focus-width: 2px;
   --focus-offset: 2px;
 
-  /* 派生交互色（UI_CONTRACT §4：按压/遮罩/状态文字/弧轨） */
+  /* 派生交互色（UI_CONTRACT §4：按压/悬停/遮罩/状态文字/弧轨） */
   --heat-press: #7d2b20;
   --heat-bright: #c14a38;
+  --heat-hover: #b04234; /* M2 悬停：heat→heat-bright 中点（≈5% 提亮） */
+  --mat-chrome-hover: rgba(64, 66, 54, 0.72);
   --heat-tint: rgba(164, 58, 47, 0.13);
   --ink-line: rgba(24, 26, 22, 0.35);
   --hatch-a: #e4dcc4;
@@ -110,20 +123,21 @@
   --amber-text: #d4a72c;
   --arc-track: #a89f88; /* 仪表面弧槽（装饰性，非信息载体；值弧+数字承载信息） */
 
-  /* ── UI_CONTRACT §4.5 动效 token（SwiftUI spring 映射） ── */
-  --spring-smooth: cubic-bezier(0.32, 0.72, 0, 1); /* 临界阻尼：sheet/仪表 */
-  --spring-snap: cubic-bezier(0.34, 1.3, 0.64, 1); /* 轻过冲：按压回弹/裁刀 */
-  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1); /* 过冲：toast/浮层 */
+  /* ── UI_CONTRACT §4.5 动效 token（SwiftUI spring 映射；M2 依研究修正） ── */
+  --spring-smooth: cubic-bezier(0.32, 0.72, 0, 1); /* 临界阻尼 sheet 族（社区正典，多设计系统采用） */
+  --spring-snap: cubic-bezier(0.34, 1.3, 0.64, 1); /* 轻过冲 ≈ .snappy(bounce .15) 与手电 squish(ζ.4) 之间 */
+  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1); /* 过冲 ≈ .bouncy(bounce .3) */
 
-  --t-press-in: 90ms;
-  --t-press-out: 340ms;
-  --t-move: 380ms;
+  --t-press-in: 90ms; /* WWDC803：按下即时高亮；attack ≤120ms */
+  --t-press-out: 340ms; /* Apple 释放 300–500ms 带内 */
+  --t-move: 300ms; /* M2：380→300，对齐 Apple 抽屉释放 response .3 / ζ.8 带（interactiveSpring 参照） */
   --t-gauge: 550ms;
   --t-overlay: 420ms;
   --t-overlay-out: 200ms;
   --t-toast-in: 420ms;
   --t-toast-out: 240ms;
   --t-mount: 220ms;
+  --t-hover: 120ms; /* 悬停态色彩过渡（桌面指针；macOS 惯例即时高亮 → 短过渡） */
 
   --press-scale: 0.97;
   --press-scale-large: 0.985;
@@ -150,31 +164,36 @@
     --surface-bench-hi: #f2f0e7;
     --surface-bench-lo: #e2dfd3;
 
-    --glow-warm: rgba(164, 58, 47, 0.12);
-    --glow-cool: rgba(44, 98, 90, 0.09);
-    --glow-neutral: rgba(212, 167, 44, 0.12);
+    --glow-warm: rgba(178, 84, 44, 0.16);
+    --glow-cool: rgba(44, 98, 90, 0.12);
+    --glow-neutral: rgba(212, 167, 44, 0.14);
 
     --bench-ink: #26251f;
     --bench-ink-soft: rgba(38, 37, 31, 0.72);
 
-    /* 浅色下纸面材质更透、玻璃面加厚（HIG：同档材质按外观调填充） */
-    --mat-paper: rgba(252, 249, 240, 0.74);
-    --mat-paper-strong: rgba(253, 251, 245, 0.88);
-    --mat-glass: rgba(255, 253, 246, 0.72);
-    --mat-chrome: rgba(252, 250, 243, 0.85);
+    /* 浅色下纸面材质更透（M2：0.74→0.62，让大尺度斑驳透出玻璃感）、
+       玻璃面加厚（HIG：同档材质按外观调填充） */
+    --mat-paper: rgba(252, 249, 240, 0.62);
+    --mat-paper-strong: rgba(253, 251, 245, 0.76);
+    --mat-glass: rgba(255, 253, 246, 0.66);
+    --mat-chrome: rgba(252, 250, 243, 0.78);
     --glass-ink: #26251f;
     --glass-ink-soft: rgba(38, 37, 31, 0.66);
+    --fallback-paper: #f3ecd9;
+    --fallback-glass: #e9e5d8;
 
-    --hairline-color: rgba(40, 38, 30, 0.16);
-    --hairline-strong: rgba(40, 38, 30, 0.24);
+    --hairline-color: rgba(40, 38, 30, 0.22);
+    --hairline-strong: rgba(40, 38, 30, 0.3);
     --edge-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     --edge-highlight-soft: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-    --shadow-panel: 0 18px 40px rgba(74, 66, 46, 0.16), 0 2px 6px rgba(74, 66, 46, 0.1);
-    --shadow-float: 0 24px 60px rgba(74, 66, 46, 0.22), 0 4px 12px rgba(74, 66, 46, 0.12);
+    --shadow-panel: 0 18px 40px rgba(74, 66, 46, 0.2), 0 2px 6px rgba(74, 66, 46, 0.12);
+    --shadow-float: 0 24px 60px rgba(74, 66, 46, 0.26), 0 4px 12px rgba(74, 66, 46, 0.14);
 
     --focus: #8f6400;
 
     --heat-press: #7d2b20;
+    --heat-hover: #b04234;
+    --mat-chrome-hover: rgba(246, 243, 233, 0.88);
     --scrim: rgba(40, 38, 30, 0.32);
     --amber-text: #755200;
     --arc-track: #c9c2ac;

@@ -111,11 +111,11 @@ if (!machineBox) throw new Error('machine element not found for GIF capture');
 const gifScale = 'crop=1440:900:0:0,scale=960:600:flags=lanczos,fps=12';
 execFileSync(ffmpegPath, [
   '-y', '-sseof', '-8.5', '-i', rawVideo, '-t', '7.5',
-  '-c:v', 'libvpx', '-b:v', '1M', '-an', trimmed,
+  '-c:v', 'libvpx', '-b:v', '600k', '-an', trimmed,
 ]);
 execFileSync(ffmpegPath, [
   '-y', '-i', trimmed, '-vf',
-  `${gifScale},split[a][b];[a]palettegen=max_colors=80:stats_mode=single[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`,
+  `${gifScale},split[a][b];[a]palettegen=max_colors=80[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`,
   gif,
 ]);
 

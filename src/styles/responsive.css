@@ -2,7 +2,8 @@
    注：仪表芯片随行动簇容器堆叠（DOM 属于 lower-row），位于面板之后、观察窗之前。 */
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: hidden; /* 老引擎兜底 */
+  overflow-x: clip; /* MDN：纯裁切，不产生可编程滚动容器（§92 绝对禁止水平滚动） */
   max-width: 100%;
 }
 

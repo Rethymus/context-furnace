@@ -101,7 +101,7 @@ export class SettingsPanel {
 
     const closeBtn = document.createElement('button');
     closeBtn.type = 'button';
-    closeBtn.className = 'btn';
+    closeBtn.className = 'btn dialog-close'; // M2：紧凑方形关闭钮（右上角，44×44 命中）
     closeBtn.textContent = '×';
     closeBtn.setAttribute('aria-label', '×');
     closeBtn.addEventListener('click', () => this.close());

@@ -1,0 +1,11 @@
+{
+  "scheme": "dark",
+  "metrics": {
+    "glassVisibility": 4.52,
+    "glassVisibilityGlass": 0.25,
+    "backgroundMottle": 31.66,
+    "benchMottle": 1.62,
+    "separationFeed": 143.48,
+    "separationGlass": 6.82
+  }
+}

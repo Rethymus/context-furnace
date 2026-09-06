@@ -127,8 +127,16 @@ export function createCutTrack(opts: CutTrackOpts): CutTrackHandle {
 
   function refresh(): void {
     const sel = getSelection();
-    leftBtn.style.left = `${((sel.left / segmentCount) * 100).toFixed(3)}%`;
-    rightBtn.style.left = `${(((sel.right + 1) / segmentCount) * 100).toFixed(3)}%`;
+    // 槽弹簧走 transform（compositor-only，UI_CONTRACT §4.6 M2）：
+    // 边界 i 的绝对 x = 左 padding + i/N·块区宽；再平移半个命中区宽度居中。
+    // （旧 %left 相对 padding-box，边缘有 ≤8px 偏差——顺带修正）
+    const w = root.clientWidth;
+    const pad = 8; // .track 左右 padding（controls.css）
+    const span = Math.max(0, w - pad * 2);
+    const half = leftBtn.offsetWidth / 2;
+    const x = (i: number) => pad + (i / segmentCount) * span - half;
+    leftBtn.style.transform = `translateX(${x(sel.left).toFixed(1)}px)`;
+    rightBtn.style.transform = `translateX(${x(sel.right + 1).toFixed(1)}px)`;
     blocks.forEach((b, i) => {
       const selected = i >= sel.left && i <= sel.right;
       b.classList.toggle('excluded', !selected);
@@ -138,6 +146,11 @@ export function createCutTrack(opts: CutTrackOpts): CutTrackHandle {
         feedSeg.classList.toggle('dim', !selected);
       }
     });
+  }
+
+  // 视口/布局变化时重算 transform 位移（px 位移需随宽度重算；%left 时代不需要）
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(() => refresh()).observe(root);
   }
 
   function setHighlighted(index: 0 | 1 | null): void {

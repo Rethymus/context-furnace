@@ -37,18 +37,20 @@
   }
 }
 
-/* 推石 shake：指数衰减 x(t)=A·e^(−t/τ)·sin(2πft)（A≈3px，τ≈150ms，f≈18Hz，480ms）
-   关键帧幅度按衰减曲线取点、正负交替（UI_CONTRACT §4.6） */
+/* 推石 shake：指数衰减 x(t)=A·e^(−t/τ)·sin(2πft)（UI_CONTRACT §4.6；M2 依研究重校参）
+   A=5px（峰值 ≈3.5px @53ms）、f=3.5Hz、τ=200ms、480ms（≈1.7 周期）。
+   M1 的 f≈18Hz 违反 60fps 抗混叠约束（可见动效 f≤6Hz，Apple 惯例 <6Hz，
+   高频质感交给触感而非视觉）——正负交替关键帧按新曲线取点（正弦相位 = 冲击响应） */
 @keyframes press-shake {
-  0% { transform: translateX(3px); }
-  11% { transform: translateX(-2.1px); }
-  23% { transform: translateX(1.4px); }
-  34% { transform: translateX(-1px); }
-  46% { transform: translateX(0.7px); }
-  57% { transform: translateX(-0.5px); }
-  69% { transform: translateX(0.3px); }
-  80% { transform: translateX(-0.2px); }
-  92% { transform: translateX(0.2px); }
+  0% { transform: translateX(0); }
+  11% { transform: translateX(3.53px); }
+  23% { transform: translateX(1.89px); }
+  34% { transform: translateX(-0.95px); }
+  46% { transform: translateX(-1.64px); }
+  57% { transform: translateX(-0.33px); }
+  69% { transform: translateX(0.78px); }
+  80% { transform: translateX(0.6px); }
+  92% { transform: translateX(-0.18px); }
   100% { transform: translateX(0); }
 }
 
