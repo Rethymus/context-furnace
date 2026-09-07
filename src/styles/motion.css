@@ -46,6 +46,12 @@
   100% { transform: translateX(0); }
 }
 
+/* 教学 Step4：入炉按钮引导脉冲（RM/freeze 下由全局规则关闭） */
+@keyframes ignite-hint-pulse {
+  0%, 100% { box-shadow: 0 4px 0 var(--heat-deep), 0 0 0 0 rgba(164, 58, 47, 0.45); }
+  60% { box-shadow: 0 4px 0 var(--heat-deep), 0 0 0 9px rgba(164, 58, 47, 0); }
+}
+
 .machine.burning {
   animation: press-shake 480ms cubic-bezier(0.36, 0, 0.64, 1) 1;
 }

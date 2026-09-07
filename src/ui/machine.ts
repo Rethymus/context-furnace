@@ -244,6 +244,7 @@ export class MachineController {
 
   private tutorialTrack: CutTrackHandle | null = null;
   private tutorialSel = { left: 0, right: 2 };
+  private tutorialStep = 0;
   private tutorialEls: {
     hint: HTMLElement;
     output: HTMLElement;
@@ -307,6 +308,18 @@ export class MachineController {
     const hint = document.createElement('div');
     hint.className = 'tutorial-note';
     hint.dataset.testid = 'tutorial-hint';
+    // §3 步进指示（纯视觉，无文字；aria-hidden）
+    const dots = document.createElement('span');
+    dots.className = 'tutorial-dots';
+    dots.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 4; i++) {
+      const dot = document.createElement('i');
+      dot.className = 'tutorial-dot';
+      dots.appendChild(dot);
+    }
+    const hintText = document.createElement('span');
+    hintText.className = 'tutorial-note-text';
+    hint.append(dots, hintText);
     panelWrap.appendChild(hint);
 
     stage.appendChild(machine);
@@ -318,11 +331,21 @@ export class MachineController {
 
     // 教学选区（D8：本地状态，不影响任何游戏数值）；OUTPUT 实时跟随
     this.tutorialSel = { left: 0, right: TUTORIAL_CARD.segments.length - 1 };
+    this.tutorialStep = 0;
     this.tutorialTrack = createCutTrack({
       segmentCount: TUTORIAL_CARD.segments.length,
       getSelection: () => ({ ...this.tutorialSel }),
       setSelection: (left, right) => {
+        const prev = { ...this.tutorialSel };
         this.tutorialSel = { left, right };
+        // §3 步进引导：左刀已动 → Step2；右刀已动 → Step3，随后进入 Step4（D35 不锁输入）
+        if (this.tutorialStep < 1 && left !== prev.left) this.showTutorialStep(1);
+        if (this.tutorialStep < 2 && right !== prev.right) {
+          this.showTutorialStep(2);
+          window.setTimeout(() => {
+            if (this.state.phase === 'TUTORIAL' && this.tutorialStep < 3) this.showTutorialStep(3);
+          }, 900);
+        }
         this.updateTutorialOutput();
       },
       onTick: () => this.audio.cutterTick(1),
@@ -346,13 +369,18 @@ export class MachineController {
     els.output.textContent = locale === 'zh-CN' ? `「${joined}」` : `“${joined}”`;
   }
 
-  // §3 Step 1–5：高亮引导，不锁输入（D35）
+  // §3 Step 1–5：高亮引导，不锁输入（D35）；步进由玩家动作驱动
   private showTutorialStep(step: number): void {
     const els = this.tutorialEls;
     if (!els) return;
+    this.tutorialStep = Math.min(3, Math.max(0, step));
     const hints = [t('tutorial.step1'), t('tutorial.step2'), t('tutorial.step3'), t('tutorial.step4')];
-    els.hint.textContent = hints[Math.min(step, 3)] ?? '';
-    this.tutorialTrack?.setHighlighted(step === 0 ? 0 : step === 1 ? 1 : null);
+    const note = els.hint.querySelector('.tutorial-note-text');
+    if (note) note.textContent = hints[this.tutorialStep] ?? '';
+    const dots = els.hint.querySelectorAll('.tutorial-dot');
+    dots.forEach((d, i) => d.classList.toggle('on', i <= this.tutorialStep));
+    this.tutorialTrack?.setHighlighted(this.tutorialStep === 0 ? 0 : this.tutorialStep === 1 ? 1 : null);
+    els.ignite.classList.toggle('ignite-hint', this.tutorialStep === 3);
     this.updateTutorialOutput();
   }
 

@@ -47,6 +47,11 @@
   box-shadow: 0 2px 0 var(--heat-deep);
 }
 
+/* 教学 Step4 引导态（§3 Step4；D35 不锁输入） */
+.btn-primary.ignite-hint {
+  animation: ignite-hint-pulse 1.4s ease-out infinite;
+}
+
 /* 深炭次级强按钮（NEXT INPUT / 结局重开） */
 .btn-dark {
   background: linear-gradient(180deg, var(--coal-hi) 0%, var(--coal) 100%);
