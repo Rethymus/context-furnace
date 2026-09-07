@@ -150,7 +150,10 @@
   background: linear-gradient(180deg, var(--machine-hi) 0%, var(--machine) 58%, var(--machine-lo) 100%);
   border: 1px solid var(--machine-edge);
   border-radius: var(--r-panel);
-  box-shadow: var(--shadow-panel), inset 0 1px 0 rgba(255, 252, 240, 0.65);
+  box-shadow:
+    0 3px 0 rgba(104, 91, 62, 0.3),
+    var(--shadow-panel),
+    inset 0 1px 0 rgba(255, 252, 240, 0.65);
   padding: 20px 22px;
 }
 
@@ -183,7 +186,7 @@
   background: var(--paper);
   border: 1px solid var(--paper-edge);
   border-radius: var(--r-card);
-  box-shadow: var(--shadow-card);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), var(--shadow-card);
   padding: 10px 16px 13px;
 }
 
@@ -252,8 +255,7 @@
 }
 
 .feed-seg.lit {
-  background: rgba(212, 167, 44, 0.24);
-  box-shadow: inset 0 -2px 0 var(--heat-bright);
+  background: rgba(212, 167, 44, 0.34);
 }
 
 /* ── 圆形表盘（概念板 06：奶油表盘 + 红/绿弧 + 指针） ── */
@@ -282,15 +284,34 @@
   margin: 4px auto 0;
 }
 
+.gauge-bezel {
+  fill: none;
+  stroke: #a89a76;
+  stroke-width: 3;
+}
+
 .gauge-face {
   fill: #faf5e6;
-  stroke: var(--machine-edge);
-  stroke-width: 1.5;
+  stroke: #cfc3a2;
+  stroke-width: 1;
+}
+
+.gauge-inner-ring {
+  fill: none;
+  stroke: #ded3b4;
+  stroke-width: 1;
 }
 
 .gauge-tick {
-  stroke: #a89a76;
-  stroke-width: 1.5;
+  stroke: #8d8060;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.gauge-tick-minor {
+  stroke: #b9ad8e;
+  stroke-width: 1;
+  stroke-linecap: round;
 }
 
 .gauge-arc-bg {
@@ -350,19 +371,36 @@
   color: var(--on-coal);
 }
 
+.observation::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 20%,
+    rgba(255, 255, 255, 0) 34%
+  );
+  pointer-events: none;
+}
+
 .observation .glyph {
   position: absolute;
   will-change: transform;
   opacity: 0.85;
 }
 
-/* ── 炉口（ROUND_BURNING 反馈窗 — 概念板 07） ── */
+/* ── 炉口（ROUND_BURNING 反馈窗 — 概念板 07）：设备门 + 角部沉头螺丝 ── */
 .furnace-card {
   margin-top: 16px;
   height: 150px;
   border-radius: var(--r-card);
   border: 1px solid #16140f;
   background:
+    radial-gradient(circle at 16px 16px, #4a443a 0 2.5px, #17150f 2.5px 3.5px, rgba(0, 0, 0, 0) 3.5px),
+    radial-gradient(circle at calc(100% - 16px) 16px, #4a443a 0 2.5px, #17150f 2.5px 3.5px, rgba(0, 0, 0, 0) 3.5px),
+    radial-gradient(circle at 16px calc(100% - 16px), #4a443a 0 2.5px, #17150f 2.5px 3.5px, rgba(0, 0, 0, 0) 3.5px),
+    radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), #4a443a 0 2.5px, #17150f 2.5px 3.5px, rgba(0, 0, 0, 0) 3.5px),
     radial-gradient(95% 130% at 50% 116%, rgba(228, 128, 52, 0.85) 0%, rgba(180, 70, 34, 0.5) 38%, rgba(30, 22, 14, 0.2) 72%),
     linear-gradient(180deg, #201d17 0%, #12100c 100%);
   box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.4), inset 0 10px 30px rgba(0, 0, 0, 0.6);
@@ -408,6 +446,11 @@
   padding: 7px 14px;
   display: flex;
   align-items: center;
+}
+
+/* 无有效核心等设备警示（§6.2）：琥珀色提示 */
+.status-line.status-warn {
+  color: var(--warning);
 }
 
 /* ── 首页（暗调书桌 + 深炭铭牌 — 概念板 01）：内容整屏垂直居中 ── */
@@ -561,7 +604,7 @@
   background: var(--paper);
   border: 1px solid var(--paper-edge);
   border-radius: 12px;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 24px 50px rgba(0, 0, 0, 0.45);
   padding: 18px 26px 20px;
   width: min(460px, 100%);
   margin-top: 14px;

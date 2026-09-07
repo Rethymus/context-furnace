@@ -645,6 +645,7 @@ export class MachineController {
     const ok = hasCoreSelected(round.card, this.state.cutLeft, this.state.cutRight);
     round.ignite.disabled = !ok; // §17 CORE 硬规则
     round.status.textContent = ok ? '' : t('error.noCore');
+    round.status.classList.toggle('status-warn', !ok); // §6.2 警示态
   }
 
   private updateObservation(): void {
@@ -762,6 +763,7 @@ export class MachineController {
     if (!round || !this.lastMachineMessage) return;
     const main = t(`msg.${this.lastMachineMessage}`) as string;
     round.status.textContent = this.lastReserve ? `${main} ${t('msg.highYield')}` : main; // §12 附加行
+    round.status.classList.remove('status-warn');
   }
 
   private showNextInput(): void {

@@ -195,10 +195,22 @@
   height: 68px;
   margin: 2px auto 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #4a463a 0%, #211f19 78%);
+  /* 外缘滚花 + 中心盘面（repeating-conic 只露 3px 边环） */
+  background: repeating-conic-gradient(
+    rgba(228, 222, 203, 0.14) 0deg 5deg,
+    rgba(228, 222, 203, 0) 5deg 15deg
+  );
   border: 2px solid #17150f;
   box-shadow: 0 6px 14px rgba(50, 40, 22, 0.45), inset 0 1px 0 rgba(228, 222, 203, 0.18);
   position: relative;
+}
+
+.gain-knob::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a463a 0%, #211f19 78%);
 }
 
 .gain-pointer {
@@ -212,6 +224,7 @@
   background: var(--warning);
   transform-origin: 2px 28px;
   transform: rotate(var(--knob-rot, -60deg));
+  z-index: 1;
 }
 
 .gain-stops {
@@ -321,6 +334,17 @@
   max-height: 85dvh;
   overflow: auto;
   box-shadow: var(--shadow-float), inset 0 1px 0 rgba(228, 222, 203, 0.08);
+  scrollbar-width: thin;
+  scrollbar-color: var(--coal-edge) rgba(0, 0, 0, 0);
+}
+
+.dialog::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dialog::-webkit-scrollbar-thumb {
+  background: var(--coal-edge);
+  border-radius: 4px;
 }
 
 .dialog h2 {
@@ -364,10 +388,60 @@
   color: var(--on-coal);
 }
 
+/* 音量滑杆（自定义轨道与拇指 — 消灭默认浏览器控件外观） */
 .setting-row input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
   min-height: auto;
-  accent-color: var(--heat);
   width: 170px;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.setting-row input[type='range']::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--heat) 0%,
+    var(--heat) var(--vol, 70%),
+    #3c3931 var(--vol, 70%),
+    #3c3931 100%
+  );
+}
+
+.setting-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #b2453a 0%, var(--heat) 100%);
+  border: 2px solid var(--heat-deep);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.setting-row input[type='range']::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #3c3931;
+}
+
+.setting-row input[type='range']::-moz-range-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--heat);
+}
+
+.setting-row input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--heat);
+  border: 2px solid var(--heat-deep);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .setting-row .btn {

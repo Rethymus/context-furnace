@@ -21,16 +21,32 @@ export function createGauge(labelKey: I18nKey, ariaKey: I18nKey, cssClass: strin
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('class', 'gauge-dial');
-  svg.setAttribute('viewBox', '0 0 120 84');
+  svg.setAttribute('viewBox', '0 0 120 88');
   svg.setAttribute('aria-hidden', 'true');
+
+  // 外圈 bezel（仪器外框）
+  const bezel = document.createElementNS(NS, 'circle');
+  bezel.setAttribute('class', 'gauge-bezel');
+  bezel.setAttribute('cx', '60');
+  bezel.setAttribute('cy', '46');
+  bezel.setAttribute('r', '40.5');
+  svg.appendChild(bezel);
 
   // 表盘面（圆心 60,46 半径 40）
   const face = document.createElementNS(NS, 'circle');
   face.setAttribute('class', 'gauge-face');
   face.setAttribute('cx', '60');
   face.setAttribute('cy', '46');
-  face.setAttribute('r', '40');
+  face.setAttribute('r', '38.5');
   svg.appendChild(face);
+
+  // 内分环（表盘刻度带内界线）
+  const innerRing = document.createElementNS(NS, 'circle');
+  innerRing.setAttribute('class', 'gauge-inner-ring');
+  innerRing.setAttribute('cx', '60');
+  innerRing.setAttribute('cy', '46');
+  innerRing.setAttribute('r', '30');
+  svg.appendChild(innerRing);
 
   // 主刻度（−120° / −60° / 0° / 60° / 120°，12 点方向为 0）
   for (const deg of [-120, -60, 0, 60, 120]) {
@@ -39,10 +55,25 @@ export function createGauge(labelKey: I18nKey, ariaKey: I18nKey, cssClass: strin
     const cos = Math.cos(rad);
     const tick = document.createElementNS(NS, 'line');
     tick.setAttribute('class', 'gauge-tick');
-    tick.setAttribute('x1', (60 + 33 * sin).toFixed(1));
-    tick.setAttribute('y1', (46 - 33 * cos).toFixed(1));
-    tick.setAttribute('x2', (60 + 37.5 * sin).toFixed(1));
-    tick.setAttribute('y2', (46 - 37.5 * cos).toFixed(1));
+    tick.setAttribute('x1', (60 + 32 * sin).toFixed(1));
+    tick.setAttribute('y1', (46 - 32 * cos).toFixed(1));
+    tick.setAttribute('x2', (60 + 36.5 * sin).toFixed(1));
+    tick.setAttribute('y2', (46 - 36.5 * cos).toFixed(1));
+    svg.appendChild(tick);
+  }
+
+  // 细分刻度（每 20°，跳过主刻度位）
+  for (let deg = -120; deg <= 120; deg += 20) {
+    if (deg % 60 === 0) continue;
+    const rad = (deg * Math.PI) / 180;
+    const sin = Math.sin(rad);
+    const cos = Math.cos(rad);
+    const tick = document.createElementNS(NS, 'line');
+    tick.setAttribute('class', 'gauge-tick-minor');
+    tick.setAttribute('x1', (60 + 34 * sin).toFixed(1));
+    tick.setAttribute('y1', (46 - 34 * cos).toFixed(1));
+    tick.setAttribute('x2', (60 + 36.5 * sin).toFixed(1));
+    tick.setAttribute('y2', (46 - 36.5 * cos).toFixed(1));
     svg.appendChild(tick);
   }
 
@@ -63,7 +94,7 @@ export function createGauge(labelKey: I18nKey, ariaKey: I18nKey, cssClass: strin
   const needle = document.createElementNS(NS, 'line');
   needle.setAttribute('class', 'gauge-needle');
   needle.setAttribute('x1', '60');
-  needle.setAttribute('y1', '46');
+  needle.setAttribute('y1', '54');
   needle.setAttribute('x2', '60');
   needle.setAttribute('y2', '19');
   svg.appendChild(needle);
