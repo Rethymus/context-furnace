@@ -1,20 +1,32 @@
+<div align="center">
+
 # Context Furnace
 
 **断章取火器 · CF-01**
 
-English | [简体中文](./README.zh-CN.md)
-
 A compact bilingual browser game built around a fictional text-processing machine.
 
-Cut the feed. Adjust the gain. Keep the furnace running.
+<img
+  src="./docs/media/readme/boot-en.png"
+  alt="Context Furnace boot screen: the CF-01 title card and its power-on button"
+  width="560"
+/>
 
-<p align="center">
-  <img
-    src="./docs/media/readme/gameplay.gif"
-    alt="Context Furnace gameplay showing the cutters, gain control, heat and fidelity gauges"
-    width="820"
-  />
-</p>
+[![Play](https://img.shields.io/badge/Play-GitHub_Pages-C24D2C)](https://rethymus.github.io/context-furnace/)
+[![verify](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml/badge.svg)](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3C3A34)](./LICENSE)
+
+English | [简体中文](./README.zh-CN.md)
+
+*Cut the feed. Adjust the gain. Keep the furnace running.*
+
+<img
+  src="./docs/media/readme/gameplay.gif"
+  alt="Context Furnace gameplay showing the cutters, gain control, heat and fidelity gauges"
+  width="820"
+/>
+
+</div>
 
 ## Play
 
@@ -31,7 +43,12 @@ Each cycle gives the machine a new text feed. Select a continuous section, adjus
 - **Heat** — keeps the machine running.
 - **Fidelity** — tracks how closely the output remains connected to its input.
 
-A complete run contains 12 cycles and usually takes a few minutes.
+| | |
+|---|---|
+| **Session** | 12 cycles · a few minutes |
+| **Languages** | 简体中文 · English |
+| **Input** | Mouse, touch, or keyboard |
+| **Audio** | Synthesized in the browser (Web Audio) — no audio files |
 
 ## How to Play
 
