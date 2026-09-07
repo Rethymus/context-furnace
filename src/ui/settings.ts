@@ -183,7 +183,9 @@ export class SettingsPanel {
         input.value = String(this.settings.volume);
         input.dataset.testid = 'volume';
         input.setAttribute('aria-label', t('settings.volume'));
+        input.style.setProperty('--vol', `${this.settings.volume}%`); // 滑杆填充
         input.addEventListener('input', () => {
+          input.style.setProperty('--vol', `${input.value}%`);
           this.update({ volume: Number(input.value) });
         });
         row.appendChild(input);
