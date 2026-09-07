@@ -1,20 +1,32 @@
+<div align="center">
+
 # 断章取火器
 
 **Context Furnace · CF-01**
 
-[English](./README.md) | 简体中文
-
 一款围绕虚构文字加工设备展开的轻量级双语浏览器小游戏。
 
-截取原料，调节增益，让炉子继续运转。
+<img
+  src="./docs/media/readme/boot-zh.png"
+  alt="《断章取火器》启动界面：CF-01 标题卡与启动按钮"
+  width="560"
+/>
 
-<p align="center">
-  <img
-    src="./docs/media/readme/gameplay.gif"
-    alt="《断章取火器》游戏画面，包含裁刀、增益旋钮、炉温与保真度仪表"
-    width="820"
-  />
-</p>
+[![开始游戏](https://img.shields.io/badge/%E5%BC%80%E5%A7%8B%E6%B8%B8%E6%88%8F-GitHub_Pages-C24D2C)](https://rethymus.github.io/context-furnace/)
+[![verify](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml/badge.svg)](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3C3A34)](./LICENSE)
+
+[English](./README.md) | 简体中文
+
+*截取原料，调节增益，让炉子继续运转。*
+
+<img
+  src="./docs/media/readme/gameplay-zh.gif"
+  alt="《断章取火器》游戏画面，包含裁刀、增益旋钮、炉温与保真度仪表"
+  width="820"
+/>
+
+</div>
 
 ## 开始游戏
 
@@ -31,7 +43,12 @@
 - **炉温**：维持设备运转。
 - **保真度**：反映输出与输入之间仍保留多少关联。
 
-完整运行包含 12 个周期，通常只需几分钟。
+| | |
+|---|---|
+| **流程** | 12 个周期 · 几分钟 |
+| **语言** | 简体中文 · English |
+| **操作** | 鼠标 / 触摸 / 键盘 |
+| **音频** | 浏览器内实时合成（Web Audio），无音频文件 |
 
 ## 怎么玩
 

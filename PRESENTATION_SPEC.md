@@ -1,8 +1,12 @@
 # PRESENTATION_SPEC.md — 《断章取火器 / Context Furnace》公开呈现面规格
 
-> **权威版本：v1.0-frozen（2026-09-06，依据用户提供的 Repository Presentation Freeze 文档 32 节 + 裁决 D36–D42）**
+> **权威版本：v1.1-frozen（2026-09-07）**
 > 核心原则：**公开展示层只描述"它是什么、怎么玩、怎么运行"，绝不解释"它在影射什么、为什么这样设计"。**
 > 本文档是全部公开面文本的唯一来源；公开面文案**逐字冻结**，Agent 无创作权（见 AGENTS.md「Repository Presentation Freeze」）。
+>
+> **v1.1 修订记录（2026-09-07，用户人工指示授权）**：README 双语重构——按主流开源仓库惯例引入居中头部块（头图 + 徽章 + 语言切换），并要求**各语言版本的截图与 GIF 一一对应**。具体变更：§8/§9 开头冻结块更新（正文文案不变，仅重排版并新增头图与徽章）；§11 资产清单新增 `boot-zh.png`、`boot-en.png`、`gameplay-zh.gif`；§12 首屏顺序更新；§13 GIF 按语言各录一份；§15 新增 boot 头图采集状态；§18 采集脚本产物更新；§26 徽章定为 Play / CI / License 三个；§30 P4/P5 规则同步。§2 禁用词、§4 Description、§5 Topics、§7 H2 白名单、§10 隐藏机制、§27/§28 逐字章节等其余条款**不变**。
+>
+> v1.0 原始冻结依据：用户提供的 Repository Presentation Freeze 文档 32 节 + 裁决 D36–D42（2026-09-06）。
 
 ---
 
@@ -119,85 +123,95 @@ Technology  Run Locally  Testing  Project Scope  License
 
 禁止新增任何其它 H2，尤其：`Background / Why I Made This / Design Philosophy / Real-world Inspiration / Social Commentary / Message / Themes / Interpretation / What This Game Criticizes`（及中文等价物）。
 
-## 8. README.md 英文开头（逐字冻结）
+## 8. README.md 英文开头（v1.1 冻结块，逐字）
 
 ```markdown
+<div align="center">
+
 # Context Furnace
 
 **断章取火器 · CF-01**
 
-English | [简体中文](./README.zh-CN.md)
-
 A compact bilingual browser game built around a fictional text-processing machine.
 
-Cut the feed. Adjust the gain. Keep the furnace running.
+<img
+  src="./docs/media/readme/boot-en.png"
+  alt="Context Furnace boot screen: the CF-01 title card and its power-on button"
+  width="560"
+/>
 
-<p align="center">
-  <img
-    src="./docs/media/readme/gameplay.gif"
-    alt="Context Furnace gameplay showing the cutters, gain control, heat and fidelity gauges"
-    width="820"
-  />
-</p>
+[![Play](https://img.shields.io/badge/Play-GitHub_Pages-C24D2C)](https://rethymus.github.io/context-furnace/)
+[![verify](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml/badge.svg)](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3C3A34)](./LICENSE)
 
-## Play
+English | [简体中文](./README.zh-CN.md)
 
-**[Launch Context Furnace →](YOUR_GITHUB_PAGES_URL)**
+*Cut the feed. Adjust the gain. Keep the furnace running.*
 
-No installation, account, or network connection is required after the page has loaded.
+<img
+  src="./docs/media/readme/gameplay.gif"
+  alt="Context Furnace gameplay showing the cutters, gain control, heat and fidelity gauges"
+  width="820"
+/>
 
-## Overview
-
-Context Furnace is a short single-page browser game.
-
-Each cycle gives the machine a new text feed. Select a continuous section, adjust the gain, and send the resulting output into the furnace while balancing two operating values:
-
-- **Heat** — keeps the machine running.
-- **Fidelity** — tracks how closely the output remains connected to its input.
-
-A complete run contains 12 cycles and usually takes a few minutes.
+</div>
 ```
 
-## 9. README.zh-CN.md 开头（逐字冻结）
+紧随其后的 `## Play` / `## Overview` 正文沿用 v1.0 冻结文案不变；Overview 末尾新增速览表（v1.1，逐字）：
 
 ```markdown
+| | |
+|---|---|
+| **Session** | 12 cycles · a few minutes |
+| **Languages** | 简体中文 · English |
+| **Input** | Mouse, touch, or keyboard |
+| **Audio** | Synthesized in the browser (Web Audio) — no audio files |
+```
+
+## 9. README.zh-CN.md 开头（v1.1 冻结块，逐字）
+
+```markdown
+<div align="center">
+
 # 断章取火器
 
 **Context Furnace · CF-01**
 
-[English](./README.md) | 简体中文
-
 一款围绕虚构文字加工设备展开的轻量级双语浏览器小游戏。
 
-截取原料，调节增益，让炉子继续运转。
+<img
+  src="./docs/media/readme/boot-zh.png"
+  alt="《断章取火器》启动界面：CF-01 标题卡与启动按钮"
+  width="560"
+/>
 
-<p align="center">
-  <img
-    src="./docs/media/readme/gameplay.gif"
-    alt="《断章取火器》游戏画面，包含裁刀、增益旋钮、炉温与保真度仪表"
-    width="820"
-  />
-</p>
+[![开始游戏](https://img.shields.io/badge/%E5%BC%80%E5%A7%8B%E6%B8%B8%E6%88%8F-GitHub_Pages-C24D2C)](https://rethymus.github.io/context-furnace/)
+[![verify](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml/badge.svg)](https://github.com/Rethymus/context-furnace/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3C3A34)](./LICENSE)
 
-## 开始游戏
+[English](./README.md) | 简体中文
 
-**[启动 CF-01 →](YOUR_GITHUB_PAGES_URL)**
+*截取原料，调节增益，让炉子继续运转。*
 
-无需安装、注册或登录；页面加载完成后，游戏运行本身不依赖网络服务。
+<img
+  src="./docs/media/readme/gameplay-zh.gif"
+  alt="《断章取火器》游戏画面，包含裁刀、增益旋钮、炉温与保真度仪表"
+  width="820"
+/>
 
-## 游戏简介
-
-《断章取火器》是一款短流程单页浏览器小游戏。
-
-每个周期，机器都会送入一份新的文字原料。你需要截取其中连续的一段，调整增益，再将成品投入炉中，同时维持两项运行参数：
-
-- **炉温**：维持设备运转。
-- **保真度**：反映输出与输入之间仍保留多少关联。
-
-完整运行包含 12 个周期，通常只需几分钟。
+</div>
 ```
 
-`YOUR_GITHUB_PAGES_URL` 按 §4 回退链处理。
+紧随其后的 `## 开始游戏` / `## 游戏简介` 正文沿用 v1.0 冻结文案不变；游戏简介末尾新增速览表（v1.1，逐字）：
+
+```markdown
+| | |
+|---|---|
+| **流程** | 12 个周期 · 几分钟 |
+| **语言** | 简体中文 · English |
+| **操作** | 鼠标 / 触摸 / 键盘 |
+| **音频** | 浏览器内实时合成（Web Audio），无音频文件 |
+```
 
 ## 10. README 禁止公开的隐藏机制
 
@@ -213,31 +227,37 @@ GAIN 1 = 情绪加工 / GAIN 2 = 解释加工 / GAIN 3 = 叙事重构
 
 README 只解释：`CUT / GAIN / HEAT / FIDELITY / 12 cycles`。甚至不要写"观察窗会随着你的操作变化"——让玩家自己看到。
 
-## 11. 视觉资产目录（固定）
+## 11. 视觉资产目录（固定，v1.1）
 
 ```text
 docs/
 └─ media/
    ├─ readme/
-   │  ├─ gameplay.gif
+   │  ├─ gameplay.gif        ← 英文 UI（README.md）
+   │  ├─ gameplay-zh.gif     ← 中文 UI（README.zh-CN.md）
+   │  ├─ boot-en.png         ← 英文启动界面头图（README.md）
+   │  ├─ boot-zh.png         ← 中文启动界面头图（README.zh-CN.md）
    │  ├─ machine-zh.png
    │  └─ machine-en.png
    └─ social-preview.png
 ```
 
+各语言版本的截图与 GIF 必须与该语言**一一对应**：README.md 只用英文 UI 动图与英文头图，README.zh-CN.md 只用中文 UI 动图与中文头图；`machine-zh.png` / `machine-en.png` 两张游戏截图在两份 README 中均展示（§16）。
+
 README 中图片一律**相对路径**（`./docs/media/readme/...`），保证分支/fork/clone 后可用；禁止 `raw.githubusercontent.com` 绝对链接。
 
-## 12. 首屏顺序
+## 12. 首屏顺序（v1.1）
 
 ```text
-Title → 一句话 tagline → GIF → Play
+Title 块（H1 · 副标题 · 一句话简介 · 头图 · 徽章 · 语言切换） → tagline → 语言对应 GIF → Play
 ```
 
 小游戏仓库，访客最想知道"怎么玩"，不是读 600 字背景。
 
-## 13. GIF 内容冻结
+## 13. GIF 内容冻结（v1.1：按语言各录一份）
 
-- 时长 **6–8 秒**（最长 7.5 s），不录完整一局；使用**英文 UI**（默认 README 为英文）。
+- `gameplay.gif` 使用**英文 UI**（README.md）；`gameplay-zh.gif` 使用**中文 UI**（README.zh-CN.md）。分镜、时长、规格完全相同。
+- 时长 **6–8 秒**（最长 7.5 s），不录完整一局。
 - 从 **Cycle 06（GAIN 1 available）** 开始。固定分镜：
 
 | 时间 | 画面 |
@@ -264,14 +284,16 @@ Duration: ≤ 7.5 s              Size: ≤ 4 MB
 
 禁止：鼠标轨迹特效、放大圆圈、字幕、箭头标注、"See how misinformation works!" 式文案、后期加标题。只录真实游戏。
 
-## 15. 两张截图固定状态
+## 15. 截图与头图固定状态
 
 | 文件 | locale | viewport | cycle | gain | 展示 |
 |---|---|---|---|---|---|
+| `boot-zh.png` | zh-CN | 1440×900 | 00（上电前） | — | 启动界面标题卡：断章取火器 · 启动按钮 |
+| `boot-en.png` | en-US | 1440×900 | 00（上电前） | — | 启动界面标题卡：Context Furnace · Power on |
 | `machine-zh.png` | zh-CN | 1440×900 | 04 | 0 | 完整机器、中文、双仪表、Cut、OUTPUT、GAIN、观察窗 |
 | `machine-en.png` | en-US | 1440×900 | 08 | 2 | 英文本地化、GAIN、中期机器状态 |
 
-不摆拍夸张内容。
+头图为真实启动界面截取（等比缩放展示，宽 560），不是新造的 Logo 系统。不摆拍夸张内容。
 
 ## 16. Screenshots 章节写法（逐字）
 
@@ -316,7 +338,8 @@ scripts/capture-readme-media.mjs     命令：npm run capture:readme
 只负责生成：
 
 ```text
-machine-zh.png  machine-en.png  playwright-video.webm  gameplay.gif  social-preview.png
+boot-zh.png  boot-en.png  machine-zh.png  machine-en.png
+gameplay.gif（en） gameplay-zh.gif（zh）  social-preview.png
 ```
 
 ## 19. 截图必须来自真实 Playwright 流程
@@ -374,9 +397,15 @@ README.md ≤ 220 行    README.zh-CN.md ≤ 220 行
 正文 ≤ 1,200 英文词 / ≤ 2,000 中文字
 ```
 
-## 26. Badge 限制
+## 26. Badge 限制（v1.1 定案）
 
-最多 **3 个**，例如 Build / License / Play。禁止 TypeScript version、Stars、Forks、Issues、Code size、Last commit、Visitors 等装饰徽章。
+恰好 **3 个**，逐字：
+
+1. **Play** → GitHub Pages（中文版徽标文案为「开始游戏」，链接相同）
+2. **verify** → GitHub Actions `ci.yml` 工作流徽章
+3. **License: MIT** → `./LICENSE`
+
+禁止 TypeScript version、Stars、Forks、Issues、Code size、Last commit、Visitors 等装饰徽章。徽章图床为 shields.io / GitHub Actions 标准徽章 URL（仅 README 展示层引用，不构成游戏运行时网络依赖）。
 
 ## 27. Technology 章节（逐字，只写事实）
 
@@ -422,8 +451,8 @@ Context Furnace is intentionally small:
 | P1 | 禁止词 | §2 两张禁用词表扫受检文件，命中即 FAIL |
 | P2 | Description 全等 | `package.json` description 与 `.github/repository-metadata.json` description 必须**逐字符等于** §4 冻结串 |
 | P3 | H2 allowlist | README.md 仅含 §7 英文 11 标题；README.zh-CN.md 仅含 §7 中文 11 标题 |
-| P4 | 媒体存在与规格 | 4 个媒体文件存在；gif ≤4MB；PNG 截图各 ≤1.5MB；social-preview ≤1MB 且解析尺寸 =1280×640 |
-| P5 | 引用完整 | README 相对路径引用 `./docs/media/readme/` 三文件齐全；禁 `raw.githubusercontent.com` |
+| P4 | 媒体存在与规格 | 7 个媒体文件存在（2 GIF + 4 PNG + social-preview）；每个 GIF ≤4MB；PNG 截图与头图各 ≤1.5MB；social-preview ≤1MB 且解析尺寸 =1280×640 |
+| P5 | 引用完整且语言对应 | README.md 相对路径引用 `gameplay.gif`、`boot-en.png`、`machine-zh.png`、`machine-en.png`；README.zh-CN.md 引用 `gameplay-zh.gif`、`boot-zh.png`、`machine-zh.png`、`machine-en.png`；两文件均禁 `raw.githubusercontent.com`；README.md 不引用 `gameplay-zh.gif`/`boot-zh.png`，README.zh-CN.md 不引用 `gameplay.gif`/`boot-en.png` |
 | P6 | meta 一致性（D41） | index.html **不含** meta description / OG 标签（与 D34 一致） |
 
 ## 31. verify 聚合（最终 12 项）
@@ -450,3 +479,4 @@ verify 同时保护**游戏本身 + GitHub 门面**。
 | §29 License | D37 |
 | §30 P6 | D41 |
 | 文件结构 / verify 扩项 | D42 |
+| §8/§9/§11–§13/§15/§18/§26/§30 v1.1 修订 | 用户人工指示（2026-09-07）：README 按主流开源仓库惯例双语重构，各语言媒体一一对应 |
