@@ -1,12 +1,30 @@
 /* 设计 Tokens — 概念板 12 屏（2026-09-07 批准概念方向）。
    暖纸台面 + 奶油烤漆机面板 + 白纸卡 + 红/绿仪表 + 深炭铭牌。
-   --heat / --fidelity / --warning 沿用 DESIGN_SPEC §15.2 冻结色。 */
+   --heat / --fidelity / --warning 沿用 DESIGN_SPEC §15.2 冻结色。
+
+   UI_CONTRACT v4（2026-09-08）：新增三层体系 ——
+   ① 中性亮度阶（Apple systemGray 式暖中性 6 级，浅/深双值）
+   ② 材质层 recipe（blur / saturate / 半透明叠色 / 内高光 / 细边 / 阴影）
+   ③ 动效令牌（SwiftUI spring 语义 → CSS 曲线；按压反馈对）
+   外观跟随系统 prefers-color-scheme（HIG Dark Mode：语义令牌双值，不做应用内开关）。 */
+
 :root {
+  /* ── 中性亮度阶（暖中性，浅色值；深色见文末覆盖块） ──
+     n0 最暗 → n5 最亮；表面与文本一律经语义令牌引用此阶 */
+  --n0: #17150f;
+  --n1: #26231c;
+  --n2: #38342a;
+  --n3: #55503f;
+  --n4: #8d8368;
+  --n5: #d8d0ba;
+
   /* 台面（desk） */
   --desk-hi: #c6bca7;
   --desk: #b6ab94;
   --desk-deep: #a2977f;
   --desk-ink: #3a3527;
+  --stage-glow: rgba(255, 246, 220, 0.5);   /* 台面顶部光晕 */
+  --stage-shade: rgba(96, 84, 60, 0.38);    /* 台面底部渐影 */
 
   /* 机面板（烤漆奶油，DESIGN_SPEC §15.2 --machine 域） */
   --machine-hi: #e0d6bc;
@@ -15,11 +33,18 @@
   --machine-edge: #ac9f7d;
   --machine-line: #bfb392;
 
-  /* 纸卡 */
+  /* 纸卡（内容层 elevated 表面） */
   --paper: #f7f2e2;
   --paper-edge: #c9bfa2;
   --ink: #22201a;
   --ink-soft: #55503c;
+
+  /* 纸面控件（按键/卡位/轨道块：暖纸渐变端点） */
+  --btn-hi: #fbf6e7;
+  --btn-lo: #efe8d0;
+
+  /* 微注记（裁刀 9px 提示字等：深色下需提亮，视觉审计 v4.0-M1） */
+  --hint-ink: #55503c;
 
   /* 深炭面（铭牌 / 设置 / 观察窗 / 结局） */
   --coal-hi: #2d2b24;
@@ -30,13 +55,39 @@
   --on-coal: #e4decb;
   --on-coal-dim: #b3ac97;
 
-  /* 指标与行动色（§15.2 冻结） */
+  /* 指标与行动色（§15.2 冻结，双外观共用） */
   --heat: #a43a2f;
   --heat-deep: #7c2a20;
   --heat-bright: #c0503f;
   --fidelity: #2c625a;
   --fidelity-bright: #47847a;
   --warning: #d4a72c;
+
+  /* ── 材质层 recipe（UI_CONTRACT v4 §M2）──
+     玻璃 = backdrop 采样模糊 + 提饱和 + 半透明叠色 + 顶部内高光 + 1px 细边 */
+  --mat-blur-s: 10px;
+  --mat-blur-m: 18px;
+  --mat-blur-l: 26px;
+  --mat-sat: 1.35;
+  /* 厚材质（机面板：内容层，保对比为主） */
+  --mat-thick-bg: rgba(213, 201, 171, 0.94);
+  /* 浮层玻璃（toast：内容层之上的浮动功能层，纸感玻璃） */
+  --glass-float-bg: rgba(247, 242, 226, 0.78);
+  --glass-float-edge: rgba(201, 191, 162, 0.6);
+  /* 深面玻璃（dialog / 观察窗：暗调半透明） */
+  --glass-dark-bg: rgba(38, 36, 32, 0.68);
+  --glass-dark-edge: rgba(69, 66, 58, 0.75);
+  /* 背景幕（sheet 背后压暗 + 轻模糊，macOS sheet 语汇） */
+  --scrim: rgba(18, 16, 12, 0.45);
+  --scrim-blur: 6px;
+  /* 顶部内高光 / 细边通用 */
+  --hi-light: rgba(255, 252, 240, 0.55);
+  --hi-light-dim: rgba(228, 222, 203, 0.1);
+
+  /* ── 焦点环（v4 §M1 修复：浅底 1.36:1 → 双层环 ≥3:1）── */
+  --focus-ring: #7a5f10;               /* 浅色：深琥珀（vs machine ≈3.3:1，WCAG 1.4.11） */
+  --focus-halo: rgba(212, 167, 44, 0.4);
+  --focus-width: 3px;
 
   /* 半径 / 阴影 / 时序 */
   --r-panel: 18px;
@@ -45,8 +96,18 @@
   --shadow-panel: 0 26px 48px rgba(56, 46, 28, 0.32), 0 6px 14px rgba(56, 46, 28, 0.18);
   --shadow-card: 0 2px 0 rgba(122, 106, 74, 0.22), 0 10px 22px rgba(70, 58, 38, 0.14);
   --shadow-float: 0 14px 34px rgba(30, 25, 15, 0.4);
+  --shadow-press: rgba(122, 106, 74, 0.45);   /* 按压反馈对的「厚度」色 */
+
+  /* ── 动效令牌（v4 §M3；SwiftUI 语义 → CSS 近似）──
+     spring-snappy ≈ response .5 / bounce .15（控件回弹）
+     spring-smooth ≈ response .5 / 临界阻尼（面板与数值，沿用 v3）
+     spring-bouncy ≈ response .5 / bounce .3（仅小面积点缀）
+     press 为按下沿（快速入位），回弹沿走各元素 spring —— 按压反馈对 */
   --t-mount: 220ms;
-  --spring-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring-smooth: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  --spring-snappy: 300ms cubic-bezier(0.26, 1.16, 0.36, 1);
+  --spring-bouncy: 420ms cubic-bezier(0.34, 1.44, 0.5, 1);
+  --press-in: 110ms cubic-bezier(0.3, 0, 0.7, 0.4);
 
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
     "PingFang SC", "Microsoft YaHei", "Noto Sans Mono CJK SC", monospace;
@@ -57,4 +118,102 @@
   --lh-body: 1.65;
   --fs-title: 24px;
   --fs-gauge: 26px;
+}
+
+/* ── 深色外观（跟随系统；HIG：语义令牌双值、base 暗退 / elevated 提亮、
+     软化米白防发光；§15.2 冻结的指标色不随外观变化） ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --n0: #0d0c09;
+    --n1: #17150f;
+    --n2: #26231c;
+    --n3: #45402f;
+    --n4: #7d745c;
+    --n5: #cfc8b4;
+
+    --desk-hi: #3a342a;
+    --desk: #2b261e;
+    --desk-deep: #1f1b15;
+    --desk-ink: #cfc8b4;
+    --stage-glow: rgba(255, 232, 180, 0.09);
+    --stage-shade: rgba(0, 0, 0, 0.5);
+
+    --machine-hi: #453f30;
+    --machine: #3a352a;
+    --machine-lo: #322d22;
+    --machine-edge: #26221a;
+    --machine-line: #4f4936;
+
+    /* 软化米白（HIG Dark Mode：白背景微暗化防发光）；ink 不变 ≈9.8:1 */
+    --paper: #cfc8b4;
+    --paper-edge: #948a72;
+    --ink: #22201a;
+    --ink-soft: #5e5744;
+
+    --btn-hi: #ded5bb;
+    --btn-lo: #cabf9f;
+
+    --hint-ink: #a89f87;
+
+    --coal-hi: #33302a;
+    --coal: #262420;
+    --coal-deep: #1c1a16;
+    --coal-edge: #55503f;
+    --coal-line: #45402f;
+    --on-coal: #e4decb;
+    --on-coal-dim: #b3ac97;
+
+    --mat-thick-bg: rgba(58, 53, 42, 0.94);
+    --glass-float-bg: rgba(207, 200, 180, 0.82);
+    --glass-float-edge: rgba(148, 138, 114, 0.6);
+    --glass-dark-bg: rgba(28, 26, 21, 0.7);
+    --glass-dark-edge: rgba(85, 80, 63, 0.8);
+    --scrim: rgba(8, 7, 5, 0.55);
+
+    --hi-light: rgba(255, 252, 240, 0.14);
+
+    --focus-ring: #d4a72c;             /* 深底回到琥珀原色 ≈6.9:1 */
+    --focus-halo: rgba(212, 167, 44, 0.35);
+
+    --shadow-panel: 0 26px 48px rgba(0, 0, 0, 0.5), 0 6px 14px rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 2px 0 rgba(0, 0, 0, 0.3), 0 10px 22px rgba(0, 0, 0, 0.25);
+    --shadow-float: 0 14px 34px rgba(0, 0, 0, 0.55);
+    --shadow-press: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ── 降级矩阵（HIG Reduce Transparency / Increase Contrast）── */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --mat-thick-bg: var(--machine);
+    --glass-float-bg: var(--paper);
+    --glass-dark-bg: var(--coal);
+    --scrim: rgba(18, 16, 12, 0.72);
+    --scrim-blur: 0px;
+    --mat-blur-s: 0px;
+    --mat-blur-m: 0px;
+    --mat-blur-l: 0px;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --focus-ring: #4a3a08;
+    --focus-halo: rgba(74, 58, 8, 0.5);
+    --focus-width: 4px;
+    --ink-soft: #3f3a2b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --focus-ring: #e8c14f;
+      --ink-soft: #8d8368;
+    }
+  }
+}
+
+/* 旋钮转角可过渡（@property 注册后 --knob-rot 参与 transition） */
+@property --knob-rot {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: -60deg;
 }

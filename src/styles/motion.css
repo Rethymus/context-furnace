@@ -31,6 +31,30 @@
   }
 }
 
+/* v4 浮层入场（SwiftUI snappy/smooth 语义的 CSS 近似）：
+   toast = bouncy（小面积点缀，轻微过冲）；dialog = smooth（临界阻尼，无过冲） */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* 推石 shake：指数衰减 x(t)=A·e^(−t/τ)·sin(2πft)
    A=5px、f=3.5Hz、τ=200ms、480ms（≈1.7 周期）；仅伴随 IGNITE 反馈窗口 */
 @keyframes press-shake {

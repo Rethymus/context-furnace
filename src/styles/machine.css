@@ -10,8 +10,8 @@
   align-items: flex-start;
   padding: 18px 24px 40px;
   background:
-    radial-gradient(1100px 520px at 50% -8%, rgba(255, 246, 220, 0.5) 0%, rgba(255, 246, 220, 0) 62%),
-    radial-gradient(130% 90% at 50% 118%, rgba(96, 84, 60, 0.38) 0%, rgba(96, 84, 60, 0) 58%),
+    radial-gradient(1100px 520px at 50% -8%, var(--stage-glow) 0%, rgba(255, 246, 220, 0) 62%),
+    radial-gradient(130% 90% at 50% 118%, var(--stage-shade) 0%, rgba(96, 84, 60, 0) 58%),
     linear-gradient(180deg, var(--desk-hi) 0%, var(--desk) 52%, var(--desk-deep) 100%);
 }
 
@@ -94,18 +94,20 @@
   color: var(--on-coal-dim);
 }
 
-/* 周期铭牌（台面上的纸 pill） */
+/* 周期铭牌（台面上的纸 pill；v4 浮动薄玻璃） */
 .cycle-plate {
   justify-self: center;
   font-family: var(--font-mono);
   font-size: 14px;
   letter-spacing: 0.08em;
   color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--paper-edge);
+  background: var(--glass-float-bg);
+  backdrop-filter: blur(var(--mat-blur-s)) saturate(var(--mat-sat));
+  -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(var(--mat-sat));
+  border: 1px solid var(--glass-float-edge);
   border-radius: 999px;
   padding: 5px 16px;
-  box-shadow: 0 2px 0 rgba(122, 106, 74, 0.25);
+  box-shadow: 0 2px 0 var(--shadow-press), inset 0 1px 0 var(--hi-light);
   white-space: nowrap;
 }
 
@@ -117,8 +119,10 @@
 }
 
 .tool-btn {
-  background: var(--paper);
-  border: 1px solid var(--paper-edge);
+  background: var(--glass-float-bg);
+  backdrop-filter: blur(var(--mat-blur-s)) saturate(var(--mat-sat));
+  -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(var(--mat-sat));
+  border: 1px solid var(--glass-float-edge);
   border-radius: 8px;
   color: var(--ink);
   padding: 5px 10px;
@@ -127,12 +131,18 @@
   font-size: 14px;
   min-width: 44px;
   min-height: 36px;
-  box-shadow: 0 2px 0 rgba(122, 106, 74, 0.25);
+  box-shadow: 0 2px 0 var(--shadow-press), inset 0 1px 0 var(--hi-light);
+  transition:
+    transform var(--spring-snappy),
+    box-shadow var(--spring-snappy);
 }
 
 .tool-btn:active {
   transform: translateY(1px);
-  box-shadow: none;
+  box-shadow: 0 0 0 var(--shadow-press), inset 0 1px 0 var(--hi-light);
+  transition:
+    transform var(--press-in),
+    box-shadow var(--press-in);
 }
 
 .load-line {
@@ -144,16 +154,24 @@
   margin: -4px 2px 10px;
 }
 
-/* ── 机面板（奶油烤漆 — 概念板 06 主承载面） ── */
+/* ── 机面板（奶油烤漆 — 概念板 06 主承载面；v4 厚材质：叠色 8% 半透 + 采样模糊，
+      台面渐变从背后透出层次。HIG：内容层用标准材质，不越级用浮动层玻璃） ── */
 .machine-panel {
   position: relative;
-  background: linear-gradient(180deg, var(--machine-hi) 0%, var(--machine) 58%, var(--machine-lo) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--machine-hi) 92%, transparent) 0%,
+    color-mix(in srgb, var(--machine) 92%, transparent) 58%,
+    color-mix(in srgb, var(--machine-lo) 92%, transparent) 100%
+  );
+  backdrop-filter: blur(var(--mat-blur-l)) saturate(var(--mat-sat));
+  -webkit-backdrop-filter: blur(var(--mat-blur-l)) saturate(var(--mat-sat));
   border: 1px solid var(--machine-edge);
   border-radius: var(--r-panel);
   box-shadow:
     0 3px 0 rgba(104, 91, 62, 0.3),
     var(--shadow-panel),
-    inset 0 1px 0 rgba(255, 252, 240, 0.65);
+    inset 0 1px 0 var(--hi-light);
   padding: 20px 22px;
 }
 
@@ -286,37 +304,37 @@
 
 .gauge-bezel {
   fill: none;
-  stroke: #a89a76;
+  stroke: var(--machine-edge);
   stroke-width: 3;
 }
 
 .gauge-face {
-  fill: #faf5e6;
-  stroke: #cfc3a2;
+  fill: var(--paper);
+  stroke: var(--paper-edge);
   stroke-width: 1;
 }
 
 .gauge-inner-ring {
   fill: none;
-  stroke: #ded3b4;
+  stroke: var(--paper-edge);
   stroke-width: 1;
 }
 
 .gauge-tick {
-  stroke: #8d8060;
+  stroke: var(--ink-soft);
   stroke-width: 2;
   stroke-linecap: round;
 }
 
 .gauge-tick-minor {
-  stroke: #b9ad8e;
+  stroke: var(--paper-edge);
   stroke-width: 1;
   stroke-linecap: round;
 }
 
 .gauge-arc-bg {
   fill: none;
-  stroke: #cfc3a2;
+  stroke: var(--paper-edge);
   stroke-width: 7;
   stroke-linecap: round;
 }
@@ -327,6 +345,8 @@
   stroke-linecap: round;
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
+  /* v4 阻尼：数值变化时弧线走临界阻尼弹簧（开机自检的 linear 时序由 gauges.ts 内联覆盖） */
+  transition: stroke-dashoffset var(--spring-smooth);
 }
 
 .gauge-heat .gauge-arc-fg {
@@ -342,6 +362,8 @@
   stroke-width: 2.5;
   stroke-linecap: round;
   transform-origin: 60px 46px;
+  /* v4 阻尼：指针随数值弹簧归位（仪器指针的物理感） */
+  transition: transform var(--spring-smooth);
 }
 
 .gauge-hub {
@@ -356,15 +378,17 @@
   color: var(--ink);
 }
 
-/* ── 观察窗（深炭玻璃内嵌窗） ── */
+/* ── 观察窗（深炭玻璃内嵌窗；v4：暗调玻璃采样，面板渐变透出产生层次） ── */
 .observation {
   margin-top: 16px;
   height: 104px;
   border-radius: var(--r-card);
-  border: 1px solid var(--coal-edge);
+  border: 1px solid var(--glass-dark-edge);
   background:
     radial-gradient(120% 90% at 50% 0%, rgba(228, 222, 203, 0.06) 0%, rgba(228, 222, 203, 0) 55%),
-    linear-gradient(180deg, #23211b 0%, #191813 100%);
+    linear-gradient(180deg, rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%);
+  backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
   box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.55);
   position: relative;
   overflow: hidden;
@@ -433,15 +457,17 @@
   opacity: 0;
 }
 
-/* ── 状态条（机器消息 — 深炭 LCD 条） ── */
+/* ── 状态条（机器消息 — 深炭 LCD 条；v4 暗调薄玻璃） ── */
 .status-line {
   min-height: 38px;
   margin-top: 14px;
   font-size: 14px;
   letter-spacing: 0.04em;
   color: var(--on-coal);
-  background: linear-gradient(180deg, #26241e 0%, #1d1b16 100%);
-  border: 1px solid var(--coal-line);
+  background: linear-gradient(180deg, rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%);
+  backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
+  border: 1px solid var(--glass-dark-edge);
   border-radius: 8px;
   padding: 7px 14px;
   display: flex;

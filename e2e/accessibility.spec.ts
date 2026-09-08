@@ -4,6 +4,13 @@ import { expect, test } from '@playwright/test';
 import { T, playRound, powerOn, skipTutorial } from './helpers';
 
 async function axeScan(page: import('@playwright/test').Page): Promise<void> {
+  // 先等入场动画收敛：axe 会把半透明祖先（mount-rise 220ms 等）合进前景/背景色，
+  // 动画中途扫描会得到瞬时假对比度（UI_CONTRACT v4 §M3 审计发现）
+  await page
+    .waitForFunction(() => document.getAnimations().every((a) => a.playState === 'finished'), undefined, {
+      timeout: 5_000,
+    })
+    .catch(() => {});
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag22aa']).analyze();
   const bad = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
   if (bad.length > 0) {

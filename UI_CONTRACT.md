@@ -3,6 +3,87 @@
 > 约束体系已由产品所有者解除（2026-09-06 指令）。本契约 = 流水线第 1、2 步（设计规格 → 可执行 UI Contract）。
 > 行为、数值、文案不变（领域层不动）；本版仅重定义视觉与布局。布局/几何断言见 §5，供第 6 步测试。
 
+---
+
+# UI_CONTRACT v4 — 材质与动效系统（Apple 范式落地，2026-09-08 所有者指令）
+
+> v4 在 v3 布局与概念板语言**不变**的前提下，建立可验证的「材质层 + 动效令牌」体系。
+> 领域层、几何断言（§5 G1–G8）、文案、§15.2 冻结色（--heat/--fidelity/--warning）一概不动。
+> 验收锚点：`tests/material.test.ts`（并入 verify 的 test:unit）+ 双平台视觉基线。
+
+## v4.0 调研依据（可溯源）
+
+| 来源 | 采纳结论 |
+|---|---|
+| SwiftUI `spring(response:dampingFraction:blendDuration:)`（默认 .5/.825/0，Apple 文档 JSON） | 弹簧以「响应时长 + 阻尼分数」定义；临界阻尼=1 无过冲；控件默认带轻微弹性 |
+| HIG Materials（2025-09 修订版） | 材质分「内容层标准材质」与「浮动功能层（Liquid Glass）」；regular/clear 双变体；亮内容上 clear 需 35% 压暗；厚材质保对比、薄材质保上下文；vibrancy 分级，禁 quaternary 上薄材质 |
+| HIG Dark Mode | 语义令牌双值（Any/Dark）；base 暗退、elevated 提亮；软化白背景防发光；对比 ≥4.5:1（小字力求 7:1）；**不做应用内外观开关，跟随系统**；Reduce Transparency / Increase Contrast 须单独可测 |
+| MDN backdrop-filter（Baseline 2024） | 需半透明叠色才可见；**backdrop root 陷阱**：祖先 opacity<1 / filter / mix-blend 会截断采样——浮动玻璃只挂在 body 级（dialog/toast 满足）；入场动画结束态必须 opacity=1 |
+| MDN overscroll-behavior | 模态内滚动 `contain`（阻断滚动链、保留自身回弹）；无溢出容器恒处边界 → backdrop 上 `contain` 可无 JS 阻断页面穿透 |
+
+## v4.1 中性亮度阶与双外观
+
+`--n0..--n5` 暖中性 6 级（Apple systemGray 式），浅/深双值；全部表面与文字经语义令牌引用。
+深色映射：desk→暗调书桌语汇（沿用 stage--home 词汇）、machine→深焙烤漆、paper→软化米白
+（#cfc8b4，ink 对比 ≈9.8:1，防发光）、coal 系近恒定。外观只随 `prefers-color-scheme`，
+无应用内开关（HIG）。Playwright e2e 默认 light → 既有基线不因深色受扰。
+
+## v4.2 材质层 recipe（可复用，非逐例调色）
+
+```css
+/* 浮动功能层玻璃（toast / cycle-plate / tool-btn） */
+background: var(--glass-float-bg);            /* ≈0.78–0.82 叠色 */
+backdrop-filter: blur(var(--mat-blur-m)) saturate(var(--mat-sat));  /* 18px / 1.35 */
+border: 1px var(--glass-float-edge); inset 0 1px 0 var(--hi-light);
+
+/* 深面玻璃（dialog / 观察窗 / 状态条） */
+background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1.2–1.35);
+
+/* 厚材质（machine-panel 内容层主承载面） */
+8% 半透叠色（color-mix 92%）+ blur(--mat-blur-l)=26px —— 台面渐变透出层次，保纸卡对比。
+```
+
+降级矩阵：`prefers-reduced-transparency: reduce` → 全部落回不透明（blur=0）；
+`prefers-contrast: more` → 焦点环 4px 加深、次级文字加深。Safari 不支持的属性自然回退。
+
+## v4.3 动效令牌（SwiftUI 语义 → CSS 近似）
+
+| 令牌 | 值 | 对应 SwiftUI 语义 | 用途 |
+|---|---|---|---|
+| `--spring-smooth` | 320ms cubic-bezier(.22,1,.36,1) | response .5 / 临界阻尼 | 面板装载、指针/弧线、sheet 入场 |
+| `--spring-snappy` | 300ms cubic-bezier(.26,1.16,.36,1) | response .5 / bounce≈.15 | 按钮回弹、裁刀槽、旋钮卡位 |
+| `--spring-bouncy` | 420ms cubic-bezier(.34,1.44,.5,1) | response .5 / bounce≈.3 | 仅小面积点缀（toast 入场） |
+| `--press-in` | 110ms cubic-bezier(.3,0,.7,.4) | 按下沿（快入位） | :active 覆盖回弹沿 |
+
+**按压反馈对**：transform 位移与厚度阴影**成对同动**；基线 transition=回弹沿，:active 覆盖=按下沿。
+**直控零延迟原则**：拖拽（pointer capture）一律 1:1 即时（.dragging 禁过渡）；弹簧只用于
+释放、键盘步进、程序性归位。推石 shake 指数衰减（A=5px·f=3.5Hz·τ=200ms）维持 v3 冻结参数。
+阻尼：dialog 与 backdrop `overscroll-behavior: contain`；body `overscroll-behavior-y: none`。
+全部新动效处于既有 RM/freeze 全局 kill-switch 覆盖之下（0.01ms 退化）。
+
+## v4.4 焦点环（M1 修复：审计 1.36:1 → 合规）
+
+浅色 `--focus-ring: #7a5f10`（vs machine ≈3.3:1，WCAG 1.4.11 非文本 ≥3:1）；
+深色回到琥珀 #d4a72c（≈6.9:1）；`prefers-contrast: more` 加粗至 4px 并加深。
+
+## v4.5 长周期批次（每批验收 = material.test.ts 断言扩展 + 基线重采 + verify 全绿）
+
+| 批次 | 内容 | 状态 |
+|---|---|---|
+| M1 地基 | 中性阶、双外观、材质 recipe 接入（panel/observation/status/dialog/toast/plate/tool-btn）、动效令牌、按压反馈对、槽弹簧+拖拽旁路、指针阻尼、浮层入场、焦点环修复、overscroll 阻尼、降级矩阵 | **本次交付** |
+| M2 层次深化 | 燃烧/结局舞台与玻璃联动（火光透射观察窗）、tool 按钮悬浮态 specular、教学便签纸材质化、ending 幕玻璃 | 计划 |
+| M3 性能与降级审计 | 采样模糊 GPU 层级梳理（避免大面积 blur 叠加）、Safari/旧引擎回退矩阵实测、reduce-transparency/contrast 全链路走查 | 计划 |
+| M4 液态玻璃语汇 | 控件激活态边缘 specular 高光、按压液感（cap 高光位移）、旋钮卡位定位感（微过冲调参）、跨引擎基线固化 | 计划 |
+
+## v4.6 可验证性
+
+`tests/material.test.ts` 静态断言：令牌完整性（模糊三档/饱和/玻璃三层/焦点环/弹簧四令牌/双外观块/
+降级矩阵）、按压反馈对（:active 必须同时改 transform+box-shadow+transition）、直控旁路（.dragging）、
+浮层入场（toast-in/sheet-in）、滚动阻尼（contain ×2）、推石 shake 参数注释锁定、
+防硬化回归（styles/*.css 禁新增裸 hex——白名单枚举既有项）。
+运行时契约：审计脚本 `scripts/audit-ui.mjs`（对比度/计算样式/深色适配采集，不入 verify）。
+
+
 ## 1. Art Direction（概念图提炼）
 
 暖灰泥色（putty）明亮台面；居中**深炭黑大圆角面板**承载全部工作区；面板内衬白纸卡；

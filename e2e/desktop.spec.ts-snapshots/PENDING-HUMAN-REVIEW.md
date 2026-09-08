@@ -28,3 +28,13 @@
 ## 变更记录（2026-09-06 · UI v3）
 
 - 流水线重构（用户指令解除约束）：依 UI_CONTRACT v3 与新概念图（暖泥台面 + 深炭黑面板 + 左主右辅双栏 + 旋钮回归）全量重采 8 张金本位。行为/文案/数值未变；几何由 e2e/layout.spec.ts G1–G8 保护。
+
+## 变更记录（2026-09-08 · UI v4 M1）
+
+- 全量重采（8 张 win32）：UI_CONTRACT v4「材质与动效体系」落地——Apple HIG 材质分层
+  （面板厚材质 blur 26px/sat 1.35 + color-mix 92% 半透叠色、浮层玻璃 0.78/0.68、
+  观察窗/状态行暗玻璃 10px）、SwiftUI 弹簧动效令牌（smooth/snappy/bouncy CSS 近似）、
+  按压反馈对（110ms 压入 + 300ms 弹性回弹）、浮层入场（toast-in/sheet-in）、
+  裁刀拖拽 1:1 直控旁路（.dragging 禁过渡）、指针/弧线阻尼过渡、
+  焦点环对比度修复（1.36:1→≈3.3:1，WCAG 1.4.11）。行为/文案/数值未变；
+  几何仍由 e2e/layout.spec.ts 保护。PENDING-HUMAN-REVIEW 状态不变（自采 ≠ 已确认）。

@@ -1,0 +1,230 @@
+{
+  "contrastPairs": [
+    {
+      "pair": "ink / paper 正文",
+      "ratio": 14.54
+    },
+    {
+      "pair": "inkSoft / paper 次级",
+      "ratio": 7.22
+    },
+    {
+      "pair": "inkSoft / machine 面板标签",
+      "ratio": 4.91
+    },
+    {
+      "pair": "onCoal / coal 深面正文",
+      "ratio": 11.51
+    },
+    {
+      "pair": "onCoalDim / coal 深面次级",
+      "ratio": 6.83
+    },
+    {
+      "pair": "heat(红) / paper",
+      "ratio": 5.82
+    },
+    {
+      "pair": "warn(黄焦点) / machine",
+      "ratio": 1.36
+    },
+    {
+      "pair": "warn(黄焦点) / coal",
+      "ratio": 6.91
+    },
+    {
+      "pair": "#f9f4e4 白字 / heat 主按钮",
+      "ratio": 5.92
+    }
+  ],
+  "cycle": [
+    {
+      "sel": ".machine-panel",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": "blur(26px) saturate(1.35)",
+      "boxShadow": "rgba(104, 91, 62, 0.3) 0px 3px 0px 0px, rgba(56, 46, 28, 0.32) 0px 26px 48px 0px, rgba(56, 46, 28, 0.18) 0px 6px 14px 0p",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".panel:not(.on-dark)",
+      "present": true,
+      "bg": "rgb(247, 242, 226)",
+      "bgImage": false,
+      "alpha": "1",
+      "backdropFilter": null,
+      "boxShadow": "rgba(255, 255, 255, 0.65) 0px 1px 0px 0px inset, rgba(122, 106, 74, 0.22) 0px 2px 0px 0px, rgba(70, 58, 38, 0.14) 0px 10",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".observation",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": "blur(10px) saturate(1.2)",
+      "boxShadow": "rgba(0, 0, 0, 0.55) 0px 3px 10px 0px inset",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".status-line",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": "blur(10px) saturate(1.2)",
+      "boxShadow": null,
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".dialog",
+      "present": false
+    },
+    {
+      "sel": ".dialog-backdrop",
+      "present": false
+    },
+    {
+      "sel": ".toast",
+      "present": false
+    },
+    {
+      "sel": ".btn-primary",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": null,
+      "boxShadow": "rgb(124, 42, 32) 0px 4px 0px 0px, rgba(255, 252, 240, 0.25) 0px 1px 0px 0px inset",
+      "transition": "0.3s, 0.3s, 0.3s cubic-bezier(0.26, 1.16, 0.36, 1), cubic-bezier(0.26, 1.16, 0.36, 1), cubic-bezier(0.26, 1.16, 0.36, 1)",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".gain-knob",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": null,
+      "boxShadow": "rgba(50, 40, 22, 0.45) 0px 6px 14px 0px, rgba(228, 222, 203, 0.18) 0px 1px 0px 0px inset",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".cycle-plate",
+      "present": true,
+      "bg": "rgba(247, 242, 226, 0.78)",
+      "bgImage": false,
+      "alpha": "0.78",
+      "backdropFilter": "blur(10px) saturate(1.35)",
+      "boxShadow": "rgba(122, 106, 74, 0.45) 0px 2px 0px 0px, rgba(255, 252, 240, 0.55) 0px 1px 0px 0px inset",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    }
+  ],
+  "settings": [
+    {
+      "sel": ".machine-panel",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": "blur(26px) saturate(1.35)",
+      "boxShadow": "rgba(104, 91, 62, 0.3) 0px 3px 0px 0px, rgba(56, 46, 28, 0.32) 0px 26px 48px 0px, rgba(56, 46, 28, 0.18) 0px 6px 14px 0p",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".panel:not(.on-dark)",
+      "present": true,
+      "bg": "rgb(247, 242, 226)",
+      "bgImage": false,
+      "alpha": "1",
+      "backdropFilter": null,
+      "boxShadow": "rgba(255, 255, 255, 0.65) 0px 1px 0px 0px inset, rgba(122, 106, 74, 0.22) 0px 2px 0px 0px, rgba(70, 58, 38, 0.14) 0px 10",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".observation",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": "blur(10px) saturate(1.2)",
+      "boxShadow": "rgba(0, 0, 0, 0.55) 0px 3px 10px 0px inset",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".status-line",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": "blur(10px) saturate(1.2)",
+      "boxShadow": null,
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".dialog",
+      "present": false
+    },
+    {
+      "sel": ".dialog-backdrop",
+      "present": false
+    },
+    {
+      "sel": ".toast",
+      "present": false
+    },
+    {
+      "sel": ".btn-primary",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": null,
+      "boxShadow": "rgb(124, 42, 32) 0px 4px 0px 0px, rgba(255, 252, 240, 0.25) 0px 1px 0px 0px inset",
+      "transition": "0.3s, 0.3s, 0.3s cubic-bezier(0.26, 1.16, 0.36, 1), cubic-bezier(0.26, 1.16, 0.36, 1), cubic-bezier(0.26, 1.16, 0.36, 1)",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".gain-knob",
+      "present": true,
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": true,
+      "alpha": "0",
+      "backdropFilter": null,
+      "boxShadow": "rgba(50, 40, 22, 0.45) 0px 6px 14px 0px, rgba(228, 222, 203, 0.18) 0px 1px 0px 0px inset",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    },
+    {
+      "sel": ".cycle-plate",
+      "present": true,
+      "bg": "rgba(247, 242, 226, 0.78)",
+      "bgImage": false,
+      "alpha": "0.78",
+      "backdropFilter": "blur(10px) saturate(1.35)",
+      "boxShadow": "rgba(122, 106, 74, 0.45) 0px 2px 0px 0px, rgba(255, 252, 240, 0.55) 0px 1px 0px 0px inset",
+      "transition": "0s ease",
+      "overscroll": "auto"
+    }
+  ],
+  "focusRing": {
+    "outline": "3px none rgba(16, 16, 16, 0.3)",
+    "offset": "0px"
+  },
+  "darkScheme": {
+    "bodyBg": "rgb(43, 38, 30)",
+    "adapted": false
+  }
+}

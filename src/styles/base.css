@@ -25,6 +25,8 @@ body {
   line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* v4 阻尼：游戏页非长文档，关闭页面级橡皮筋/边界链（Safari 不支持则自然回退） */
+  overscroll-behavior-y: none;
 }
 
 /* §15.5 中文排版：禁止 break-all */
@@ -78,8 +80,10 @@ svg {
   border: 0;
 }
 
-/* §19 focus visible：统一焦点环 */
+/* §19 focus visible：统一焦点环（v4：令牌化双层体系——
+   浅色用深琥珀 #7a5f10 修复 1.36:1 可见性缺陷 → ≈3.3:1 满足 WCAG 1.4.11；
+   深色回到琥珀原色；prefers-contrast 下加粗加深，见 tokens.css） */
 :focus-visible {
-  outline: 3px solid var(--warning);
+  outline: var(--focus-width) solid var(--focus-ring);
   outline-offset: 2px;
 }

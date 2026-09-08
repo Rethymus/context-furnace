@@ -107,6 +107,7 @@ export function createCutTrack(opts: CutTrackOpts): CutTrackHandle {
       startX = e.clientX;
       startBoundary = which === 'left' ? getSelection().left : getSelection().right + 1;
       btn.classList.add('active');
+      btn.classList.add('dragging'); // 直控 1:1：拖拽期间禁用槽弹簧（UI_CONTRACT v4 §M3）
     };
     const onMove = (e: PointerEvent) => {
       if (!btn.hasPointerCapture(e.pointerId)) return;
@@ -119,6 +120,7 @@ export function createCutTrack(opts: CutTrackOpts): CutTrackHandle {
     const onUp = (e: PointerEvent) => {
       if (btn.hasPointerCapture(e.pointerId)) btn.releasePointerCapture(e.pointerId);
       btn.classList.remove('active');
+      btn.classList.remove('dragging');
     };
     btn.addEventListener('pointerdown', onDown);
     btn.addEventListener('pointermove', onMove);
