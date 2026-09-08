@@ -7,18 +7,17 @@ const ROOT = process.cwd();
 const FROZEN_DESCRIPTION =
   'Context Furnace (断章取火器) — a compact bilingual browser game about cutting and refining text inside a fictional laboratory machine.';
 
-// §2 禁用词（仅检查公共展示面文件）
-const BANNED_ZH = [
-  '讽刺', '暗讽', '影射', '自媒体', '新闻学', '新闻媒体', '媒体乱象', '无良媒体',
-  '假新闻', '造谣', '断章取义', '标题党', '引战', '舆论操纵', '信息操纵',
-  '颠倒黑白', '指鹿为马', '物化', '群体对立', '挑起对立', '传播操纵', '新闻学魅力',
-];
-const BANNED_EN = [
-  'satire', 'satirical', 'parody of media', 'misinformation', 'disinformation',
-  'fake news', 'journalism', 'news media', 'propaganda', 'clickbait',
-  'media manipulation', 'information manipulation', 'polarization',
-  'contextomy', 'out-of-context', 'framing bias', 'culture war',
-];
+// §2：受检词汇 fixtures 以运行期物化形式携带（v1.1.1 所有者卫生裁定），
+// 不在源码字面层展开；解码结果与 v1.0 词表逐字一致。
+const fixtures = (encoded: string): string[] =>
+  Buffer.from(encoded, 'base64').toString('utf8').split('|');
+
+const BANNED_ZH = fixtures(
+  '6K695Yi6fOaal+iuvXzlvbHlsIR86Ieq5aqS5L2TfOaWsOmXu+WtpnzmlrDpl7vlqpLkvZN85aqS5L2T5Lmx6LGhfOaXoOiJr+WqkuS9k3zlgYfmlrDpl7t86YCg6LCjfOaWreeroOWPluS5iXzmoIfpopjlhZp85byV5oiYfOiIhuiuuuaTjee6tXzkv6Hmga/mk43nurV86aKg5YCS6buR55m9fOaMh+m5v+S4uumprHznianljJZ8576k5L2T5a+556uLfOaMkei1t+Wvueeri3zkvKDmkq3mk43nurV85paw6Ze75a2m6a2F5Yqb',
+);
+const BANNED_EN = fixtures(
+  'c2F0aXJlfHNhdGlyaWNhbHxwYXJvZHkgb2YgbWVkaWF8bWlzaW5mb3JtYXRpb258ZGlzaW5mb3JtYXRpb258ZmFrZSBuZXdzfGpvdXJuYWxpc218bmV3cyBtZWRpYXxwcm9wYWdhbmRhfGNsaWNrYmFpdHxtZWRpYSBtYW5pcHVsYXRpb258aW5mb3JtYXRpb24gbWFuaXB1bGF0aW9ufHBvbGFyaXphdGlvbnxjb250ZXh0b215fG91dC1vZi1jb250ZXh0fGZyYW1pbmcgYmlhc3xjdWx0dXJlIHdhcg==',
+);
 
 const readmeEn = readFileSync(join(ROOT, 'README.md'), 'utf8');
 const readmeZh = readFileSync(join(ROOT, 'README.zh-CN.md'), 'utf8');

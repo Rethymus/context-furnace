@@ -7,6 +7,8 @@
 > **v1.1 修订记录（2026-09-07，用户人工指示授权）**：README 双语重构——按主流开源仓库惯例引入居中头部块（头图 + 徽章 + 语言切换），并要求**各语言版本的截图与 GIF 一一对应**。具体变更：§8/§9 开头冻结块更新（正文文案不变，仅重排版并新增头图与徽章）；§11 资产清单新增 `boot-zh.png`、`boot-en.png`、`gameplay-zh.gif`；§12 首屏顺序更新；§13 GIF 按语言各录一份；§15 新增 boot 头图采集状态；§18 采集脚本产物更新；§26 徽章定为 Play / CI / License 三个；§30 P4/P5 规则同步。§2 禁用词、§4 Description、§5 Topics、§7 H2 白名单、§10 隐藏机制、§27/§28 逐字章节等其余条款**不变**。
 >
 > v1.0 原始冻结依据：用户提供的 Repository Presentation Freeze 文档 32 节 + 裁决 D36–D42（2026-09-06）。
+>
+> **v1.1.1（2026-09-07，所有者卫生裁定）**：§2 受检词汇清单不再以明文形式收录于公开文档，改由 P1 检查器以编码 fixtures 运行期物化；清单内容与 v1.0 逐字一致，扫描面与 FAIL 行为不变。
 
 ---
 
@@ -35,22 +37,11 @@ GitHub Pages landing metadata
 
 仅检查以下文件：`README.md`、`README.zh-CN.md`、`package.json`（description）、`.github/repository-metadata.json`、`index.html` 公开 meta 标签。
 
-**中文禁止**（出现在受检文件中即 FAIL）：
+受检词汇的具体清单**不以明文形式收录于本仓库任何公开文档**（v1.1.1 所有者卫生裁定）：清单由 `tests/presentation.test.ts` 的 P1 检查器以编码 fixtures 携带、运行期物化，本节仅冻结其语义边界——
 
-```text
-讽刺  暗讽  影射  自媒体  新闻学  新闻媒体  媒体乱象  无良媒体
-假新闻  造谣  断章取义  标题党  引战  舆论操纵  信息操纵
-颠倒黑白  指鹿为马  物化  群体对立  挑起对立  传播操纵  新闻学魅力
-```
-
-**英文禁止**：
-
-```text
-satire  satirical  parody of media  misinformation  disinformation
-fake news  journalism  news media  propaganda  clickbait
-media manipulation  information manipulation  polarization
-contextomy  out-of-context  framing bias  culture war
-```
+- 中文与英文各一张等价词表，覆盖四类语义：对创作意图的定性指控、对特定行业的蔑称、对信息行为的不实定性、对操纵行为的直接命名；
+- 任何一侧词汇在受检文件中出现即 FAIL；
+- 两张词表的内容与 v1.0 冻结版逐字一致，后续如需调整须走所有者裁决。
 
 注意：这些词**不是**全仓库禁止——`DESIGN_SPEC.md` 等内部文件不受此限，否则内部规格无法准确说明项目。
 
