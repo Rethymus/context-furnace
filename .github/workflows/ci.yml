@@ -3,6 +3,9 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch: # baseline-bot commits are pushed with GITHUB_TOKEN and
+    # never trigger CI themselves (no nested runs); dispatch lets any post-
+    # baseline-update commit be verified without waiting for the next push
 
 jobs:
   verify:
