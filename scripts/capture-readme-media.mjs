@@ -1,9 +1,12 @@
 // PRESENTATION_SPEC §18–§23：README 媒体采集（真实 Playwright 流程，不使用状态强制参数）。
 // 产物：boot-zh.png / boot-en.png / machine-zh.png / machine-en.png
-//       gameplay.gif（en UI）/ gameplay-zh.gif（zh UI）/ social-preview.png
+//       settings-zh.png / settings-en.png / result-zh.png / result-en.png（v1.2 §15）
+//       gameplay.gif（en UI）/ gameplay-zh.gif（zh UI）
+//       switch-en.gif（en 起）/ switch-zh.gif（zh 起）（v1.2 §13-2）
+//       social-preview.png
 // 仅 `npm run capture:readme` 使用；ffmpeg 来自 devDependency ffmpeg-static（D39）。
 import { chromium } from '@playwright/test';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -55,7 +58,27 @@ async function next(page) {
   await page.waitForTimeout(300);
 }
 
-// §15：machine-zh.png（zh / C04 / gain 0）与 machine-en.png（en / C08 / gain 2）；boot 头图随行采集
+// §15：machine-zh.png（zh / C04 / gain 0）与 machine-en.png（en / C08 / gain 2）；boot 头图随行采集。
+// v1.2 §15：settings-*（C04 / GAIN 0，面板开启，按 machine 边界裁剪以同比例）与
+//           result-*（C06 / GAIN 1，ROUND_RESULT：机器消息 + 下一份按钮）。
+// 设置弹层挂在 body 上而非 main.machine 内，故取 machine boundingBox 作 clip；
+// 编辑态机身天然矮于结果态（738 vs 803），上下对称补边统一为 1088×803 画幅（§15 v1.2.1），
+// 使 Screenshots 网格四图等高、行底边对齐。
+const GRID_CANVAS_H = 803;
+async function captureSettings(page, outName) {
+  await page.getByTestId('settings-btn').click();
+  await page.waitForTimeout(350); // 弹层 fade-in 200ms + 余量
+  const box = await page.locator('main.machine').boundingBox();
+  if (!box) throw new Error('machine element not found for settings capture');
+  const vh = page.viewportSize()?.height ?? 900;
+  const pad = Math.max(0, GRID_CANVAS_H - box.height);
+  const clipH = Math.min(GRID_CANVAS_H, vh - box.y);
+  const clipY = Math.max(0, Math.min(box.y - pad / 2, vh - clipH));
+  await page.screenshot({ path: join(OUT, 'readme', outName), clip: { x: box.x, y: clipY, width: box.width, height: clipH } });
+  await page.keyboard.press('Escape'); // D3 关闭
+  await page.waitForTimeout(250);
+}
+
 await withLocale('zh-CN', 'boot-zh.png', async (page) => {
   for (let c = 1; c <= 3; c++) {
     await playRound(page, { gain: 0 });
@@ -63,19 +86,67 @@ await withLocale('zh-CN', 'boot-zh.png', async (page) => {
   }
   await page.waitForTimeout(400);
   await page.locator('main.machine').screenshot({ path: join(OUT, 'readme', 'machine-zh.png') });
+  await next(page); // ROUND_RESULT → C04 编辑态（IGNITE 仅在编辑态可用）
+  await captureSettings(page, 'settings-zh.png');
+  await playRound(page, { gain: 0 }); // C04
+  await next(page);
+  await playRound(page, { gain: 1 }); // C05（GAIN 1 解锁）
+  await next(page);
+  await playRound(page, { gain: 1 }); // C06
+  await page.waitForTimeout(1400); // playRound 已等 1200ms；合计 ≈2.6s，反馈动画 + ROUND_RESULT 就绪
+  await page.locator('main.machine').screenshot({ path: join(OUT, 'readme', 'result-zh.png') });
 });
 
 await withLocale('en-US', 'boot-en.png', async (page) => {
-  for (let c = 1; c <= 7; c++) {
-    await playRound(page, { gain: c <= 4 ? 0 : c <= 6 ? 1 : 2, leftMoves: 1 });
-    if (c < 7) await next(page);
+  for (let c = 1; c <= 3; c++) {
+    await playRound(page, { gain: 0, leftMoves: 1 });
+    await next(page);
   }
+  await captureSettings(page, 'settings-en.png'); // C04 编辑态
+  for (let c = 4; c <= 5; c++) {
+    await playRound(page, { gain: c <= 4 ? 0 : 1, leftMoves: 1 });
+    await next(page);
+  }
+  await playRound(page, { gain: 1, leftMoves: 1 }); // C06
+  await page.waitForTimeout(1400);
+  await page.locator('main.machine').screenshot({ path: join(OUT, 'readme', 'result-en.png') });
+  await next(page);
+  await playRound(page, { gain: 2, leftMoves: 1 }); // C07（与 v1.1 落点一致：此后不再 next）
   await page.waitForTimeout(400);
   await page.locator('main.machine').screenshot({ path: join(OUT, 'readme', 'machine-en.png') });
 });
 
 // §13–14：GIF 按语言各一份（en → gameplay.gif；zh → gameplay-zh.gif），分镜相同，
 // Cycle 06 起，≤7.5s，960×600，12fps
+// ffmpeg：裁尾部片段 → 全视口等比 960×600 → 12fps → palette GIF。
+// 注意必须用**输出端精确 seek**（-ss 在 -i 之后）：Playwright webm 容器时长含 ~1s 尾部填充，
+// 输入端 -sseof 快速 seek 会打乱帧时间戳（实测两次相隔 2.2s 的点击被压成 0.4s）。
+// tail 比 take 多留 1s 前置余量，保证分镜首个动作不被容器填充偏移裁掉。
+function videoDuration(file) {
+  const res = spawnSync(ffmpegPath, ['-i', file], { encoding: 'utf8' });
+  const m = /Duration: (\d+):(\d+):(\d+\.\d+)/.exec(String(res.stderr));
+  if (!m) throw new Error(`cannot read duration of ${file}`);
+  return Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]);
+}
+
+function encodeTailGif(videoPath, tailSeconds, takeSeconds, outName) {
+  const dur = videoDuration(videoPath);
+  const start = Math.max(0, dur - tailSeconds);
+  const trimmed = join(OUT, 'readme', 'playwright-video.webm');
+  const palette = join(OUT, 'readme', 'palette.png');
+  const gif = join(OUT, 'readme', outName);
+  const gifScale = 'crop=1440:900:0:0,scale=960:600:flags=lanczos,fps=12';
+  execFileSync(ffmpegPath, [
+    '-y', '-i', videoPath, '-ss', start.toFixed(3), '-t', String(takeSeconds),
+    '-c:v', 'libvpx', '-b:v', '600k', '-an', trimmed,
+  ]);
+  execFileSync(ffmpegPath, [
+    '-y', '-i', trimmed, '-vf',
+    `${gifScale},split[a][b];[a]palettegen=max_colors=80[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`,
+    gif,
+  ]);
+}
+
 async function captureGif(locale, outName) {
   const gifContext = await browser.newContext({
     viewport: { width: 1440, height: 900 },
@@ -111,25 +182,44 @@ async function captureGif(locale, outName) {
   await gifContext.close();
   if (!machineBox) throw new Error('machine element not found for GIF capture');
 
-  // ffmpeg：取视频末尾 7.5s（分镜段，重编码保证精确 seek）→ 全视口等比 960×600 → 12fps → palette GIF
-  // 中间产物统一写 playwright-video.webm（已 gitignore），两轮顺序覆盖
-  const trimmed = join(OUT, 'readme', 'playwright-video.webm');
-  const palette = join(OUT, 'readme', 'palette.png');
-  const gif = join(OUT, 'readme', outName);
-  const gifScale = 'crop=1440:900:0:0,scale=960:600:flags=lanczos,fps=12';
-  execFileSync(ffmpegPath, [
-    '-y', '-sseof', '-8.5', '-i', videoPath, '-t', '7.5',
-    '-c:v', 'libvpx', '-b:v', '600k', '-an', trimmed,
-  ]);
-  execFileSync(ffmpegPath, [
-    '-y', '-i', trimmed, '-vf',
-    `${gifScale},split[a][b];[a]palettegen=max_colors=80[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`,
-    gif,
-  ]);
+  encodeTailGif(videoPath, 8.5, 7.5, outName);
 }
 
 await captureGif('en-US', 'gameplay.gif');
 await captureGif('zh-CN', 'gameplay-zh.gif');
+
+// §13-2（v1.2）：语言切换 GIF（switch-en 从英文 UI 起、switch-zh 从中文 UI 起），Cycle 03，≤5.5s
+async function captureSwitchGif(startLocale, outName) {
+  const switchContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    locale: startLocale,
+    recordVideo: { dir: join(OUT, 'readme'), size: { width: 1440, height: 900 } },
+  });
+  const switchPage = await switchContext.newPage();
+  await switchPage.goto(BASE);
+  await switchPage.getByTestId('power-on').click();
+  await switchPage.waitForTimeout(1500);
+  await switchPage.getByTestId('ignite').click();
+  await switchPage.waitForTimeout(300);
+  // 走到 Cycle 03 编辑态（GAIN 未解锁，界面最安静）
+  for (let c = 1; c <= 2; c++) {
+    await playRound(switchPage, { gain: 0 });
+    await next(switchPage);
+  }
+  // §13-2 分镜：静止 → 切换 → 停留 → 切回 → 静止收尾（视频尾部 5.5s 即成品，1s 前置余量）
+  await switchPage.waitForTimeout(1000);
+  await switchPage.getByTestId('locale-toggle').click();
+  await switchPage.waitForTimeout(2200);
+  await switchPage.getByTestId('locale-toggle').click();
+  await switchPage.waitForTimeout(2500);
+  const videoPath = await switchPage.video()?.path();
+  await switchContext.close();
+
+  encodeTailGif(videoPath, 6.5, 5.5, outName);
+}
+
+await captureSwitchGif('en-US', 'switch-en.gif');
+await captureSwitchGif('zh-CN', 'switch-zh.gif');
 
 // §22–23：social-preview.png（1280×640，仅用既有视觉资产；纯色底消除拼缝）
 const spContext = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' });
