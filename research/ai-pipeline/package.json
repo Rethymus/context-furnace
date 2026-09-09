@@ -1,0 +1,19 @@
+{
+  "name": "ai-pipeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@visioncortex/vtracer": "^1.0.0-alpha.4",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.35.4",
+    "svgo": "^4.1.0"
+  }
+}

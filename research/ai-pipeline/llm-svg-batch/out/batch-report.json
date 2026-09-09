@@ -1,0 +1,50 @@
+{
+  "ending-a-cold-ash.svg": {
+    "rawBytes": 2118,
+    "gzipBytes": 506,
+    "elements": 19,
+    "colors": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "ending-b-signal-lost.svg": {
+    "rawBytes": 2921,
+    "gzipBytes": 593,
+    "elements": 35,
+    "colors": 11,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "ending-c-stable-run.svg": {
+    "rawBytes": 2968,
+    "gzipBytes": 538,
+    "elements": 30,
+    "colors": 13,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "ending-d-peak-efficiency.svg": {
+    "rawBytes": 2777,
+    "gzipBytes": 605,
+    "elements": 24,
+    "colors": 12,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "ending-e-unplugged.svg": {
+    "rawBytes": 2186,
+    "gzipBytes": 458,
+    "elements": 16,
+    "colors": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "paper-to-furnace.svg": {
+    "rawBytes": 2439,
+    "gzipBytes": 548,
+    "elements": 18,
+    "colors": 13,
+    "offPalette": [],
+    "verdict": "PASS"
+  }
+}

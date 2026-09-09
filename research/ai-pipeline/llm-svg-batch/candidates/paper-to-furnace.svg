@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img">
+  <!-- LLM 直写 SVG PoC：纸带入炉（版画风，项目美术子色板·暖+余烬族）
+       由 GLM-5.3 系模型直接生成——路线2「文本模型直出矢量」的实证样本 -->
+  <!-- 台面与背景 -->
+  <rect width="200" height="140" fill="#262420"/>
+  <path d="M0 118 h200 v22 h-200 z" fill="#38342a"/>
+  <!-- 炉体（炭块 + 烤漆沿口） -->
+  <path d="M78 22 h64 a10 10 0 0 1 10 10 v66 h-84 v-66 a10 10 0 0 1 10 -10 z" fill="#17150f"/>
+  <path d="M74 16 h72 a12 12 0 0 1 12 12 v6 h-96 v-6 a12 12 0 0 1 12 -12 z" fill="#55503f"/>
+  <!-- 炉口 -->
+  <path d="M92 52 h36 v34 a18 18 0 0 1 -36 0 z" fill="#17150f"/>
+  <path d="M90 50 h40 v4 h-40 z" fill="#55503f"/>
+  <!-- 余烬床（三层木刻式火舌） -->
+  <path d="M92 86 q4 -14 9 -6 q3 -12 8 -3 q4 -9 8 -1 q4 -8 7 0 v14 h-32 z" fill="#b44622"/>
+  <path d="M96 86 q3 -9 7 -4 q3 -8 6 -2 q3 -6 6 -1 v7 z" fill="#e48034"/>
+  <path d="M100 86 q2 -5 4 -2 q2 -4 4 -1 v3 z" fill="#f7f2e2"/>
+  <!-- 纸带（左入炉，微斜）与折角 -->
+  <g transform="rotate(-4 40 74)">
+    <rect x="8" y="66" width="88" height="16" fill="#f7f2e2"/>
+    <rect x="8" y="78" width="88" height="4" fill="#d8d0ba"/>
+    <path d="M8 66 l8 0 l0 6 l-8 0 z" fill="#e4decb"/>
+  </g>
+  <!-- 纸带上的墨字刻痕（木刻短划，非文字） -->
+  <g stroke="#22201a" stroke-width="2" stroke-linecap="round">
+    <line x1="18" y1="71" x2="34" y2="71"/>
+    <line x1="38" y1="71" x2="52" y2="71"/>
+    <line x1="18" y1="76" x2="28" y2="76"/>
+    <line x1="32" y1="76" x2="48" y2="76"/>
+  </g>
+  <!-- 炉体散热鳍（刻线） -->
+  <g stroke="#38342a" stroke-width="2" stroke-linecap="round">
+    <line x1="86" y1="34" x2="86" y2="42"/>
+    <line x1="96" y1="34" x2="96" y2="42"/>
+    <line x1="106" y1="34" x2="106" y2="42"/>
+    <line x1="116" y1="34" x2="116" y2="42"/>
+    <line x1="126" y1="34" x2="126" y2="42"/>
+    <line x1="136" y1="34" x2="136" y2="42"/>
+  </g>
+  <!-- 飞溅余烬点 -->
+  <circle cx="126" cy="44" r="2" fill="#e48034"/>
+  <circle cx="138" cy="36" r="1.5" fill="#b44622"/>
+  <circle cx="120" cy="30" r="1.5" fill="#a43a2f"/>
+  <!-- 烟（两缕刻线） -->
+  <path d="M110 14 q4 -6 0 -12" stroke="#55503f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M118 16 q5 -7 1 -13" stroke="#38342a" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

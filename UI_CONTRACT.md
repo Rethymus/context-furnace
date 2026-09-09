@@ -75,6 +75,7 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 | M3 性能与降级审计 | 采样模糊 GPU 层级梳理（避免大面积 blur 叠加）、Safari/旧引擎回退矩阵实测、reduce-transparency/contrast 全链路走查 | **已交付（审计报告 `shots/audit/m3-report.md`；P0 全修 + P1 三条处置见 v4.7）** |
 | M4 液态玻璃语汇 | 控件激活态边缘 specular 高光、按压液感（cap 高光位移）、旋钮卡位定位感（微过冲调参）、跨引擎基线固化 | **已交付（2026-09-08 所有者批复 K3，见 v4.8）** |
 | M5 插画与沉浸语汇 | IL-1 炉膛余烬床、IL-2 台面工业印记、IL-3 Act 铭牌蚀刻、IL-4 结局幕插画层、IL-5 纸带纤维纹理（非叙事、CSS/SVG-only、零新文本） | **已交付（2026-09-08 所有者批复 K2 全项，草案 `UI_CONTRACT_M5_DRAFT.md`，见 v4.8）** |
+| M6 结局版画（LLM 直写 SVG） | 五结局木刻版画板（模型直写矢量、子色板闸门、aria-hidden 零文本），生成方式与研究依据见 `AI_ILLUSTRATION_RESEARCH.md` 与 `research/ai-pipeline/` | **已交付（2026-09-09 所有者授权「授权你 LLM 直写 SVG」+「授权执行」，见 v4.9）** |
 
 ## v4.6 可验证性
 
@@ -231,6 +232,49 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
   清理与 `browserContext.close` 收尾写入竞态（负载下把已通过测试标为 ENOENT
   失败，取证见 `shots/diag/`；修复 = 本地 `trace: off`、CI 语义不变）。
 - gzip 增量：CSS 31.26 → 38.24 KB（gzip 7.83 → 9.07 KB，+1.24 KB，预算 ≤8 KB 内）。
+
+## v4.9 M6 实现批次（2026-09-09，所有者授权「LLM 直写 SVG」后交付）
+
+依据：`AI_ILLUSTRATION_RESEARCH.md`（GitHub 工具生态 + 同类游戏两层调研 + 三条
+不经 ComfyUI 的生成路线）与 `research/ai-pipeline/`（端到端管线 PoC + 候选库）。
+授权链：2026-09-09「授权你 LLM 直写 SVG」→ 候选库 6 件全过闸门 →「授权执行」
+→ 本批集成。行为/文案/数值/几何断言零改动，hex 白名单零扩册（版画色全部
+落在既有册内），零新增运行时依赖与网络面。
+
+### 交付内容
+
+1. **五幅结局木刻版画**（ENDING_WOODCUTS 常量入 `src/ui/machine.ts`，保持
+   §18.4 冻结文件结构不新增源文件）：A 冷灰烬 / B 信号失真 / C 稳态运行
+   （fidelity 绿语义锚，全库唯一彩色点）/ D 过载辉光 / E 拔掉插头。统一画幅
+   viewBox 320×200；LLM 直写 SVG → 声明式子色板闸门（零越板）→ svgo 优化后
+   入库；走查修正三处（B 碎裂过渡加密、A 灰丘拥炉消缝、C 表盘刻度加密）。
+2. **版画板挂载**：`.ending-plate`（aria-hidden、零文本）置于结算玻璃幕顶部、
+   结局横幅之上；发丝边 + 投影；五结局统一呈现。
+3. **满屏 tableau 尺寸预算**（集成期关键修正）：结局幕为
+   `min-height: calc(100dvh - 58px)` 满屏构图（M2 冻结值），幕内纵向 slack
+   实测 100px（1440×900）。初版 `min(300px, 78vw)` 令 machine 涨至 932、
+   页面滚动 90px——破坏满屏构图，已废弃。终版宽度
+   `clamp(140px, calc(100svh * 1.5 - 1220px), 300px)`（svh 防移动端地址栏
+   抖动；不支持 svh 的旧浏览器回退 `min(300px, 78vw)`）：
+   900 高视口 → 140px（machine 保持 842 零滚动，视觉评审结论「小而正确——
+   收官印章」，由窄到宽的视觉漏斗成立）；≥~1031px 高视口 → 300px 满幅；
+   140px 底值兜底短视口/移动端（390×844 实测无水平溢出、无新增滚动）。
+4. **降级语义**：静态 SVG 无时间线（RM 天然合规）；显式填充色不依赖透明度
+   效果——**RT 保持**（与仪表 SVG 同层的 inline 内容件，不走 IL-4 意象层的
+   材质塌缩路径，此为有意区分：插画是内容，不是玻璃材质效果）。
+5. **体积**：五件 gzip 合计 ≈2.7 KB（458–605B/件）；bundle 影响 +2.7 KB。
+
+### 验证与基线
+
+- `tests/material.test.ts` 41 → 44 条断言：五件嵌入与挂载顺序（先版画后横幅）、
+  零文本节点（`<text`/`<tspan` 负向锁）、用色 ⊆ 美术子色板（20 色枚举）、
+  统一画幅、尺寸预算规则（svh clamp 串锁）。
+- win32 基线重采：result-peak / result-stable 为预期变更面（版画板入镜，
+  machine 高度 842 不变）；其余 7 张逐字节不变（实证）。自采 ≠ 已确认。
+- Linux（CI）基线：像素内容随本批变化，需 `update-baselines.yml` 手动触发
+  重生成（D28）；两平台 machine 高度同为 842（尺寸不变、仅内容 diff）。
+- 生成端方法与替代路线（云端文生图 API / 本地 diffusers）、候选库走查记录
+  与批量闸门脚本：`research/ai-pipeline/`（研究资产，不进生产 bundle）。
 
 
 ## 1. Art Direction（概念图提炼）

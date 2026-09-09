@@ -47,3 +47,9 @@
 - 重采（settings-mobile win32）：dialog 外缘 lensing 暗环 + 内底亮棱（M4 LG-2）、
   设置浮层内纸面控件无变更；M5 纸纹不触及 dialog 内部（暗面玻璃）。其余交付面
   详见 desktop 目录同日条目与 UI_CONTRACT v4.8。自采 ≠ 已确认。
+
+## 变更记录（2026-09-09 · UI v4.9 M6 结局版画）
+
+- 本目录快照（settings-mobile）无变更（M6 版画仅在结局幕，不在快照覆盖内）。
+  移动端结局页实测（390×844）：版画 140px 宽、无水平溢出、无新增滚动。
+  详见 desktop 目录同日条目与 UI_CONTRACT v4.9。自采 ≠ 已确认。

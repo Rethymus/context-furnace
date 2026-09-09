@@ -868,6 +868,33 @@
   padding: 10px 8px 8px;
 }
 
+/* v4.9 M6 结局版画板：LLM 直写 SVG 候选库首批五件（2026-09-09 所有者授权），
+   挂载于结算玻璃幕顶部、结局横幅之上。纯视觉层（aria-hidden、零文本、
+   零时间线——RM 天然合规）；颜色为显式填充、不依赖透明度效果（RT 保持，
+   与仪表 SVG 同层的 inline 内容件，不走 IL-4 意象层的材质塌缩路径） */
+.ending-plate {
+  /* 尺寸受结算幕版面预算约束：.machine--ending 为 100dvh-58 满屏 tableau
+     （M2 冻结），幕内纵向 slack 实测 100px（1440×900），版画外框须 ≤ slack
+     才不产生页面滚动。宽度随视口高度增长，≥~1031px 高视口达到 300px 满幅；
+     底值兜底短视口/移动端（垂直滚动本就存在）；140px 底值留 ~10px 字体
+     度量漂移余量，保 Linux/Win32 两套基线 machine 高度同为 842。
+     svh 不支持时回退首行（旧浏览器放宽为允许滚动） */
+  width: min(300px, 78vw);
+  width: clamp(140px, calc(100svh * 1.5 - 1220px), 300px);
+  margin: 0 auto 2px;
+  flex: 0 0 auto;
+  border: 1px solid var(--glass-dark-edge);
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.ending-plate svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .ending-banner h2 {
   font-size: clamp(26px, 3.2vw, 34px);
   font-family: var(--font-title);

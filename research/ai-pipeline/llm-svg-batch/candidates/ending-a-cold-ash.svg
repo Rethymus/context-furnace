@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img">
+  <!-- LLM 直写 SVG 候选库 · 结局 A「COLD END」：熄炉冷灰。
+       暖中性灰阶表现"冷"——灰烬丘、死余烬、残烟。子色板：暖中性（无红焰）。 -->
+  <rect width="320" height="200" fill="#26231c"/>
+  <!-- 灰烬丘（三层叠丘，木刻式起伏） -->
+  <path d="M0 150 q50 -18 96 -4 q54 16 108 2 q58 -14 116 4 v48 h-320 z" fill="#38342a"/>
+  <path d="M40 166 q44 -12 88 -2 q40 9 92 0 v36 h-180 z" fill="#55503f"/>
+  <path d="M120 178 q36 -8 74 -1 v23 h-74 z" fill="#8d8368"/>
+  <!-- 熄灭的炉体剪影（右侧，炉口黑洞） -->
+  <path d="M212 60 h72 a8 8 0 0 1 8 8 v92 h-88 v-92 a8 8 0 0 1 8 -8 z" fill="#17150f"/>
+  <path d="M230 96 h36 v30 a18 18 0 0 1 -36 0 z" fill="#0d0c09"/>
+  <!-- 灰堆拥炉（走查修正：灰丘漫上炉基，消融衔接缝） -->
+  <path d="M196 160 q22 -10 52 -4 q30 6 52 2 q8 0 4 4 h-108 z" fill="#38342a"/>
+  <path d="M210 162 q18 -6 40 -2 q20 4 38 2 v6 h-78 z" fill="#55503f"/>
+  <!-- 死余烬（冷灰点，无光） -->
+  <circle cx="238" cy="128" r="2.5" fill="#55503f"/>
+  <circle cx="250" cy="124" r="2" fill="#38342a"/>
+  <circle cx="260" cy="129" r="1.5" fill="#55503f"/>
+  <!-- 残烟（两缕刻线，右上部） -->
+  <path d="M248 56 q5 -10 0 -20 q-4 -8 1 -16" stroke="#55503f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M258 60 q6 -12 1 -22" stroke="#38342a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- 飘灰（细点，疏朗） -->
+  <circle cx="60" cy="60" r="1.5" fill="#8d8368"/>
+  <circle cx="120" cy="42" r="1" fill="#55503f"/>
+  <circle cx="170" cy="70" r="1.5" fill="#8d8368"/>
+  <circle cx="90" cy="100" r="1" fill="#d8d0ba"/>
+  <circle cx="196" cy="52" r="1" fill="#d8d0ba"/>
+  <!-- 灰面刻痕（短划排线） -->
+  <g stroke="#26231c" stroke-width="2" stroke-linecap="round">
+    <line x1="56" y1="164" x2="72" y2="162"/>
+    <line x1="92" y1="172" x2="106" y2="170"/>
+    <line x1="140" y1="160" x2="154" y2="158"/>
+    <line x1="176" y1="172" x2="188" y2="171"/>
+  </g>
+</svg>

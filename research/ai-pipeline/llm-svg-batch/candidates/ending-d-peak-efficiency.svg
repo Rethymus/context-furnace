@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img">
+  <!-- LLM 直写 SVG 候选库 · 结局 D「PEAK EFFICIENCY」：过载辉光。
+       最大火势：高焰、放射热浪刻线、满表指针、密集火星。子色板：暖中性 + 余烬全族（红黄最浓的一幅）。 -->
+  <rect width="320" height="200" fill="#17150f"/>
+  <!-- 放射热浪（炉位为中心的斜刻线，左右对称扩张） -->
+  <g stroke="#7c2a20" stroke-width="3" stroke-linecap="round">
+    <line x1="120" y1="120" x2="76" y2="76"/>
+    <line x1="110" y1="140" x2="58" y2="128"/>
+    <line x1="200" y1="120" x2="244" y2="76"/>
+    <line x1="210" y1="140" x2="262" y2="128"/>
+  </g>
+  <g stroke="#a43a2f" stroke-width="2" stroke-linecap="round">
+    <line x1="128" y1="104" x2="96" y2="56"/>
+    <line x1="192" y1="104" x2="224" y2="56"/>
+    <line x1="106" y1="152" x2="44" y2="152"/>
+    <line x1="214" y1="152" x2="276" y2="152"/>
+  </g>
+  <!-- 炉体（居中，受热发亮的沿口） -->
+  <path d="M118 78 h84 a8 8 0 0 1 8 8 v74 h-100 v-74 a8 8 0 0 1 8 -8 z" fill="#262420"/>
+  <path d="M114 72 h92 a10 10 0 0 1 10 10 v6 h-112 v-6 a10 10 0 0 1 10 -10 z" fill="#a43a2f"/>
+  <!-- 炉口（高焰：四层木刻焰舌，越内越亮） -->
+  <path d="M138 160 q6 -46 14 -26 q7 -34 15 -12 q7 -24 14 -4 q7 -18 12 0 q4 -10 7 4 v38 h-62 z" fill="#7c2a20"/>
+  <path d="M146 160 q5 -32 11 -18 q5 -22 11 -8 q5 -16 10 -2 q5 -12 8 0 v28 h-40 z" fill="#b44622"/>
+  <path d="M154 160 q4 -20 8 -10 q4 -12 8 -4 q4 -8 7 -1 v15 h-23 z" fill="#e48034"/>
+  <path d="M162 160 q3 -10 5 -4 q2 -5 4 -1 v5 h-9 z" fill="#f7f2e2"/>
+  <!-- 满表指针（右上小表盘，指针打到顶） -->
+  <path d="M252 52 a22 22 0 0 1 44 0" stroke="#d8d0ba" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <line x1="274" y1="52" x2="290" y2="34" stroke="#e48034" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="274" cy="52" r="3" fill="#d8d0ba"/>
+  <!-- 火星群（密集上扬） -->
+  <g fill="#e48034">
+    <circle cx="140" cy="58" r="2"/><circle cx="158" cy="42" r="1.5"/>
+    <circle cx="180" cy="50" r="2.2"/><circle cx="200" cy="36" r="1.6"/>
+    <circle cx="126" cy="80" r="1.5"/><circle cx="212" cy="66" r="1.8"/>
+  </g>
+  <g fill="#b44622">
+    <circle cx="148" cy="72" r="1.5"/><circle cx="190" cy="62" r="1.4"/>
+    <circle cx="170" cy="34" r="1.3"/><circle cx="116" cy="100" r="1.4"/>
+  </g>
+  <!-- 地面（受光染红的地面切线） -->
+  <path d="M0 172 h320 v28 h-320 z" fill="#262420"/>
+  <g stroke="#a43a2f" stroke-width="2" stroke-linecap="round">
+    <line x1="30" y1="180" x2="58" y2="180"/>
+    <line x1="262" y1="180" x2="290" y2="180"/>
+    <line x1="70" y1="188" x2="92" y2="188"/>
+    <line x1="234" y1="188" x2="252" y2="188"/>
+  </g>
+</svg>

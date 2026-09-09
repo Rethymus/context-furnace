@@ -431,6 +431,47 @@ describe('v4 M5 illustration vocabulary', () => {
   });
 });
 
+// ── v4.9 M6 结局版画（2026-09-09 所有者授权「LLM 直写 SVG」路线首批入库）──
+describe('v4 M6 ending woodcuts', () => {
+  const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+  const woodcuts = mts.split('const ENDING_WOODCUTS')[1]?.split('};')[0] ?? '';
+
+  it('five woodcuts are embedded and mounted as an aria-hidden plate above the banner', () => {
+    expect((woodcuts.match(/<svg/g) ?? []).length).toBe(5);
+    for (const e of ["'a':", "'b':", "'c':", "'d':", "'e':"]) {
+      expect(woodcuts).toContain(e);
+    }
+    expect(mts).toContain("plate.className = 'ending-plate'");
+    expect(mts).toContain("plate.setAttribute('aria-hidden', 'true')");
+    expect(mts).toContain('endWrap.appendChild(plate)');
+    // 挂载先于横幅（版画板位于结算玻璃幕顶部）
+    expect(mts.indexOf('endWrap.appendChild(plate)')).toBeLessThan(mts.indexOf('renderEndingBanner(endWrap'));
+    const plate = machine.split('.ending-plate {')[1]?.split('}')[0] ?? '';
+    expect(plate).toContain('min(300px, 78vw)'); // svh 不支持时的回退上限
+    // 满屏 tableau 预算：900 高视口 machine 须保持 842 零滚动，≥~1031px 视口达 300 满幅
+    expect(plate).toContain('clamp(140px, calc(100svh * 1.5 - 1220px), 300px)');
+  });
+
+  it('woodcuts carry zero text nodes (player-visible text stays in CONTENT_SPEC)', () => {
+    expect(woodcuts).not.toContain('<text');
+    expect(woodcuts).not.toContain('<tspan');
+  });
+
+  it('woodcut fills stay inside the art sub-palette (no hardening)', () => {
+    const ART = new Set([
+      '#17150f', '#26231c', '#38342a', '#55503f', '#8d8368', '#d8d0ba',
+      '#b6ab94', '#d5c9ab', '#f7f2e2', '#22201a', '#262420', '#e4decb',
+      '#a43a2f', '#c0503f', '#e48034', '#b44622', '#7c2a20',
+      '#0d0c09', '#b3ac97', '#2c625a', // 深黑/on-coal-dim（暗幕件）；fidelity 绿（C 语义锚）
+    ]);
+    const used = woodcuts.match(/#[0-9a-f]{6}\b/g) ?? [];
+    const off = [...new Set(used.filter((c) => !ART.has(c)))];
+    expect(off).toEqual([]);
+    // 五件统一画幅
+    expect((woodcuts.match(/viewBox="0 0 320 200"/g) ?? []).length).toBe(5);
+  });
+});
+
 // ── v4.6 防硬化回归：styles/*.css 的 hex 白名单（新增裸 hex 须显式入册并审对比度） ──
 describe('v4 hex allowlist (anti-hardening)', () => {
   const ALLOWLIST = new Set([

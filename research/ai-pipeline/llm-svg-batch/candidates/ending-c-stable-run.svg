@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img">
+  <!-- LLM 直写 SVG 候选库 · 结局 C「STABLE RUN」：稳态运行。
+       秩序感：等距地平线、静息表盘、规律点阵、单枚稳焰。子色板：暖中性 + fidelity 绿（C 专属语义）。 -->
+  <rect width="320" height="200" fill="#26231c"/>
+  <!-- 等距地平线（秩序基底） -->
+  <g stroke="#38342a" stroke-width="2">
+    <line x1="0" y1="150" x2="320" y2="150"/>
+    <line x1="0" y1="158" x2="320" y2="158" stroke-width="1.5"/>
+    <line x1="0" y1="165" x2="320" y2="165"/>
+    <line x1="0" y1="173" x2="320" y2="173" stroke-width="1.5"/>
+    <line x1="0" y1="181" x2="320" y2="181"/>
+  </g>
+  <!-- 规律点阵（右上，4×6 网格，逐行微缩的节奏） -->
+  <g fill="#8d8368">
+    <circle cx="212" cy="44" r="2"/><circle cx="236" cy="44" r="2"/><circle cx="260" cy="44" r="2"/><circle cx="284" cy="44" r="2"/>
+    <circle cx="212" cy="62" r="1.8"/><circle cx="236" cy="62" r="1.8"/><circle cx="260" cy="62" r="1.8"/><circle cx="284" cy="62" r="1.8"/>
+    <circle cx="212" cy="80" r="1.6"/><circle cx="236" cy="80" r="1.6"/><circle cx="260" cy="80" r="1.6"/><circle cx="284" cy="80" r="1.6"/>
+  </g>
+  <!-- 静息表盘（左侧：弧 + 中位指针 + 刻度） -->
+  <path d="M44 118 a44 44 0 0 1 88 0" stroke="#d8d0ba" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <g stroke="#55503f" stroke-width="2">
+    <line x1="44" y1="118" x2="52" y2="118"/>
+    <line x1="132" y1="118" x2="124" y2="118"/>
+    <line x1="88" y1="74" x2="88" y2="82"/>
+    <!-- 走查修正：加密弧上刻度（30° 间隔的中间档） -->
+    <line x1="55" y1="89" x2="60" y2="94"/>
+    <line x1="121" y1="89" x2="116" y2="94"/>
+    <line x1="66" y1="79" x2="69" y2="85"/>
+    <line x1="110" y1="79" x2="107" y2="85"/>
+  </g>
+  <line x1="88" y1="118" x2="112" y2="92" stroke="#d8d0ba" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="88" cy="118" r="4" fill="#d8d0ba"/>
+  <!-- 达标徽记（fidelity 绿，唯一彩色点：稳态的语义锚） -->
+  <circle cx="88" cy="132" r="3" fill="#2c625a"/>
+  <!-- 单枚稳焰（中部小型炉口，小而直的焰舌——不摇曳） -->
+  <path d="M170 150 h44 v20 h-44 z" fill="#17150f"/>
+  <path d="M178 150 q4 -12 9 -4 q3 -8 7 -1 q3 -6 6 0 q3 -5 5 0 v5 z" fill="#b44622"/>
+  <path d="M182 150 q2 -6 5 -2 q2 -4 4 -1 v3 z" fill="#e48034"/>
+  <rect x="170" y="146" width="44" height="4" fill="#55503f"/>
+  <!-- 稳定供给的纸带（底部地平线上匀速直线，无折角） -->
+  <rect x="0" y="140" width="150" height="7" fill="#f7f2e2"/>
+  <rect x="0" y="147" width="150" height="3" fill="#d8d0ba"/>
+  <g stroke="#b3ac97" stroke-width="1.5">
+    <line x1="18" y1="143" x2="30" y2="143"/>
+    <line x1="42" y1="143" x2="54" y2="143"/>
+    <line x1="66" y1="143" x2="78" y2="143"/>
+    <line x1="90" y1="143" x2="102" y2="143"/>
+    <line x1="114" y1="143" x2="126" y2="143"/>
+  </g>
+</svg>

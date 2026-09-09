@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img">
+  <!-- LLM 直写 SVG 候选库 · 结局 B「SIGNAL LOST」：信号失真。
+       左端连贯波形向右碎裂为噪点——语义直接图解。子色板：暗底 + 米白信号 + 灰阶。 -->
+  <rect width="320" height="200" fill="#17150f"/>
+  <!-- 框线（断裂的示波器框） -->
+  <path d="M24 36 h130 M188 36 h108 M24 36 v128 M24 176 h84 M132 176 h164 M296 36 v128" stroke="#38342a" stroke-width="3" fill="none"/>
+  <!-- 连贯波形（左 1/3，米白粗线） -->
+  <path d="M32 104 q10 -34 20 0 q8 -22 16 0 q10 -44 20 0 q8 -18 16 0 q10 -30 20 0 q6 -12 12 0" stroke="#e4decb" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 碎裂过渡（中段：断线 + 渐密的中间档散点——走查修正：加密过渡区，消除断层感） -->
+  <path d="M164 104 q6 -10 10 -2" stroke="#e4decb" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M182 96 l8 -6" stroke="#b3ac97" stroke-width="3" stroke-linecap="round"/>
+  <line x1="196" y1="104" x2="206" y2="98" stroke="#b3ac97" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="204" y1="88" x2="212" y2="94" stroke="#8d8368" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="216" cy="92" r="2.5" fill="#b3ac97"/>
+  <circle cx="221" cy="108" r="2.2" fill="#8d8368"/>
+  <circle cx="226" cy="84" r="2" fill="#55503f"/>
+  <circle cx="231" cy="116" r="2" fill="#b3ac97"/>
+  <circle cx="236" cy="74" r="1.8" fill="#8d8368"/>
+  <circle cx="240" cy="100" r="1.8" fill="#55503f"/>
+  <circle cx="245" cy="90" r="1.6" fill="#8d8368"/>
+  <circle cx="248" cy="112" r="1.5" fill="#b3ac97"/>
+  <circle cx="251" cy="80" r="1.4" fill="#55503f"/>
+  <circle cx="254" cy="104" r="1.4" fill="#8d8368"/>
+  <!-- 噪声场（右 1/3：无序散点，密度渐增再衰减） -->
+  <g fill="#55503f">
+    <circle cx="254" cy="96" r="1.5"/><circle cx="260" cy="116" r="1.2"/>
+    <circle cx="264" cy="80" r="1.4"/><circle cx="270" cy="102" r="1.6"/>
+    <circle cx="274" cy="124" r="1.1"/><circle cx="276" cy="72" r="1.3"/>
+    <circle cx="282" cy="94" r="1.5"/><circle cx="286" cy="110" r="1.2"/>
+  </g>
+  <g fill="#38342a">
+    <circle cx="258" cy="132" r="1.2"/><circle cx="268" cy="140" r="1.4"/>
+    <circle cx="280" cy="146" r="1.1"/><circle cx="292" cy="136" r="1.3"/>
+    <circle cx="288" cy="64" r="1.2"/><circle cx="272" cy="58" r="1.1"/>
+  </g>
+  <!-- 消失的几何（失序的信号形状：三角/方/六边描边，散落） -->
+  <path d="M120 148 l7 12 h-14 z" stroke="#55503f" stroke-width="2" fill="none"/>
+  <rect x="160" y="150" width="11" height="11" stroke="#38342a" stroke-width="2" fill="none"/>
+  <path d="M210 150 l5 3 v6 l-5 3 -5 -3 v-6 z" stroke="#55503f" stroke-width="1.8" fill="none"/>
+  <!-- 最后一点信号（右上角孤点，米白） -->
+  <circle cx="284" cy="52" r="2" fill="#e4decb"/>
+</svg>

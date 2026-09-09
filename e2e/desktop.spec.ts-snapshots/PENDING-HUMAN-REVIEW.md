@@ -61,3 +61,19 @@
   行为/文案/数值/几何断言零改动；gzip 增量 +1.24 KB（预算 ≤8 KB）。
   交付细节见 UI_CONTRACT.md v4.8 节；批复记录见 UI_CONTRACT_M5_DRAFT.md §0.2。
   自采 ≠ 已确认。
+
+## 变更记录（2026-09-09 · UI v4.9 M6 结局版画）
+
+- 变更面仅 result-peak / result-stable 两张（其余 6 张逐字节不变，实证）：
+  结算玻璃幕顶部新增结局版画板（.ending-plate，aria-hidden 纯视觉，五结局各一幅
+  LLM 直写 SVG，所有者授权链「授权你 LLM 直写 SVG」+「授权执行」）。
+- 尺寸工程化（本批关键修正）：结局幕为满屏 tableau（.machine--ending
+  min-height: calc(100dvh - 58px)），幕内纵向 slack 实测 100px（1440×900）。
+  版画宽度 `clamp(140px, calc(100svh * 1.5 - 1220px), 300px)`：
+  900 高视口 → 140px（machine 保持 842、页面零滚动，与 Linux 基线同尺寸）；
+  ≥~1031px 高视口 → 300px 满幅；140px 底值兜底短视口/移动端（390×844 实测
+  无水平溢出、无新增滚动）。初版 min(300px,78vw) 曾致 machine 932/滚动 90px，
+  已废弃。
+- Linux（CI）基线：像素内容将随本批变化，需 `.github/workflows/update-baselines.yml`
+  手动触发生成（D28），machine 高度两平台同为 842（尺寸不变，仅内容 diff）。
+- 行为/文案/数值/几何断言零改动。自采 ≠ 已确认。
