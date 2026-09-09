@@ -88,24 +88,33 @@ function pngSize(buf: Buffer): { width: number; height: number } {
 
 describe('P4 media assets', () => {
   const mediaDir = join(ROOT, 'docs', 'media');
-  it('all seven assets exist', () => {
+  it('all thirteen assets exist', () => {
     for (const f of [
       join(mediaDir, 'readme', 'gameplay.gif'),
       join(mediaDir, 'readme', 'gameplay-zh.gif'),
+      join(mediaDir, 'readme', 'switch-en.gif'),
+      join(mediaDir, 'readme', 'switch-zh.gif'),
       join(mediaDir, 'readme', 'boot-en.png'),
       join(mediaDir, 'readme', 'boot-zh.png'),
       join(mediaDir, 'readme', 'machine-zh.png'),
       join(mediaDir, 'readme', 'machine-en.png'),
+      join(mediaDir, 'readme', 'settings-zh.png'),
+      join(mediaDir, 'readme', 'settings-en.png'),
+      join(mediaDir, 'readme', 'result-zh.png'),
+      join(mediaDir, 'readme', 'result-en.png'),
       join(mediaDir, 'social-preview.png'),
     ]) {
       expect(() => readFileSync(f), `${f} missing`).not.toThrow();
     }
   });
   it('size budgets (gifs ≤4MB, screenshots and banners ≤1.5MB, social ≤1MB)', () => {
-    for (const f of ['gameplay.gif', 'gameplay-zh.gif']) {
+    for (const f of ['gameplay.gif', 'gameplay-zh.gif', 'switch-en.gif', 'switch-zh.gif']) {
       expect(readFileSync(join(mediaDir, 'readme', f)).length).toBeLessThanOrEqual(4 * 1024 * 1024);
     }
-    for (const f of ['machine-zh.png', 'machine-en.png', 'boot-zh.png', 'boot-en.png']) {
+    for (const f of [
+      'machine-zh.png', 'machine-en.png', 'boot-zh.png', 'boot-en.png',
+      'settings-zh.png', 'settings-en.png', 'result-zh.png', 'result-en.png',
+    ]) {
       expect(readFileSync(join(mediaDir, 'readme', f)).length).toBeLessThanOrEqual(1.5 * 1024 * 1024);
     }
     expect(readFileSync(join(mediaDir, 'social-preview.png')).length).toBeLessThanOrEqual(1024 * 1024);
@@ -120,23 +129,29 @@ describe('P4 media assets', () => {
 // P5：README 相对路径引用完整且语言一一对应；禁绝对 raw 链接
 describe('P5 media references', () => {
   it('README.md references the English-UI assets via relative paths', () => {
-    for (const f of ['gameplay.gif', 'boot-en.png', 'machine-zh.png', 'machine-en.png']) {
+    for (const f of [
+      'gameplay.gif', 'boot-en.png', 'machine-zh.png', 'machine-en.png',
+      'result-en.png', 'settings-en.png', 'switch-en.gif',
+    ]) {
       expect(readmeEn).toContain(`./docs/media/readme/${f}`);
     }
     expect(readmeEn.includes('raw.githubusercontent.com')).toBe(false);
   });
   it('README.zh-CN.md references the Chinese-UI assets via relative paths', () => {
-    for (const f of ['gameplay-zh.gif', 'boot-zh.png', 'machine-zh.png', 'machine-en.png']) {
+    for (const f of [
+      'gameplay-zh.gif', 'boot-zh.png', 'machine-zh.png', 'machine-en.png',
+      'result-zh.png', 'settings-zh.png', 'switch-zh.gif',
+    ]) {
       expect(readmeZh).toContain(`./docs/media/readme/${f}`);
     }
     expect(readmeZh.includes('raw.githubusercontent.com')).toBe(false);
   });
   it('language-specific media is not cross-referenced', () => {
-    // §11：各语言版本的动图与头图必须与语言一一对应
-    for (const f of ['gameplay-zh.gif', 'boot-zh.png']) {
+    // §11：各语言版本的动图、头图与 v1.2 新增媒体必须与语言一一对应（machine-* 双语共用除外）
+    for (const f of ['gameplay-zh.gif', 'boot-zh.png', 'switch-zh.gif', 'result-zh.png', 'settings-zh.png']) {
       expect(readmeEn.includes(`./docs/media/readme/${f}`)).toBe(false);
     }
-    for (const f of ['gameplay.gif', 'boot-en.png']) {
+    for (const f of ['gameplay.gif', 'boot-en.png', 'switch-en.gif', 'result-en.png', 'settings-en.png']) {
       expect(readmeZh.includes(`./docs/media/readme/${f}`)).toBe(false);
     }
   });

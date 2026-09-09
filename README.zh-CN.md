@@ -60,31 +60,40 @@
 
 ## 游戏截图
 
-### 简体中文
-
 <p align="center">
   <img
     src="./docs/media/readme/machine-zh.png"
-    alt="以简体中文运行的《断章取火器》"
-    width="820"
+    alt="以简体中文运行的《断章取火器》（周期 04）：裁切轨道、增益卡位、炉温与保真度仪表"
+    width="47%"
   />
-</p>
-
-### English
-
-<p align="center">
   <img
     src="./docs/media/readme/machine-en.png"
-    alt="以英文运行的 Context Furnace"
-    width="820"
+    alt="以英文运行的 Context Furnace（周期 08）：裁切轨道、增益卡位、炉温与保真度仪表"
+    width="47%"
+  />
+  <img
+    src="./docs/media/readme/result-zh.png"
+    alt="《断章取火器》入炉结果（周期 06）：机器消息与「下一份」按钮"
+    width="47%"
+  />
+  <img
+    src="./docs/media/readme/settings-zh.png"
+    alt="《断章取火器》设置面板：语言、声音、音量、动效、重播教学"
+    width="47%"
   />
 </p>
 
 ## 操作
 
-- **鼠标 / 触摸**：拖动裁刀、点击轨道边界，或直接点击增益卡位。
-- **键盘**：<kbd>Tab</kbd> 移动焦点，<kbd>←</kbd> / <kbd>→</kbd> 移动聚焦的裁刀或增益档位，<kbd>Enter</kbd> / <kbd>空格</kbd> 确认，<kbd>Esc</kbd> 关闭设置。
-- 声音与动效可在设置中调整。
+| 输入 | 动作 |
+|---|---|
+| **鼠标 / 触摸** | 拖动裁刀、点击轨道边界，或直接点击增益卡位 |
+| <kbd>Tab</kbd> | 移动焦点 |
+| <kbd>←</kbd> / <kbd>→</kbd> | 移动聚焦的裁刀或增益档位 |
+| <kbd>Enter</kbd> / <kbd>空格</kbd> | 确认 |
+| <kbd>Esc</kbd> | 关闭设置 |
+
+声音与动效可在设置中调整。
 
 ## 语言
 
@@ -92,6 +101,14 @@
 - English（en-US）
 
 可随时通过页面顶部按钮切换语言。
+
+<p align="center">
+  <img
+    src="./docs/media/readme/switch-zh.gif"
+    alt="《断章取火器》游戏中途在简体中文与英文之间即时切换"
+    width="820"
+  />
+</p>
 
 ## 技术栈
 

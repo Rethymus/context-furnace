@@ -60,31 +60,40 @@ Each cycle gives the machine a new text feed. Select a continuous section, adjus
 
 ## Screenshots
 
-### Simplified Chinese
-
 <p align="center">
   <img
     src="./docs/media/readme/machine-zh.png"
-    alt="Context Furnace running in Simplified Chinese"
-    width="820"
+    alt="Context Furnace running in Simplified Chinese at Cycle 04: cut track, gain stops, heat and fidelity gauges"
+    width="47%"
   />
-</p>
-
-### English
-
-<p align="center">
   <img
     src="./docs/media/readme/machine-en.png"
-    alt="Context Furnace running in English"
-    width="820"
+    alt="Context Furnace running in English at Cycle 08: cut track, gain stops, heat and fidelity gauges"
+    width="47%"
+  />
+  <img
+    src="./docs/media/readme/result-en.png"
+    alt="Context Furnace round result in English at Cycle 06: machine message and next-input button"
+    width="47%"
+  />
+  <img
+    src="./docs/media/readme/settings-en.png"
+    alt="Context Furnace settings panel in English: language, sound, volume, motion, tutorial replay"
+    width="47%"
   />
 </p>
 
 ## Controls
 
-- **Mouse / touch** — drag the cutters, tap a track edge, or tap a gain stop.
-- **Keyboard** — <kbd>Tab</kbd> to move focus, <kbd>←</kbd> / <kbd>→</kbd> to move a focused cutter or the gain, <kbd>Enter</kbd> / <kbd>Space</kbd> to activate, <kbd>Esc</kbd> closes settings.
-- Sound and motion can be adjusted in Settings.
+| Input | Action |
+|---|---|
+| **Mouse / touch** | Drag the cutters, tap a track edge, or tap a gain stop |
+| <kbd>Tab</kbd> | Move focus |
+| <kbd>←</kbd> / <kbd>→</kbd> | Move a focused cutter or the gain |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | Activate |
+| <kbd>Esc</kbd> | Close settings |
+
+Sound and motion can be adjusted in Settings.
 
 ## Languages
 
@@ -92,6 +101,14 @@ Each cycle gives the machine a new text feed. Select a continuous section, adjus
 - English (en-US)
 
 The language can be switched at any time from the header.
+
+<p align="center">
+  <img
+    src="./docs/media/readme/switch-en.gif"
+    alt="Context Furnace switching between English and Simplified Chinese mid-run"
+    width="820"
+  />
+</p>
 
 ## Technology
 
