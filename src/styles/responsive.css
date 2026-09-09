@@ -89,6 +89,12 @@ body {
     padding: 14px 16px 16px;
   }
 
+  /* M2 结局幕玻璃：窄屏收窄水平内衬与圆角（与 .machine-panel 移动端同档） */
+  .ending-wrap {
+    padding: 1vh 12px 3vh;
+    border-radius: 14px;
+  }
+
   .ending-wrap .gauge-row {
     gap: 14px;
   }

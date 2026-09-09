@@ -8,6 +8,13 @@ const chromiumChannel = process.env.CHROMIUM_CHANNEL
   ? { channel: process.env.CHROMIUM_CHANNEL }
   : {};
 
+// E2E_PORT isolates concurrent local runs on one machine: two sessions sharing
+// the fixed 4173 keep killing each other's webServer (reuseExistingServer
+// latches onto a foreign server, then loses it mid-run → 2026-09-08 integration
+// session: three full-verify attempts died this way with zero assertion
+// failures). Default stays 4173; CI is unaffected.
+const e2ePort = Number(process.env.E2E_PORT ?? 4173);
+
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
@@ -17,12 +24,17 @@ export default defineConfig({
   reporter: 'list',
   timeout: 90_000, // WebKit/慢机余量（长流程单测另行加码）
   use: {
-    baseURL: 'http://localhost:4173',
-    trace: 'retain-on-failure',
+    baseURL: `http://localhost:${e2ePort}`,
+    // Local runs disable traces: with retain-on-failure the post-pass trace
+    // cleanup races browserContext.close's trace flush under parallel load,
+    // failing passed tests with ENOENT (reproduced 2026-09-08: repeat-each=6
+    // workers=6 → 4 failed, all browserContext.close ENOENT, zero pixel
+    // diffs). CI keeps retain-on-failure (retries: 1 records failure traces).
+    trace: process.env.CI ? 'retain-on-failure' : 'off',
   },
   webServer: {
-    command: 'npm run preview -- --port 4173 --strictPort',
-    url: 'http://localhost:4173',
+    command: `npm run preview -- --port ${e2ePort} --strictPort`,
+    url: `http://localhost:${e2ePort}`,
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
   },

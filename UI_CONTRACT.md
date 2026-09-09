@@ -70,10 +70,11 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 
 | 批次 | 内容 | 状态 |
 |---|---|---|
-| M1 地基 | 中性阶、双外观、材质 recipe 接入（panel/observation/status/dialog/toast/plate/tool-btn）、动效令牌、按压反馈对、槽弹簧+拖拽旁路、指针阻尼、浮层入场、焦点环修复、overscroll 阻尼、降级矩阵 | **本次交付** |
-| M2 层次深化 | 燃烧/结局舞台与玻璃联动（火光透射观察窗）、tool 按钮悬浮态 specular、教学便签纸材质化、ending 幕玻璃 | 计划 |
-| M3 性能与降级审计 | 采样模糊 GPU 层级梳理（避免大面积 blur 叠加）、Safari/旧引擎回退矩阵实测、reduce-transparency/contrast 全链路走查 | 计划 |
-| M4 液态玻璃语汇 | 控件激活态边缘 specular 高光、按压液感（cap 高光位移）、旋钮卡位定位感（微过冲调参）、跨引擎基线固化 | 计划 |
+| M1 地基 | 中性阶、双外观、材质 recipe 接入（panel/observation/status/dialog/toast/plate/tool-btn）、动效令牌、按压反馈对、槽弹簧+拖拽旁路、指针阻尼、浮层入场、焦点环修复、overscroll 阻尼、降级矩阵 | **已交付** |
+| M2 层次深化 | 燃烧/结局舞台与玻璃联动（火光透射观察窗）、tool 按钮悬浮态 specular、教学便签纸材质化、ending 幕玻璃 | **已交付（本次，见 v4.7）** |
+| M3 性能与降级审计 | 采样模糊 GPU 层级梳理（避免大面积 blur 叠加）、Safari/旧引擎回退矩阵实测、reduce-transparency/contrast 全链路走查 | **已交付（审计报告 `shots/audit/m3-report.md`；P0 全修 + P1 三条处置见 v4.7）** |
+| M4 液态玻璃语汇 | 控件激活态边缘 specular 高光、按压液感（cap 高光位移）、旋钮卡位定位感（微过冲调参）、跨引擎基线固化 | **已交付（2026-09-08 所有者批复 K3，见 v4.8）** |
+| M5 插画与沉浸语汇 | IL-1 炉膛余烬床、IL-2 台面工业印记、IL-3 Act 铭牌蚀刻、IL-4 结局幕插画层、IL-5 纸带纤维纹理（非叙事、CSS/SVG-only、零新文本） | **已交付（2026-09-08 所有者批复 K2 全项，草案 `UI_CONTRACT_M5_DRAFT.md`，见 v4.8）** |
 
 ## v4.6 可验证性
 
@@ -82,6 +83,154 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 浮层入场（toast-in/sheet-in）、滚动阻尼（contain ×2）、推石 shake 参数注释锁定、
 防硬化回归（styles/*.css 禁新增裸 hex——白名单枚举既有项）。
 运行时契约：审计脚本 `scripts/audit-ui.mjs`（对比度/计算样式/深色适配采集，不入 verify）。
+
+## v4.7 M2 交付 + M3 修复批（2026-09-08）
+
+依据：M3 审计报告 `shots/audit/m3-report.md`（数据 `shots/audit/m3-data.json`，本批
+修复后已复跑）。本批 = v4.5 表 M2 四项 + M3 的 P0 全部与 P1 三条；行为/文案/数值/
+几何断言零改动，hex 白名单零扩册（新颜色全部为 rgba 令牌）。
+
+### M3-P0（规格符合性，已修）
+- **P0-1 RT 四表面未落回不透明**：`.machine-panel` / `.observation` / `.status-line` /
+  `.dialog` 背景端点改引双外观令牌——厚材质族 `--mat-thick-bg/-hi/-lo`
+  （color-mix 92% 经 var(--machine-*) 惰性解析：浅/深由深色块的 machine 覆写自动接管，
+  计算值与令牌化前字面值逐像素一致）；深面玻璃族逐面端点 `--glass-obs-hi/lo`、
+  `--glass-status-hi/lo`、`--glass-sheet-hi/lo`（浅/深同值冻结——暗玻璃双外观本就同像素，
+  深色块无需覆写）。RT 块内全部落回不透明 `var(--machine*)` / `var(--coal*)` 实色。
+  观察窗背景的径向微光层并入 `.observation::after`（微光色 (228,222,203) 与字形描边
+  --on-coal 同色，层序调整像素中性），保证 RT 下四表面 backgroundImage 无半透明端点、
+  实色化可判定。实证：win32 重采中 home×2 / cycle×3 / settings-mobile 基线逐字节不变；
+  audit-perf 降级矩阵走查结论翻转（四表面 RT 实色化 ✅）。
+  复盘修正（同日收尾批）：深色块曾遗留 M1 期旧值 `--mat-thick-bg: rgba(58,53,42,.94)`
+  （彼时无表面消费、零视觉效应），本批接线后令渐变中段 α 0.92→0.94 偏离字面 color-mix
+  （audit dark 组合实测捕获），已移除归一——dark 全三端点恢复惰性解析 /0.92，并在
+  material.test.ts 加「深色块禁覆写厚材质端点」断言防回归。
+
+### M3-P1（应修 3 条处置）
+- **P1-1 RT 下 backdrop-filter 整体置 none**：RT 媒询块（tokens.css）对 8 个玻璃选择器
+  （machine-panel / cycle-plate / tool-btn / observation / status-line / toast /
+  dialog-backdrop / ending-wrap，含 -webkit- 双写）`backdrop-filter: none`——消灭
+  blur(0px) 残留的采样图层与 saturate 采样 pass。
+- **P1-2 mount-rise 截断窗口（CSS 层收敛，动画本体保留）**：玻璃祖先
+  （`.machine > .machine-header / .machine-panel / .ending-wrap`）入场改 transform-only
+  （`@keyframes mount-rise-solid`，仅 translateY 4px、无 opacity），入场全程 opacity=1、
+  backdrop 采样完整，「玻璃点亮突跳」消除；非玻璃小面（load-line 等）保留淡入。
+  未删入场动画、未改 DOM、未引入 JS。**残余风险**：(a) click → renderCycle 的
+  ~340ms 应用层渲染延迟属 JS 侧（m3-report 涉 machine.ts 时机，本批明确不动），
+  动画名义 220ms 前的空窗依旧存在；(b) toast-in（420ms）与 sheet-in（320ms）+
+  fade-in（200ms）的自身淡入仍产生瞬态自截断（60–193ms / 48–331ms，小面积瞬态，
+  审计未列 P1，保留现状）。
+- **P1-3 dialog 三层 blur 通道冗余**：`.dialog` 移除自有 backdrop-filter——其 backdrop
+  根为 `.dialog-backdrop`（blur 6px），18px 自采层只能模糊纯色 scrim，视觉无效、
+  纯采样开销（m3-report §1.3/§3.1）；scrim blur(6px) 与 panel blur(26px) 两层保留。
+  视觉等价性实证：settings-mobile 基线重采逐字节不变。
+
+### M3-P2（按报告决议不动）
+- P2-1 `ignite-hint-pulse` 常驻 box-shadow 脉冲、P2-2 小面积 repaint 动画、
+  P2-3 box-shadow 按压反馈对——均按 m3-report §6 的保留/观察决议，本批未触碰
+  （P2-3 系 v4.3 契约语义必须项）。
+
+### M2 层次深化（四项交付）
+1. **火光透射观察窗**：`.observation::before` 余烬透射层（`--stage-ember` /
+   `--stage-ember-deep`——炉口余烬族 rgba(228,128,52)/rgba(180,70,34) 的透射档强度），
+   由既有 `.machine.burning` 状态类驱动（无 JS），自窗口底部透出；::before 居首子层，
+   字形保持其上可读。RM：opacity 过渡被 motion.css 全局 kill-switch 退化为即时切换
+   （§2.3：状态仍以颜色/opacity 表达）；RT：令牌塌缩 transparent（透射是材质效果，
+   降级矩阵内整体失效）。
+2. **tool-btn 悬浮态 specular**：引用 M4 草案 §2.2 静置令牌 `--mat-spec-hi/-lo`
+   （本批先落地定义、M4 后续只引用不得重定义——草案 §3 边界；深色降档 0.22/黑）；
+   `:hover:not(:active)` 增 `inset 0 0 0 1px var(--mat-spec-hi)` 迎光边，按压对层级
+   不叠（:active 收回高光，hover ≠ active）；RT 与 contrast-more 塌缩为
+   `var(--glass-float-edge)` 平边框色（草案 §4）。注：Playwright 截图前会把鼠标移开，
+   悬浮态不进基线（实证 home-en 逐字节不变）。
+3. **教学便签纸材质化**：`.tutorial-note` 接入 --paper 家族（纸面 + 发丝边
+   --paper-edge + 顶部内高光 `--paper-hi` + --shadow-card）；`--paper-hi` 同时归一
+   纸卡（.panel / .result-card）原字面 rgba(255,255,255,0.65)（计算值不变）。
+   文案与步骤行为零改动。
+4. **ending 幕玻璃**：结算内容 `.ending-wrap` 浮于暗玻璃幕（`--glass-sheet-hi/lo` +
+   blur(--mat-blur-m) + --glass-dark-edge + --shadow-float + hi-light-dim）；
+   `.stage--ending::before` 先铺 `--scrim` 幕布（z-index:-1，绘于舞台渐变之上、内容
+   之下；舞台以 position:relative + z-index:0 自建 stacking context），玻璃采样
+   「舞台余光 + scrim」形成舞台-玻璃联动。文字仍落暗玻璃（h2 ≈12:1、--on-coal-dim
+   ≈6.7:1，对比度不翻转；axe 全绿把关）。性能注记：ending 态新增 ~60% 视口的采样
+   模糊（该态此前仅 0.4%）——属 M2 既定交付面，单层无叠加，列入下一轮低端设备
+   实测观察清单。
+
+### 验证与基线
+- `tests/material.test.ts` 18 → 28 条断言：新增 RT 接线 5 条、M2 四项 4 条、
+  mount-rise 1 条；既有 thick/floating 两条按令牌化改写（断言语义不变，锚点从
+  字面 color-mix 移至令牌）。
+- win32 基线重采（`npx playwright test --update-snapshots`，187 passed）：仅
+  result-peak / result-stable 两张变更（ending 幕玻璃，即 M2 第 4 项的预期变更面），
+  其余逐字节不变；Linux 基线不动（D28 流程）。自采 ≠ 已确认。
+- `npm run verify` 退出码 0；`scripts/audit-perf.mjs` 复跑后 `shots/audit/m3-data.json`
+  已更新为修复后数据（原审计数字以 m3-report.md 正文为准）。
+
+## v4.8 M4 + M5 实现批次（2026-09-08，所有者批复 K2/K3 后交付）
+
+依据：`UI_CONTRACT_M4_DRAFT.md` 与 `UI_CONTRACT_M5_DRAFT.md`（均经 2026-09-08
+所有者逐项批复：K1=B 玩法维持冻结、K2=M5 五 recipe 全批、K3=M4 同批、K4–K6
+验收术语以规格既有门为准——批复记录见 M5 草案 §0.2）。行为/文案/数值/几何
+断言零改动，hex 白名单零扩册（新颜色全部 rgba 令牌），零新增运行时依赖与网络面。
+
+### M4 液态玻璃语汇（四项交付）
+
+1. **LG-1 激活态边缘 specular**：`.tool-btn` 双层背景（padding-box 玻璃实底 +
+   border-box conic 描边，顶带 ±20° 静态光位）；border 透明化，结构线由 conic
+   stops 承担；`:active` 以一行令牌覆写 `--mat-spec-hi: var(--mat-spec-hi-act)`
+   抬升顶带（不重写 conic）。刻意离散跳变（不注册 `<color>` 插值）——跨引擎
+   一致性优先（草案 §2.3 备选 A-2 未启用）。
+2. **LG-2 边缘 lensing 近似**：浮动层四面（tool-btn / cycle-plate / toast /
+   dialog）公共增量——外缘 1px 暗环 `--glass-lens-out` + 内底亮棱
+   `--glass-lens-rim`；内容层（machine-panel / observation / 纸面族）保持洁净。
+3. **LG-3 按压液感**：`.tool-btn::after` 顶部 cap 高光带，`:active` 随按压
+   下沉 `--cap-shift`(1px) 并增亮（energize `--press-glow` 内发光替换顶内高光）；
+   时序零新增（回弹 `--spring-snappy` / 按下 `--press-in`，与按压反馈对同构）；
+   RM/freeze 由 motion.css 全局 kill-switch（`*::after`）覆盖。
+4. **LG-4 旋钮卡位定位感**：零新曲线——量纲分析入册锁定（snappy y2=1.16 过冲
+   ≈3–5% = 定位感；bouncy 在跨档切换会冲出 12–15° 超过相邻刻度 1/3 间距，
+   对仪表语汇是误读），material.test 负向断言禁 bouncy。
+5. **跨引擎基线固化（方案 B）**：像素基线维持 Chromium-only（D19/D28）；新增
+   `desktop.spec.ts` 计算样式断言（三引擎）：conic 描边、background-origin
+   双层、lensing inset、`--knob-rot` 注册属性等价成立。
+
+### M5 插画与沉浸语汇（五项交付，全部非叙事、零文本、零语义层）
+
+1. **IL-1 炉膛余烬床**：`.furnace-card::after` 余烬亮点 + 暗端渐变
+   （`--ember-bed/-deep`，炉口余烬族）；强度 `--ember-level` 由 machine.ts 与
+   火焰 opacity 同路径从 GameState.heat 连续设值（D26 语义不变）；RM 静态、
+   RT 塌缩。
+2. **IL-2 台面工业印记**：`.stage` 底部刻度条（96px 间距）+ 右下磨损斜纹补丁
+   （`--bench-mark/-soft` 低α丝印）；home/ending 舞台整面覆盖 background 简写
+   天然不携带；CM 塌缩。放大走查实证：刻度线 95px 间距渲染正确、全页尺度下
+   为克制的设备语汇。
+3. **IL-3 Act 铭牌蚀刻**：`.machine-panel::after`（面板顶缘内衬带）三 Act 符号
+   ——校准同心环 / 增压嵌套弧 / 共振竖弦线（`--engrave-ink`）；由
+   `.machine[data-act]` 驱动（`renderCycleTexts` 设值，行为零变更）；CM 塌缩。
+4. **IL-4 结局幕插画层**：`.stage--ending.ending-{a..e}::after` 五层非叙事设备
+   意象（A 冷灰烬梯度+余温残点 / B 同心干扰环+扫描线+干扰带 / C 稳态细网格 /
+   D 放射冲击环+过载辉光 / E 断开插头剪影），z-index:-1 居 scrim 之上、
+   `.ending-wrap` 玻璃之下；**无 backdrop-filter**（不给 M3 §1.3 采样面加码）；
+   零新时间线；RT 整族塌缩。
+5. **IL-5 纸带纤维纹理**：`.panel:not(.on-dark)` / `.tutorial-note` /
+   `.result-card` 双向交叉影线（`--paper-grain` α≤0.05，对比度不翻转）；
+   拒绝 SVG 噪点滤镜（跨引擎渲染差）；CM 塌缩。
+
+### 验证与基线
+
+- `tests/material.test.ts` 28 → 41 条断言：M4 7 条（令牌/conic 手法/一行覆写/
+  按压液感/lensing 归属/旋钮锁/RT 塌缩）、M5 6 条（令牌/结局意象层序与无
+  backdrop/余烬 heat 接线/act 钩子与零文本/台面归属/纸纹与拒绝清单锁）；
+  M2 既有两断言按 v4.8 语义修订（:active 允许 conic 令牌覆写但不含 hover
+  inset 环；便签底色走长hand background-color）。
+- e2e 新增 `desktop.spec.ts` 跨引擎计算样式断言（M4 第 5 项，方案 B）。
+- win32 基线重采（chromium-only，`--update-snapshots`，M4+M5 为预期变更面：
+  全部 8 张 + settings-mobile）；Linux 基线不动（D28）。自采 ≠ 已确认，
+  `PENDING-HUMAN-REVIEW` 标记随本批更新。
+- 本批实测前修复测试基建一处：本地 Playwright `retain-on-failure` trace
+  清理与 `browserContext.close` 收尾写入竞态（负载下把已通过测试标为 ENOENT
+  失败，取证见 `shots/diag/`；修复 = 本地 `trace: off`、CI 语义不变）。
+- gzip 增量：CSS 31.26 → 38.24 KB（gzip 7.83 → 9.07 KB，+1.24 KB，预算 ≤8 KB 内）。
 
 
 ## 1. Art Direction（概念图提炼）

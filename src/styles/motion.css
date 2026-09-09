@@ -84,6 +84,27 @@
   animation: mount-rise var(--t-mount) var(--spring-smooth) both;
 }
 
+/* M3-P1-2：玻璃祖先入场不淡入。入场期间 opacity<1 会截断 backdrop 采样
+   （自截断 + 后代截断，m3-report §3.2 实测窗口 43–560ms ≈ 名义 220ms 的 2.8 倍），
+   厚材质「台面透出」全程缺席、动画结束一瞬「玻璃点亮」突跳。改为仅位移上升
+   （入场动画本体保留；小面积非玻璃子块如 load-line 保留淡入）。
+   仅 CSS 层收敛：~340ms 应用层渲染延迟（click → renderCycle）不在本批修复面，
+   残余风险与 toast-in / sheet-in 的瞬态自淡入记录于 UI_CONTRACT v4.7 */
+.machine > .machine-header,
+.machine > .machine-panel,
+.machine > .ending-wrap {
+  animation-name: mount-rise-solid;
+}
+
+@keyframes mount-rise-solid {
+  from {
+    transform: translateY(4px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .glyph.fade-swap {
   animation: fade-in 0.2s ease; /* D25：形状替换 200ms 淡入 */
 }

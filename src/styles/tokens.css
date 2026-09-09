@@ -69,20 +69,79 @@
   --mat-blur-m: 18px;
   --mat-blur-l: 26px;
   --mat-sat: 1.35;
-  /* 厚材质（机面板：内容层，保对比为主） */
-  --mat-thick-bg: rgba(213, 201, 171, 0.94);
+  /* 厚材质（机面板：内容层，保对比为主）——渐变三端点，92% 半透叠色。
+     浅/深双外观经 var(--machine-*) 在使用处惰性解析（深色块的 machine 覆写
+     自动接管，无需在此重复定义）；RT 块整体落回不透明 machine 实色（M3-P0） */
+  --mat-thick-bg: color-mix(in srgb, var(--machine) 92%, transparent);
+  --mat-thick-bg-hi: color-mix(in srgb, var(--machine-hi) 92%, transparent);
+  --mat-thick-bg-lo: color-mix(in srgb, var(--machine-lo) 92%, transparent);
   /* 浮层玻璃（toast：内容层之上的浮动功能层，纸感玻璃） */
   --glass-float-bg: rgba(247, 242, 226, 0.78);
   --glass-float-edge: rgba(201, 191, 162, 0.6);
-  /* 深面玻璃（dialog / 观察窗：暗调半透明） */
+  /* 深面玻璃（dialog / 观察窗 / 状态条：暗调半透明）。
+     --glass-dark-bg 为族基准值（不直接消费）；三组表面端点令牌逐面冻结
+     令牌化前的字面值（浅/深外观同值——暗玻璃叠暗面板，两外观像素一致，
+     深色块无需覆写）；RT 块落回不透明 coal 实色（M3-P0） */
   --glass-dark-bg: rgba(38, 36, 32, 0.68);
   --glass-dark-edge: rgba(69, 66, 58, 0.75);
+  --glass-obs-hi: rgba(35, 33, 27, 0.8);
+  --glass-obs-lo: rgba(25, 24, 19, 0.86);
+  --glass-status-hi: rgba(38, 36, 32, 0.72);
+  --glass-status-lo: rgba(29, 27, 22, 0.78);
+  --glass-sheet-hi: rgba(45, 43, 36, 0.86);
+  --glass-sheet-lo: rgba(38, 36, 32, 0.9);
   /* 背景幕（sheet 背后压暗 + 轻模糊，macOS sheet 语汇） */
   --scrim: rgba(18, 16, 12, 0.45);
   --scrim-blur: 6px;
   /* 顶部内高光 / 细边通用 */
   --hi-light: rgba(255, 252, 240, 0.55);
   --hi-light-dim: rgba(228, 222, 203, 0.1);
+
+  /* 纸材质顶部内高光（纸卡 / 教学便签共用的 --paper 家族材质分量；双外观同值） */
+  --paper-hi: rgba(255, 255, 255, 0.65);
+
+  /* ── specular 静置令牌（UI_CONTRACT_M4_DRAFT §2.2；M2 先落地定义，M4 只引用
+     不得重定义——边界见草案 §3）。静态光位：光从正上方来（与 --hi-light 的
+     inset 0 1px 0 顶部内高光、--stage-glow 顶部光晕同一光向约定）。
+     RT / contrast-more 下塌缩为平边框色（草案 §4） */
+  --mat-spec-hi: rgba(255, 252, 240, 0.5);   /* 迎光边 specular（顶带，静置） */
+  --mat-spec-lo: rgba(122, 106, 74, 0.28);   /* 背光边（底带，暖中性暗） */
+
+  /* ── M4 液态玻璃语汇（v4.8，2026-09-08 所有者批复 K3 同批）──
+     激活态高光 / lensing 棱线 / 按压 energize / cap 位移量。
+     色 same-origin：255,252,240 = --hi-light 族；84,70,44 = 烤漆暗族。
+     RT 塌缩：lens/press → transparent、cap-shift → 0px、act 高光 → 平边框色；
+     CM 同（tokens.css 文末降级矩阵） */
+  --mat-spec-hi-act: rgba(255, 252, 240, 0.9);  /* 激活态迎光边（:active 局部覆写用） */
+  --glass-lens-out: rgba(84, 70, 44, 0.22);     /* 外缘 1px 暗环（lensing 外侧弯光） */
+  --glass-lens-rim: rgba(255, 252, 240, 0.18);  /* 内底棱线（lensing 内侧聚光） */
+  --press-glow: rgba(255, 252, 240, 0.4);       /* 按压 energize 内发光 */
+  --cap-shift: 1px;                             /* cap 高光位移量（与按压 translateY 同向同量） */
+
+  /* ── M5 插画与沉浸语汇（v4.8，2026-09-08 所有者批复 K2 全项）──
+     全部非叙事、零文本、零语义层；色相取自既有族（余烬 228,128,52/180,70,34、
+     desk-ink 58,53,39、machine 暗族 84,74,52、结局冷灰 148,168,182、
+     fidelity-bright 71,132,122、on-coal 228,222,203）。
+     RT：发光/意象族塌缩 transparent（材质效果整体失效）；CM：装饰族塌缩
+     transparent（低对比装饰让位实色边界）——见文末降级矩阵 */
+  --ember-bed: rgba(228, 128, 52, 0.55);        /* IL-1 余烬亮点（炉口余烬族） */
+  --ember-bed-deep: rgba(180, 70, 34, 0.38);    /* IL-1 余烬床暗端 */
+  --bench-mark: rgba(58, 53, 39, 0.1);          /* IL-2 台面丝印刻度（desk-ink 低α） */
+  --bench-mark-soft: rgba(58, 53, 39, 0.06);    /* IL-2 台面丝印次级线 */
+  --engrave-ink: rgba(84, 74, 52, 0.4);         /* IL-3 Act 铭牌蚀刻线（烤漆暗族） */
+  --imagery-ash: rgba(148, 168, 182, 0.16);     /* IL-4 A 冷灰烬梯度（结局既有冷灰族） */
+  --imagery-noise: rgba(228, 222, 203, 0.045);  /* IL-4 B 信号噪点（on-coal 低α） */
+  --imagery-grid: rgba(71, 132, 122, 0.12);     /* IL-4 C 稳态细网格（fidelity-bright 族） */
+  --imagery-glow: rgba(228, 128, 52, 0.3);      /* IL-4 D 过载辉光（余烬族） */
+  --imagery-ghost: rgba(228, 222, 203, 0.06);   /* IL-4 E 插头剪影（on-coal 幽影档） */
+  --imagery-ghost-line: rgba(228, 222, 203, 0.14); /* IL-4 E 剪影棱线 */
+  --paper-grain: rgba(84, 74, 52, 0.05);        /* IL-5 纸面交叉影线（暗端低α） */
+
+  /* ── 火光透射（v4.5 M2：BURNING 反馈窗内炉口火光自观察窗暗玻璃底部透出；
+     色相取炉口余烬族 rgba(228,128,52)/rgba(180,70,34) 的透射档强度。
+     发光层双外观同值；RT 下塌缩为 transparent——透射是材质效果，降级整体失效） */
+  --stage-ember: rgba(228, 128, 52, 0.32);
+  --stage-ember-deep: rgba(180, 70, 34, 0.24);
 
   /* ── 焦点环（v4 §M1 修复：浅底 1.36:1 → 双层环 ≥3:1）── */
   --focus-ring: #7a5f10;               /* 浅色：深琥珀（vs machine ≈3.3:1，WCAG 1.4.11） */
@@ -163,7 +222,9 @@
     --on-coal: #e4decb;
     --on-coal-dim: #b3ac97;
 
-    --mat-thick-bg: rgba(58, 53, 42, 0.94);
+    /* --mat-thick-bg/-hi/-lo 深色不覆写：经上方 :root 的 color-mix 惰性解析
+       到深色 machine 覆写值（M3-P0；曾遗留的 rgba(58,53,42,.94) 独立覆写会使
+       渐变中段 α 0.92→0.94 偏离令牌化前的字面 color-mix，已移除归一） */
     --glass-float-bg: rgba(207, 200, 180, 0.82);
     --glass-float-edge: rgba(148, 138, 114, 0.6);
     --glass-dark-bg: rgba(28, 26, 21, 0.7);
@@ -174,6 +235,25 @@
 
     --focus-ring: #d4a72c;             /* 深底回到琥珀原色 ≈6.9:1 */
     --focus-halo: rgba(212, 167, 44, 0.35);
+
+    /* specular 深色值（M4 草案 §2.2：深底上高光降档防发光；背光边转黑） */
+    --mat-spec-hi: rgba(255, 252, 240, 0.22);
+    --mat-spec-lo: rgba(0, 0, 0, 0.35);
+
+    /* M4 液态玻璃深色值（草案 §2.2：act 高光降档；lens 外环转黑、内棱转暗米；
+       press 内发光近零防发光） */
+    --mat-spec-hi-act: rgba(255, 252, 240, 0.4);
+    --glass-lens-out: rgba(0, 0, 0, 0.4);
+    --glass-lens-rim: rgba(228, 222, 203, 0.08);
+    --press-glow: rgba(255, 252, 240, 0.14);
+
+    /* M5 插画深色值：台面丝印转亮线（暗台面上刻度反白）；蚀刻转黑；
+       纸纹加深一档（暗纸面 #cfc8b4 上暗端影线）；炉口/结局意象双外观同值
+       （炉膛与结局幕恒为暗面，不覆写） */
+    --bench-mark: rgba(207, 200, 180, 0.07);
+    --bench-mark-soft: rgba(207, 200, 180, 0.045);
+    --engrave-ink: rgba(0, 0, 0, 0.4);
+    --paper-grain: rgba(0, 0, 0, 0.06);
 
     --shadow-panel: 0 26px 48px rgba(0, 0, 0, 0.5), 0 6px 14px rgba(0, 0, 0, 0.3);
     --shadow-card: 0 2px 0 rgba(0, 0, 0, 0.3), 0 10px 22px rgba(0, 0, 0, 0.25);
@@ -186,13 +266,57 @@
 @media (prefers-reduced-transparency: reduce) {
   :root {
     --mat-thick-bg: var(--machine);
-    --glass-float-bg: var(--paper);
+    --mat-thick-bg-hi: var(--machine-hi);
+    --mat-thick-bg-lo: var(--machine-lo);
+    --glass-obs-hi: var(--coal-hi);
+    --glass-obs-lo: var(--coal);
+    --glass-status-hi: var(--coal-hi);
+    --glass-status-lo: var(--coal);
+    --glass-sheet-hi: var(--coal-hi);
+    --glass-sheet-lo: var(--coal);
     --glass-dark-bg: var(--coal);
+    --glass-float-bg: var(--paper);
     --scrim: rgba(18, 16, 12, 0.72);
     --scrim-blur: 0px;
     --mat-blur-s: 0px;
     --mat-blur-m: 0px;
     --mat-blur-l: 0px;
+    /* specular / 火光透射塌缩（M4 草案 §4：低α光学效果让位给实色边界） */
+    --mat-spec-hi: var(--glass-float-edge);
+    --mat-spec-lo: var(--glass-float-edge);
+    --mat-spec-hi-act: var(--glass-float-edge);
+    --stage-ember: transparent;
+    --stage-ember-deep: transparent;
+    /* M4 / M5 塌缩（v4.8：lens/press/cap 全失效；发光与意象族失效；
+       台面丝印/蚀刻/纸纹为实色装饰线，非透明度效果，RT 下保留） */
+    --glass-lens-out: transparent;
+    --glass-lens-rim: transparent;
+    --press-glow: transparent;
+    --cap-shift: 0px;
+    --ember-bed: transparent;
+    --ember-bed-deep: transparent;
+    --imagery-ash: transparent;
+    --imagery-noise: transparent;
+    --imagery-grid: transparent;
+    --imagery-glow: transparent;
+    --imagery-ghost: transparent;
+    --imagery-ghost-line: transparent;
+  }
+
+  /* M3-P1-1：blur(0px) 仍保留采样图层与 saturate 采样 pass（m3-report §4.1），
+     RT 下对全部玻璃表面整体置 none（含 -webkit- 前缀双写）。
+     本文件先于 machine/controls 加载：:root 前缀抬高特异性（0,2,0 > 基础规则 0,1,0），
+     保证覆盖与文件序无关。.dialog 自 M3-P1-3 起不再携带自有 backdrop-filter，不在本列表内 */
+  :root .machine-panel,
+  :root .cycle-plate,
+  :root .tool-btn,
+  :root .observation,
+  :root .status-line,
+  :root .toast,
+  :root .dialog-backdrop,
+  :root .ending-wrap {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
@@ -202,6 +326,16 @@
     --focus-halo: rgba(74, 58, 8, 0.5);
     --focus-width: 4px;
     --ink-soft: #3f3a2b;
+    /* specular 同 RT 塌缩（M4 草案 §4：增强对比下低α描边让位给实色边界） */
+    --mat-spec-hi: var(--glass-float-edge);
+    --mat-spec-lo: var(--glass-float-edge);
+    --mat-spec-hi-act: var(--glass-float-edge);
+    /* M5 装饰族塌缩（v4.8 §4：CM 下低对比装饰让位实色边界；状态承载族
+       IL-1/IL-4 保留——其承载状态信息且不受对比度增强损害） */
+    --bench-mark: transparent;
+    --bench-mark-soft: transparent;
+    --engrave-ink: transparent;
+    --paper-grain: transparent;
   }
   @media (prefers-color-scheme: dark) {
     :root {

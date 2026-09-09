@@ -38,3 +38,26 @@
   裁刀拖拽 1:1 直控旁路（.dragging 禁过渡）、指针/弧线阻尼过渡、
   焦点环对比度修复（1.36:1→≈3.3:1，WCAG 1.4.11）。行为/文案/数值未变；
   几何仍由 e2e/layout.spec.ts 保护。PENDING-HUMAN-REVIEW 状态不变（自采 ≠ 已确认）。
+
+## 变更记录（2026-09-08 · UI v4 M2+M3 修复）
+
+- 全量重采（win32，8 张）：UI_CONTRACT v4.5 M2 层次深化 + M3 审计修复批（v4.7）。
+  实际变更面仅 result-peak / result-stable 两张——ending 幕玻璃（.ending-wrap 暗玻璃幕
+  + stage scrim 幕布）。其余 6 张（home×2 / cycle×3 / settings-mobile 由 mobile 目录承载）
+  逐字节不变：M3-P0 令牌化按「浅/深计算值与当前像素一致」约束实施，P1-3 移除的 dialog
+  采样层本就视觉无效，均为实证（基线字节比对）而非推断。
+  其余交付面不在基线覆盖内：火光透射仅存在于 BURNING 反馈窗口（快照均为稳态）；
+  tool-btn 悬浮 specular 不入基线（Playwright 截图前移开鼠标）；教学便签无桌面快照。
+  行为/文案/数值/几何未变。自采 ≠ 已确认。
+
+## 变更记录（2026-09-08 · UI v4.8 M4+M5 实现批次）
+
+- 全量重采（win32，本目录 8 张）：UI_CONTRACT v4.8（所有者批复 K2/K3 后交付）。
+  M4 液态玻璃：tool-btn conic 光学描边 + 四浮动面 lensing 棱线（含 cycle-plate /
+  tool-btn 入镜的本目录全部快照）；M5 插画：台面丝印刻度与角部斜纹（cycle×3）、
+  Act 铭牌蚀刻（cycle×3）、纸面交叉影线（全部含纸卡面）、结局幕意象层
+  （result-peak / result-stable，A/D 与 C 各自的 ash/glow/grid 意象）。
+  焦点面：home×2 变更仅 tool-btn 静态 conic+lensing（hover/active 态不入基线）。
+  行为/文案/数值/几何断言零改动；gzip 增量 +1.24 KB（预算 ≤8 KB）。
+  交付细节见 UI_CONTRACT.md v4.8 节；批复记录见 UI_CONTRACT_M5_DRAFT.md §0.2。
+  自采 ≠ 已确认。

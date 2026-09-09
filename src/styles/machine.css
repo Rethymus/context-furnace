@@ -9,10 +9,33 @@
   justify-content: center;
   align-items: flex-start;
   padding: 18px 24px 40px;
-  background:
+  /* v4.8 M5 IL-2 台面工业印记：底部刻度条 + 右下磨损斜纹补丁（丝印装饰，
+     desk-ink 低α；CM 下塌缩 transparent；home/ending 舞台各自整面覆盖 background
+     简写，天然不携带本层）。长hand 分层是为把前两层 confine 到局部条带 */
+  background-image:
+    repeating-linear-gradient(90deg, var(--bench-mark) 0 2px, rgba(58, 53, 39, 0) 2px 96px),
+    repeating-linear-gradient(45deg, var(--bench-mark-soft) 0 1px, rgba(58, 53, 39, 0) 1px 8px),
     radial-gradient(1100px 520px at 50% -8%, var(--stage-glow) 0%, rgba(255, 246, 220, 0) 62%),
     radial-gradient(130% 90% at 50% 118%, var(--stage-shade) 0%, rgba(96, 84, 60, 0) 58%),
     linear-gradient(180deg, var(--desk-hi) 0%, var(--desk) 52%, var(--desk-deep) 100%);
+  background-size:
+    auto 12px,
+    140px 84px,
+    auto auto,
+    auto auto,
+    auto auto;
+  background-position:
+    12px calc(100% - 22px),
+    calc(100% - 26px) calc(100% - 36px),
+    0 0,
+    0 0,
+    0 0;
+  background-repeat:
+    repeat-x,
+    no-repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat;
 }
 
 /* 首页：暗调书桌（台灯暖光 + 暗角，呼应概念板 01 的桌面夜景） */
@@ -23,11 +46,94 @@
     linear-gradient(180deg, #463d31 0%, #332c24 48%, #241f19 100%);
 }
 
-/* 结局幕：按结局变调的暗色舞台（概念板 09/10） */
+/* 结局幕：按结局变调的暗色舞台（概念板 09/10）。
+   M2：舞台先铺 scrim 幕布（::before，z-index:-1 绘于舞台渐变之上、内容之下），
+   结算玻璃幕（.ending-wrap）再采样「舞台余光 + scrim」形成层次联动 */
 .stage--ending {
+  position: relative;
+  z-index: 0; /* 自成 stacking context：保证 ::before 负 z 序位于本层背景之上 */
   background:
     radial-gradient(900px 480px at 50% 112%, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 60%),
     linear-gradient(180deg, #2b2721 0%, #1d1b16 100%);
+}
+
+.stage--ending::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--scrim); /* M2 幕布 scrim（dialog 同源令牌；RT 下 α 0.72） */
+  pointer-events: none;
+}
+
+/* v4.8 M5 IL-4 结局幕插画层：五个结局各一层非叙事设备意象（A 冷灰烬梯度 /
+   B 信号噪点密度 / C 稳态细网格 / D 过载辉光 / E 断开的插头剪影），绘于
+   scrim（::before，同为 z-index:-1 但树序在先）之上、.ending-wrap 玻璃之下。
+   全部渐变+几何、零文本、零新时间线、无 backdrop-filter（M3 §1.3 不加采样面）；
+   RM：天然静态；RT：--imagery-* 族整体塌缩 transparent（tokens.css 降级矩阵） */
+.stage--ending::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.stage--ending.ending-a::after {
+  /* A COLD END：炉底冷灰烬梯度 + 余温残点 */
+  background:
+    radial-gradient(640px 200px at 50% 96%, var(--imagery-ash) 0%, rgba(148, 168, 182, 0) 72%),
+    radial-gradient(circle at 31% 91%, var(--imagery-ash) 0 2px, rgba(148, 168, 182, 0) 3px),
+    radial-gradient(circle at 44% 94%, var(--imagery-ash) 0 1.5px, rgba(148, 168, 182, 0) 2.5px),
+    radial-gradient(circle at 58% 90%, var(--imagery-ash) 0 2.5px, rgba(148, 168, 182, 0) 3.5px),
+    radial-gradient(circle at 70% 95%, var(--imagery-ash) 0 1.5px, rgba(148, 168, 182, 0) 2.5px);
+}
+
+.stage--ending.ending-b::after {
+  /* B SIGNAL LOST：同心干扰环 + 细竖扫描线 + 水平干扰带 */
+  background:
+    repeating-radial-gradient(circle at 50% 46%, var(--imagery-noise) 0 1px, rgba(228, 222, 203, 0) 1px 26px),
+    repeating-linear-gradient(90deg, var(--imagery-noise) 0 1px, rgba(228, 222, 203, 0) 1px 9px),
+    linear-gradient(180deg, rgba(228, 222, 203, 0) 34%, var(--imagery-noise) 46%, rgba(228, 222, 203, 0) 58%);
+}
+
+.stage--ending.ending-c::after {
+  /* C STABLE RUN：稳态工程细网格（fidelity 族低α）+ 底部软光 */
+  background:
+    repeating-linear-gradient(0deg, var(--imagery-grid) 0 1px, rgba(71, 132, 122, 0) 1px 30px),
+    repeating-linear-gradient(90deg, var(--imagery-grid) 0 1px, rgba(71, 132, 122, 0) 1px 30px),
+    radial-gradient(720px 320px at 50% 102%, var(--imagery-grid) 0%, rgba(71, 132, 122, 0) 70%);
+}
+
+.stage--ending.ending-d::after {
+  /* D PEAK EFFICIENCY：自炉位的放射冲击环 + 过载辉光（余烬族） */
+  background:
+    repeating-radial-gradient(circle at 50% 104%, var(--imagery-glow) 0 1.5px, rgba(228, 128, 52, 0) 1.5px 34px),
+    radial-gradient(560px 260px at 50% 100%, var(--imagery-glow) 0%, rgba(228, 128, 52, 0) 68%);
+}
+
+.stage--ending.ending-e::after {
+  /* E UNPLUGGED：右下角断开的插头剪影（本体 + 双插脚 + 短线缆 + 底棱线，
+     on-coal 幽影档；非叙事设备事实的非叙事呈现） */
+  background-image:
+    linear-gradient(var(--imagery-ghost), var(--imagery-ghost)),
+    linear-gradient(var(--imagery-ghost), var(--imagery-ghost)),
+    linear-gradient(var(--imagery-ghost), var(--imagery-ghost)),
+    linear-gradient(var(--imagery-ghost-line), var(--imagery-ghost-line)),
+    linear-gradient(var(--imagery-ghost-line), var(--imagery-ghost-line));
+  background-size:
+    56px 34px,
+    4px 14px,
+    4px 14px,
+    120px 2px,
+    56px 1px;
+  background-position:
+    right 110px bottom 110px,
+    right 128px bottom 146px,
+    right 144px bottom 146px,
+    right 166px bottom 122px,
+    right 110px bottom 110px;
+  background-repeat: no-repeat;
 }
 
 .stage--ending.ending-a {
@@ -107,7 +213,12 @@
   border: 1px solid var(--glass-float-edge);
   border-radius: 999px;
   padding: 5px 16px;
-  box-shadow: 0 2px 0 var(--shadow-press), inset 0 1px 0 var(--hi-light);
+  /* v4.8 M4 LG-2：胶囊端点处 lensing 棱线自然汇聚（外缘暗环 + 内底亮棱） */
+  box-shadow:
+    0 0 0 1px var(--glass-lens-out),
+    0 2px 0 var(--shadow-press),
+    inset 0 1px 0 var(--hi-light),
+    inset 0 -1px 0 var(--glass-lens-rim);
   white-space: nowrap;
 }
 
@@ -119,10 +230,21 @@
 }
 
 .tool-btn {
-  background: var(--glass-float-bg);
+  position: relative; /* v4.8 M4 LG-3：cap 高光伪元素的定位锚 */
+  /* v4.8 M4 LG-1：双层背景把 conic 光学描边画在 border 圈层（padding-box 玻璃
+     实底 + border-box conic；border 透明化，结构线由 conic stops 承担）。
+     静态光位顶带 ±20°（与 --hi-light 顶内高光同一光向约定）；RT/CM 下
+     conic 两端点塌缩同色 = 平边框（tokens.css 降级矩阵） */
+  background:
+    linear-gradient(var(--glass-float-bg), var(--glass-float-bg)) padding-box,
+    conic-gradient(
+      var(--mat-spec-lo) 0deg 150deg,
+      var(--mat-spec-hi) 170deg 190deg,
+      var(--mat-spec-lo) 210deg 360deg
+    ) border-box;
   backdrop-filter: blur(var(--mat-blur-s)) saturate(var(--mat-sat));
   -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(var(--mat-sat));
-  border: 1px solid var(--glass-float-edge);
+  border: 1px solid transparent;
   border-radius: 8px;
   color: var(--ink);
   padding: 5px 10px;
@@ -131,18 +253,62 @@
   font-size: 14px;
   min-width: 44px;
   min-height: 36px;
-  box-shadow: 0 2px 0 var(--shadow-press), inset 0 1px 0 var(--hi-light);
+  /* v4.8 M4 LG-2：外缘 1px 暗环 + 内底亮棱（lensing 近似；结构线已透明化，
+     外环由 --glass-lens-out 承担） */
+  box-shadow:
+    0 0 0 1px var(--glass-lens-out),
+    0 2px 0 var(--shadow-press),
+    inset 0 1px 0 var(--hi-light),
+    inset 0 -1px 0 var(--glass-lens-rim);
   transition:
     transform var(--spring-snappy),
     box-shadow var(--spring-snappy);
 }
 
 .tool-btn:active {
+  --mat-spec-hi: var(--mat-spec-hi-act); /* M4：激活 = 一行令牌局部覆写，conic 顶带增亮 */
   transform: translateY(1px);
-  box-shadow: 0 0 0 var(--shadow-press), inset 0 1px 0 var(--hi-light);
+  /* v4.8 M4 LG-3：按压液感——energize 内发光（--press-glow）替换顶内高光，
+     按压反馈对（transform + box-shadow + 按下沿）语义保持 */
+  box-shadow:
+    0 0 0 0 var(--shadow-press),
+    inset 0 2px 4px var(--press-glow),
+    inset 0 -1px 0 var(--glass-lens-rim);
   transition:
     transform var(--press-in),
     box-shadow var(--press-in);
+}
+
+/* v4.8 M4 LG-3：顶部 cap 高光带随按压下沉 1px 并增亮。RM/freeze：transition
+   被 motion.css 全局 kill-switch 退化（0.01ms），状态切换瞬时；
+   RT：--cap-shift 0px（高光带仍在但不位移）。pointer-events 不参与命中 */
+.tool-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--hi-light) 0%, rgba(255, 252, 240, 0) 42%);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: transform var(--spring-snappy), opacity var(--spring-snappy);
+}
+
+.tool-btn:active::after {
+  transform: translateY(var(--cap-shift));
+  opacity: 0.85;
+  transition: transform var(--press-in), opacity var(--press-in);
+}
+
+/* v4.5 M2 悬浮态 specular：引用 M4 草案 §2.2 的静置令牌（--mat-spec-hi 顶带
+   迎光边描形；RT / contrast-more 下塌缩为平边框色）。
+   hover ≠ active：:not(:active) 保证按压对优先——受压材质收回高光（层级不叠） */
+.tool-btn:hover:not(:active) {
+  box-shadow:
+    0 0 0 1px var(--glass-lens-out),
+    0 2px 0 var(--shadow-press),
+    inset 0 1px 0 var(--hi-light),
+    inset 0 0 0 1px var(--mat-spec-hi),
+    inset 0 -1px 0 var(--glass-lens-rim);
 }
 
 .load-line {
@@ -158,11 +324,14 @@
       台面渐变从背后透出层次。HIG：内容层用标准材质，不越级用浮动层玻璃） ── */
 .machine-panel {
   position: relative;
+  /* v4 厚材质：叠色 8% 半透（color-mix 92%）+ 采样模糊，台面渐变从背后透出层次。
+     M3-P0：渐变端点改引 --mat-thick-bg* 双外观令牌（浅/深计算值与字面 color-mix
+     逐像素一致；RT 块落回不透明 machine 实色，见 tokens.css 降级矩阵） */
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--machine-hi) 92%, transparent) 0%,
-    color-mix(in srgb, var(--machine) 92%, transparent) 58%,
-    color-mix(in srgb, var(--machine-lo) 92%, transparent) 100%
+    var(--mat-thick-bg-hi) 0%,
+    var(--mat-thick-bg) 58%,
+    var(--mat-thick-bg-lo) 100%
   );
   backdrop-filter: blur(var(--mat-blur-l)) saturate(var(--mat-sat));
   -webkit-backdrop-filter: blur(var(--mat-blur-l)) saturate(var(--mat-sat));
@@ -173,6 +342,51 @@
     var(--shadow-panel),
     inset 0 1px 0 var(--hi-light);
   padding: 20px 22px;
+}
+
+/* v4.8 M5 IL-3 Act 铭牌蚀刻：三个 Act（§11 CALIBRATION / PRESSURE / RESONANCE）
+   各一组抽象蚀刻符号（同心环 / 上向弧 / 竖向弦线），位于面板顶缘内衬带。
+   由 .machine[data-act] 状态钩子驱动（machine.ts renderCycleTexts 设值，
+   行为零变更）；纯装饰、伪元素零语义、不进 a11y 树；CM 下塌缩 transparent */
+.machine-panel::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 18px;
+  width: 44px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.machine[data-act='1'] .machine-panel::after {
+  /* 校准：同心细环（校准规） */
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(84, 74, 52, 0) 0 2px,
+    var(--engrave-ink) 2px 3px,
+    rgba(84, 74, 52, 0) 3px 5.5px,
+    var(--engrave-ink) 5.5px 6.5px,
+    rgba(84, 74, 52, 0) 6.5px 8px
+  );
+}
+
+.machine[data-act='2'] .machine-panel::after {
+  /* 增压：自下而上的嵌套压力弧 */
+  background: radial-gradient(
+    circle at 50% 150%,
+    rgba(84, 74, 52, 0) 0 24px,
+    var(--engrave-ink) 24px 25px,
+    rgba(84, 74, 52, 0) 25px 29px,
+    var(--engrave-ink) 29px 30px,
+    rgba(84, 74, 52, 0) 30px 33px,
+    var(--engrave-ink) 33px 34px,
+    rgba(84, 74, 52, 0) 34px
+  );
+}
+
+.machine[data-act='3'] .machine-panel::after {
+  /* 共振：细密竖向弦线 */
+  background: repeating-linear-gradient(90deg, var(--engrave-ink) 0 1px, rgba(84, 74, 52, 0) 1px 7px);
 }
 
 .workspace {
@@ -201,10 +415,16 @@
 }
 
 .panel:not(.on-dark) {
-  background: var(--paper);
+  /* v4.8 M5 IL-5 纸带纤维纹理：双向交叉影线（暗端低α --paper-grain，
+     α≤0.05 不触对比度翻转；CM 下塌缩 transparent；不用 SVG 噪点滤镜——
+     跨引擎渲染差威胁基线，拒绝清单项） */
+  background-image:
+    repeating-linear-gradient(24deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 6px),
+    repeating-linear-gradient(116deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 7px);
+  background-color: var(--paper);
   border: 1px solid var(--paper-edge);
   border-radius: var(--r-card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), var(--shadow-card);
+  box-shadow: inset 0 1px 0 var(--paper-hi), var(--shadow-card); /* --paper-hi 同字面值（M2 令牌归一） */
   padding: 10px 16px 13px;
 }
 
@@ -384,9 +604,10 @@
   height: 104px;
   border-radius: var(--r-card);
   border: 1px solid var(--glass-dark-edge);
-  background:
-    radial-gradient(120% 90% at 50% 0%, rgba(228, 222, 203, 0.06) 0%, rgba(228, 222, 203, 0) 55%),
-    linear-gradient(180deg, rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%);
+  /* M3-P0：端点改引 --glass-obs-* 令牌（值与字面 rgba 逐像素一致；
+     RT 块落回不透明 coal 实色）。径向微光层移至 ::after（见下），
+     保证 RT 下本面 backgroundImage 无半透明端点、实色化可判定 */
+  background: linear-gradient(180deg, var(--glass-obs-hi) 0%, var(--glass-obs-lo) 100%);
   backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
   -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
   box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.55);
@@ -395,16 +616,43 @@
   color: var(--on-coal);
 }
 
-.observation::after {
+/* M2 火光透射：BURNING（IGNITE 反馈窗，.machine.burning 状态类驱动，无 JS）时
+   炉口火光自暗玻璃底部透出（--stage-ember 族，与结局舞台余烬同一光语汇）。
+   ::before 为首子层 → 绘于 .glyph 之下，字形保持可读。
+   RM：opacity 过渡被 motion.css 全局 kill-switch 退化为瞬时切换（§2.3 状态表达）；
+   RT：令牌塌缩为 transparent（透射是材质效果，降级矩阵内整体失效） */
+.observation::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 20%,
-    rgba(255, 255, 255, 0) 34%
+    0deg,
+    var(--stage-ember) 0%,
+    var(--stage-ember-deep) 34%,
+    rgba(0, 0, 0, 0) 78%
   );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--spring-smooth);
+}
+
+.machine.burning .observation::before {
+  opacity: 1;
+}
+
+/* 玻璃微光（原 .observation 背景的径向层 + 斜向高光，合并为同一覆盖层） */
+.observation::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(228, 222, 203, 0.06) 0%, rgba(228, 222, 203, 0) 55%),
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.02) 20%,
+      rgba(255, 255, 255, 0) 34%
+    );
   pointer-events: none;
 }
 
@@ -457,6 +705,29 @@
   opacity: 0;
 }
 
+/* v4.8 M5 IL-1 炉膛余烬床：炉口底部余烬亮点 + 暗端渐变（--ember-bed 族，
+   炉口余烬同源色相）。强度 --ember-level 由 machine.ts 与火焰 opacity 同路径
+   从 GameState.heat 连续设值（D26 映射语义不变，仅补强视觉密度）。
+   RM：静态亮点（无摇曳）；RT：塌缩 transparent */
+.furnace-card::after {
+  content: '';
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 5px;
+  height: 36px;
+  background:
+    radial-gradient(circle at 14% 64%, var(--ember-bed) 0 2px, rgba(228, 128, 52, 0) 2.5px),
+    radial-gradient(circle at 30% 38%, var(--ember-bed-deep) 0 1.5px, rgba(228, 128, 52, 0) 2px),
+    radial-gradient(circle at 45% 70%, var(--ember-bed) 0 2.5px, rgba(228, 128, 52, 0) 3px),
+    radial-gradient(circle at 58% 30%, var(--ember-bed-deep) 0 1.5px, rgba(228, 128, 52, 0) 2px),
+    radial-gradient(circle at 72% 62%, var(--ember-bed) 0 2px, rgba(228, 128, 52, 0) 2.5px),
+    radial-gradient(circle at 86% 44%, var(--ember-bed-deep) 0 1.5px, rgba(228, 128, 52, 0) 2px),
+    linear-gradient(0deg, var(--ember-bed-deep) 0%, rgba(180, 70, 34, 0) 90%);
+  opacity: var(--ember-level, 0);
+  pointer-events: none;
+}
+
 /* ── 状态条（机器消息 — 深炭 LCD 条；v4 暗调薄玻璃） ── */
 .status-line {
   min-height: 38px;
@@ -464,7 +735,9 @@
   font-size: 14px;
   letter-spacing: 0.04em;
   color: var(--on-coal);
-  background: linear-gradient(180deg, rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%);
+  /* M3-P0：端点改引 --glass-status-* 令牌（值与字面 rgba 逐像素一致；
+     RT 块落回不透明 coal 实色，见 tokens.css 降级矩阵） */
+  background: linear-gradient(180deg, var(--glass-status-hi) 0%, var(--glass-status-lo) 100%);
   backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
   -webkit-backdrop-filter: blur(var(--mat-blur-s)) saturate(1.2);
   border: 1px solid var(--glass-dark-edge);
@@ -576,7 +849,18 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 2vh 0 4vh;
+  padding: 2vh 28px 4vh;
+  margin-top: 12px;
+  /* v4.5 M2 结局幕玻璃：结算内容浮于暗玻璃幕（--glass-sheet 深面浮层端点，
+     与 dialog 同族）；backdrop 采样「舞台余光 + scrim 幕布」（.stage--ending::before）
+     形成舞台与玻璃的联动。亮文字仍落暗玻璃（#f0e9d6 ≈12:1 / --on-coal-dim ≈6.7:1，
+     对比度不翻转，axe 把关）；RT 下端点落回不透明 coal 且 blur 置 none */
+  background: linear-gradient(180deg, var(--glass-sheet-hi) 0%, var(--glass-sheet-lo) 100%);
+  backdrop-filter: blur(var(--mat-blur-m)) saturate(var(--mat-sat));
+  -webkit-backdrop-filter: blur(var(--mat-blur-m)) saturate(var(--mat-sat));
+  border: 1px solid var(--glass-dark-edge);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow-float), inset 0 1px 0 var(--hi-light-dim);
 }
 
 .ending-banner {
@@ -625,12 +909,15 @@
   width: 104px;
 }
 
-/* 结果纸卡（概念板 08 的纸感承载） */
+/* 结果纸卡（概念板 08 的纸感承载；v4.8 M5 IL-5 纸纹同 .panel:not(.on-dark)） */
 .result-card {
-  background: var(--paper);
+  background-image:
+    repeating-linear-gradient(24deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 6px),
+    repeating-linear-gradient(116deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 7px);
+  background-color: var(--paper);
   border: 1px solid var(--paper-edge);
   border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 24px 50px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 1px 0 var(--paper-hi), 0 24px 50px rgba(0, 0, 0, 0.45); /* --paper-hi 同字面值（M2 令牌归一） */
   padding: 18px 26px 20px;
   width: min(460px, 100%);
   margin-top: 14px;
@@ -677,17 +964,23 @@
   padding: 8px 14px;
 }
 
-/* 教学提示（纸条便签 + 步进圆点 — 概念板 03–05 的步骤流强调） */
+/* 教学提示（纸条便签 + 步进圆点 — 概念板 03–05 的步骤流强调）。
+   v4.5 M2 纸材质化：接入 --paper 家族（纸面 + 发丝边 --paper-edge +
+   顶部内高光 --paper-hi，与纸卡同源；文案与步骤行为不变） */
 .tutorial-note {
   margin-top: 14px;
   min-height: 44px;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--paper);
+  /* v4.8 M5 IL-5 纸纹同源（便签纸与纸卡同一纤维语汇） */
+  background-image:
+    repeating-linear-gradient(24deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 6px),
+    repeating-linear-gradient(116deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 7px);
+  background-color: var(--paper);
   border: 1px solid var(--paper-edge);
   border-radius: 8px;
-  box-shadow: var(--shadow-card);
+  box-shadow: inset 0 1px 0 var(--paper-hi), var(--shadow-card);
   padding: 10px 16px;
   font-size: 16px;
   color: var(--ink);

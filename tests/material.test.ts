@@ -68,22 +68,33 @@ describe('v4 material & motion tokens', () => {
 describe('v4 material layer wiring', () => {
   it('machine panel uses thick material (content-layer standard material)', () => {
     expect(machine).toContain('blur(var(--mat-blur-l))');
-    expect(machine).toContain('color-mix(in srgb, var(--machine) 92%, transparent)');
+    // M3-P0 后端点经 --mat-thick-bg* 令牌接线（浅/深计算值与字面 color-mix 一致）
+    expect(tokens).toContain('--mat-thick-bg: color-mix(in srgb, var(--machine) 92%, transparent)');
+    expect(tokens).toContain('--mat-thick-bg-hi: color-mix(in srgb, var(--machine-hi) 92%, transparent)');
+    expect(tokens).toContain('--mat-thick-bg-lo: color-mix(in srgb, var(--machine-lo) 92%, transparent)');
+    const panel = machine.split('.machine-panel {')[1]?.split('}')[0] ?? '';
+    expect(panel).toContain('var(--mat-thick-bg-hi)');
+    expect(panel).toContain('var(--mat-thick-bg)');
+    expect(panel).toContain('var(--mat-thick-bg-lo)');
   });
 
   it('observation window & status line sample the backdrop (dark glass)', () => {
     const obs = machine.split('.observation {')[1]?.split('}')[0] ?? '';
     expect(obs).toContain('backdrop-filter');
+    expect(obs).toContain('var(--glass-obs-hi)');
+    expect(obs).toContain('var(--glass-obs-lo)');
     const status = machine.split('.status-line {')[1]?.split('}')[0] ?? '';
     expect(status).toContain('backdrop-filter');
+    expect(status).toContain('var(--glass-status-hi)');
+    expect(status).toContain('var(--glass-status-lo)');
   });
 
-  it('floating layer (toast/dialog/plate/tool-btn) is real glass', () => {
+  it('floating layer (toast/plate/tool-btn/ending) is real glass', () => {
     for (const block of [
       controls.split('.toast {')[1]?.split('}')[0] ?? '',
-      controls.split('.dialog {')[1]?.split('}')[0] ?? '',
       machine.split('.cycle-plate {')[1]?.split('}')[0] ?? '',
       machine.split('.tool-btn {')[1]?.split('}')[0] ?? '',
+      machine.split('.ending-wrap {')[1]?.split('}')[0] ?? '',
     ]) {
       expect(block).toContain('backdrop-filter');
       expect(block).toContain('var(--glass-');
@@ -142,6 +153,281 @@ describe('v4 motion system', () => {
   it('reduced-motion kill-switch still covers everything', () => {
     expect(motion).toContain('@media (prefers-reduced-motion: reduce)');
     expect(motion).toContain('[data-freeze=\'1\']');
+  });
+});
+
+// ── v4.7 M3 修复批：RT 降级矩阵接线（P0-1 / P1-1 / P1-3）──
+describe('v4 RT degradation wiring (M3-P0/P1)', () => {
+  it('thick & dark surfaces consume dual-appearance tokens so RT can take over', () => {
+    const panel = machine.split('.machine-panel {')[1]?.split('}')[0] ?? '';
+    expect(panel).toContain('linear-gradient');
+    const dialog = controls.split('.dialog {')[1]?.split('}')[0] ?? '';
+    expect(dialog).toContain('var(--glass-sheet-hi)');
+    expect(dialog).toContain('var(--glass-sheet-lo)');
+  });
+
+  it('token light values are pixel-frozen to the pre-token literals (zero drift)', () => {
+    // 深面玻璃族：浅/深外观同值（暗玻璃叠暗面板），深色块不覆写即双外观冻结
+    expect(tokens).toContain('--glass-obs-hi: rgba(35, 33, 27, 0.8)');
+    expect(tokens).toContain('--glass-obs-lo: rgba(25, 24, 19, 0.86)');
+    expect(tokens).toContain('--glass-status-hi: rgba(38, 36, 32, 0.72)');
+    expect(tokens).toContain('--glass-status-lo: rgba(29, 27, 22, 0.78)');
+    expect(tokens).toContain('--glass-sheet-hi: rgba(45, 43, 36, 0.86)');
+    expect(tokens).toContain('--glass-sheet-lo: rgba(38, 36, 32, 0.9)');
+    // 厚材质族：惰性 var 链（浅/深分别解析 machine/machine-hi/machine-lo）
+    expect(tokens).toContain('--mat-thick-bg: color-mix(in srgb, var(--machine) 92%, transparent)');
+    // 深色块不得覆写厚材质三端点（一旦覆写即绕过 machine 惰性链，深色中段 α 偏离
+    // 令牌化前字面 color-mix —— 2026-09-08 复盘修正：遗留 rgba(58,53,42,.94) 已移除；
+    // 断言取「声明形」token+冒号，注释里的令牌名不算数）
+    const darkBlock = tokens.split('@media (prefers-color-scheme: dark)')[1]?.split('@media (prefers-reduced-transparency')[0] ?? '';
+    expect(darkBlock).not.toMatch(/--mat-thick-bg(-hi|-lo)?\s*:/);
+  });
+
+  it('RT block collapses every thick/dark surface token to opaque (no translucent endpoint)', () => {
+    const rt = tokens.split('@media (prefers-reduced-transparency: reduce)')[1] ?? '';
+    for (const t of [
+      '--mat-thick-bg:', '--mat-thick-bg-hi:', '--mat-thick-bg-lo:',
+      '--glass-obs-hi:', '--glass-obs-lo:',
+      '--glass-status-hi:', '--glass-status-lo:',
+      '--glass-sheet-hi:', '--glass-sheet-lo:',
+    ]) {
+      expect(rt).toContain(t);
+    }
+    // 全部落回不透明 var(--machine*)/var(--coal*) 实色：端点令牌无任何 rgba 字面值
+    expect(rt).not.toMatch(/--(mat-thick|glass-(obs|status|sheet))[^;]*rgba/);
+  });
+
+  it('RT kills backdrop-filter outright (no blur(0px) sampling layer left) — P1-1', () => {
+    const rt = tokens.split('@media (prefers-reduced-transparency: reduce)')[1] ?? '';
+    for (const sel of [
+      '.machine-panel', '.cycle-plate', '.tool-btn', '.observation',
+      '.status-line', '.toast', '.dialog-backdrop', '.ending-wrap',
+    ]) {
+      expect(rt).toContain(sel);
+    }
+    expect(rt).toContain('backdrop-filter: none');
+    expect(rt).toContain('-webkit-backdrop-filter: none');
+    // tokens.css 先于 machine/controls 加载：:root 前缀保证特异性压过基础规则
+    expect(rt).toContain(':root .machine-panel');
+    expect(rt).toContain(':root .ending-wrap');
+  });
+
+  it('dialog drops its own backdrop layer (backdrop-root trapped, visually null) — P1-3', () => {
+    const dialog = controls.split('.dialog {')[1]?.split('}')[0] ?? '';
+    expect(dialog).not.toMatch(/backdrop-filter\s*:/); // 无 backdrop-filter 声明（注释提及不算）
+    // scrim blur 与 panel blur 两层保留
+    const backdrop = controls.split('.dialog-backdrop {')[1]?.split('}')[0] ?? '';
+    expect(backdrop).toContain('blur(var(--scrim-blur))');
+    expect(machine.split('.machine-panel {')[1]?.split('}')[0] ?? '').toContain(
+      'blur(var(--mat-blur-l))'
+    );
+  });
+});
+
+// ── v4.5 M2 层次深化 ──
+describe('v4 M2 depth pass', () => {
+  it('burning window transmits firelight through the observation glass (CSS state class only)', () => {
+    expect(tokens).toContain('--stage-ember:');
+    expect(tokens).toContain('--stage-ember-deep:');
+    const before = machine.split('.observation::before')[1]?.split('}')[0] ?? '';
+    expect(before).toContain('var(--stage-ember)');
+    expect(before).toContain('transition: opacity var(--spring-smooth)'); // RM kill-switch 覆盖（*::before）
+    expect(machine).toContain('.machine.burning .observation::before');
+    // RT 塌缩：透射是材质效果，降级矩阵内整体失效
+    const rt = tokens.split('@media (prefers-reduced-transparency: reduce)')[1] ?? '';
+    expect(rt).toContain('--stage-ember: transparent');
+    expect(rt).toContain('--stage-ember-deep: transparent');
+  });
+
+  it('tool-btn hover specular uses the M4 static tokens; hover stays distinct from active', () => {
+    expect(tokens).toContain('--mat-spec-hi: rgba(255, 252, 240, 0.5)');
+    expect(tokens).toContain('--mat-spec-lo: rgba(122, 106, 74, 0.28)');
+    const dark = tokens.split('@media (prefers-color-scheme: dark)')[1]?.split('@media (prefers-reduced-transparency')[0] ?? '';
+    expect(dark).toContain('--mat-spec-hi: rgba(255, 252, 240, 0.22)');
+    expect(dark).toContain('--mat-spec-lo: rgba(0, 0, 0, 0.35)');
+    const hover = machine.split('.tool-btn:hover:not(:active)')[1]?.split('}')[0] ?? '';
+    expect(hover).toContain('var(--mat-spec-hi)');
+    const act = machine.split('.tool-btn:active')[1]?.split('}')[0] ?? '';
+    // v4.8 M4 LG-1 修订：激活态以一行令牌覆写抬升 conic 顶带（--mat-spec-hi-act）；
+    // hover 的 inset 高光环仍不进 :active（受压收回悬浮高光的层级语义保持）
+    expect(act).not.toContain('inset 0 0 0 1px var(--mat-spec-hi)');
+    // RT / contrast-more 塌缩为平边框色（M4 草案 §4）
+    const rt = tokens.split('@media (prefers-reduced-transparency: reduce)')[1]?.split('@media (prefers-contrast: more)')[0] ?? '';
+    expect(rt).toContain('--mat-spec-hi: var(--glass-float-edge)');
+    const cm = tokens.split('@media (prefers-contrast: more)')[1] ?? '';
+    expect(cm).toContain('--mat-spec-hi: var(--glass-float-edge)');
+  });
+
+  it('tutorial note carries the paper material (paper + hairline edge + inner highlight)', () => {
+    expect(tokens).toContain('--paper-hi: rgba(255, 255, 255, 0.65)');
+    const note = machine.split('.tutorial-note {')[1]?.split('}')[0] ?? '';
+    expect(note).toContain('background-color: var(--paper)'); // v4.8 M5 IL-5：纸纹层后底色走长hand
+    expect(note).toContain('var(--paper-edge)');
+    expect(note).toContain('inset 0 1px 0 var(--paper-hi)');
+    expect(note).toContain('var(--shadow-card)');
+  });
+
+  it('ending curtain: glass sheet over a scrimmed stage, text stays on dark glass', () => {
+    const wrap = machine.split('.ending-wrap {')[1]?.split('}')[0] ?? '';
+    expect(wrap).toContain('var(--glass-sheet-hi)');
+    expect(wrap).toContain('var(--glass-sheet-lo)');
+    expect(wrap).toContain('blur(var(--mat-blur-m))');
+    const stage = machine.split('.stage--ending {')[1]?.split('}')[0] ?? '';
+    expect(stage).toContain('position: relative');
+    const curtain = machine.split('.stage--ending::before')[1]?.split('}')[0] ?? '';
+    expect(curtain).toContain('background: var(--scrim)');
+  });
+});
+
+// ── v4.7 M3-P1-2：mount-rise 玻璃祖先不淡入 ──
+describe('v4 mount-rise glass ancestors (M3-P1-2)', () => {
+  it('glass ancestors animate transform-only (no opacity<1 truncation window)', () => {
+    expect(motion).toContain('.machine > .machine-header');
+    expect(motion).toContain('.machine > .machine-panel');
+    expect(motion).toContain('.machine > .ending-wrap');
+    const solid = motion.match(/@keyframes mount-rise-solid\s*\{[\s\S]*?\n\}/)?.[0] ?? '';
+    expect(solid).toContain('transform: translateY(4px)');
+    expect(solid).not.toContain('opacity');
+    // 入场动画本体保留：淡入变体仍服务非玻璃子块
+    expect(motion).toContain('@keyframes mount-rise');
+    const rise = motion.match(/@keyframes mount-rise\s*\{[\s\S]*?\n\}/)?.[0] ?? '';
+    expect(rise).toContain('opacity: 0');
+  });
+});
+
+// ── v4.8 M4 液态玻璃语汇（2026-09-08 所有者批复 K3 同批）──
+describe('v4 M4 liquid glass vocabulary', () => {
+  it('M4 tokens exist (specular act, lensing pair, press glow, cap shift)', () => {
+    for (const t of [
+      '--mat-spec-hi-act:', '--glass-lens-out:', '--glass-lens-rim:', '--press-glow:', '--cap-shift:',
+    ]) {
+      expect(tokens).toContain(t);
+    }
+  });
+
+  it('edge specular = padding-box/border-box double background conic (no mask, no svg filter)', () => {
+    const tb = machine.split('.tool-btn {')[1]?.split('}')[0] ?? '';
+    expect(tb).toContain('padding-box');
+    expect(tb).toContain('border-box');
+    expect(tb).toContain('conic-gradient(');
+    expect(tb).toContain('var(--mat-spec-hi)');
+    expect(tb).toContain('var(--mat-spec-lo)');
+    expect(machine).not.toContain('mask-image'); // §2.8 否决项回归锁
+    expect(machine).not.toContain('feDisplacementMap'); // §2.8 否决项回归锁
+  });
+
+  it('activation raises specular via one-line local token override', () => {
+    const act = machine.split('.tool-btn:active')[1]?.split('}')[0] ?? '';
+    expect(act).toContain('--mat-spec-hi: var(--mat-spec-hi-act)');
+  });
+
+  it('press liquid feel: cap displaces on the press-in edge (pair contract extended)', () => {
+    const capAct = machine.split('.tool-btn:active::after')[1]?.split('}')[0] ?? '';
+    expect(capAct).toContain('translateY(var(--cap-shift))');
+    expect(capAct).toContain('var(--press-in)');
+    const act = machine.split('.tool-btn:active')[1]?.split('}')[0] ?? '';
+    expect(act).toContain('transform: translateY(1px)'); // 按压反馈对不被削弱
+    expect(act).toContain('inset 0 2px 4px var(--press-glow)'); // energize 内发光
+    expect(act).toContain('var(--press-in)');
+  });
+
+  it('lensing rims attach to the floating layer only (content layer stays clean)', () => {
+    for (const block of [
+      controls.split('.toast {')[1]?.split('}')[0] ?? '',
+      controls.split('.dialog {')[1]?.split('}')[0] ?? '',
+      machine.split('.cycle-plate {')[1]?.split('}')[0] ?? '',
+      machine.split('.tool-btn {')[1]?.split('}')[0] ?? '',
+    ]) {
+      expect(block).toContain('var(--glass-lens-');
+    }
+    for (const anchor of ['.machine-panel {', '.observation {', '.tutorial-note {']) {
+      const block = machine.split(anchor)[1]?.split('}')[0] ?? '';
+      expect(block).not.toContain('spec');
+      expect(block).not.toContain('lens');
+    }
+  });
+
+  it('knob detent stays on snappy spring (micro-overshoot locked; bouncy forbidden)', () => {
+    const p = controls.split('.gain-pointer {')[1]?.split('}')[0] ?? '';
+    expect(p).toContain('transition: --knob-rot var(--spring-snappy)');
+    expect(p).not.toContain('bouncy'); // M4 §2.6 量纲分析的行为锁
+  });
+
+  it('degradation matrix collapses M4 tokens (RT block redefines them)', () => {
+    const rt = tokens.split('@media (prefers-reduced-transparency: reduce)')[1]?.split('@media (prefers-contrast: more)')[0] ?? '';
+    expect(rt).toContain('--mat-spec-hi-act: var(--glass-float-edge)');
+    expect(rt).toContain('--glass-lens-out: transparent');
+    expect(rt).toContain('--glass-lens-rim: transparent');
+    expect(rt).toContain('--press-glow: transparent');
+    expect(rt).toContain('--cap-shift: 0px');
+  });
+});
+
+// ── v4.8 M5 插画与沉浸语汇（2026-09-08 所有者批复 K2 全项）──
+describe('v4 M5 illustration vocabulary', () => {
+  it('M5 tokens exist (ember bed, bench stencil, engraving, ending imagery, paper grain)', () => {
+    for (const t of [
+      '--ember-bed:', '--ember-bed-deep:', '--bench-mark:', '--bench-mark-soft:',
+      '--engrave-ink:', '--imagery-ash:', '--imagery-noise:', '--imagery-grid:',
+      '--imagery-glow:', '--imagery-ghost:', '--imagery-ghost-line:', '--paper-grain:',
+    ]) {
+      expect(tokens).toContain(t);
+    }
+  });
+
+  it('ending imagery layers exist for all five endings, above scrim and below glass, no backdrop', () => {
+    const common = machine.split('.stage--ending::after')[1]?.split('}')[0] ?? '';
+    expect(common).toContain('z-index: -1'); // scrim(::before) 之上、.ending-wrap 之下
+    for (const e of ['ending-a', 'ending-b', 'ending-c', 'ending-d', 'ending-e']) {
+      const block = machine.split(`.stage--ending.${e}::after`)[1]?.split('}')[0] ?? '';
+      expect(block.length).toBeGreaterThan(0);
+      expect(block).toContain('var(--imagery-');
+      expect(block).not.toContain('backdrop-filter'); // M3 §1.3：不给采样模糊加面积
+    }
+  });
+
+  it('ember bed is driven by --ember-level from GameState.heat (D26 same path as flame)', () => {
+    const bed = machine.split('.furnace-card::after')[1]?.split('}')[0] ?? '';
+    expect(bed).toContain('var(--ember-level, 0)');
+    expect(bed).toContain('var(--ember-bed)');
+    const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+    expect(mts).toContain("setProperty('--ember-level'");
+  });
+
+  it('act engraving hooks the data-act state on the machine element (zero-semantics pseudo)', () => {
+    for (const a of ['1', '2', '3']) {
+      const block = machine.split(`.machine[data-act='${a}'] .machine-panel::after`)[1]?.split('}')[0] ?? '';
+      expect(block).toContain('var(--engrave-ink)');
+    }
+    const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+    expect(mts).toContain('dataset.act = String(this.state.act)');
+    const pseudo = machine.split('.machine-panel::after')[1]?.split('}')[0] ?? '';
+    expect(pseudo).toContain("content: ''"); // 零文本
+  });
+
+  it('bench stencil lives on the round stage only (home/ending override wholesale)', () => {
+    const stage = machine.split('.stage {')[1]?.split('}')[0] ?? '';
+    expect(stage).toContain('var(--bench-mark)');
+    const home = machine.split('.stage--home {')[1]?.split('}')[0] ?? '';
+    expect(home).not.toContain('bench-mark');
+  });
+
+  it('paper grain uses crosshatch only (no feTurbulence, no raster assets) and collapses in CM', () => {
+    for (const anchor of ['.panel:not(.on-dark) {', '.tutorial-note {', '.result-card {']) {
+      const block = machine.split(anchor)[1]?.split('}')[0] ?? '';
+      expect(block).toContain('var(--paper-grain)');
+    }
+    for (const f of ['tokens.css', 'controls.css', 'machine.css', 'motion.css', 'base.css', 'responsive.css']) {
+      expect(read(f)).not.toContain('feTurbulence'); // 拒绝清单回归锁
+      expect(read(f)).not.toMatch(/url\([^)]*\.(png|jpe?g|webp)/i); // 禁光栅资产
+    }
+    const rt = tokens.split('@media (prefers-reduced-transparency: reduce)')[1]?.split('@media (prefers-contrast: more)')[0] ?? '';
+    expect(rt).toContain('--ember-bed: transparent');
+    expect(rt).toContain('--imagery-ash: transparent');
+    const cm = tokens.split('@media (prefers-contrast: more)')[1] ?? '';
+    expect(cm).toContain('--bench-mark: transparent');
+    expect(cm).toContain('--engrave-ink: transparent');
+    expect(cm).toContain('--paper-grain: transparent');
   });
 });
 

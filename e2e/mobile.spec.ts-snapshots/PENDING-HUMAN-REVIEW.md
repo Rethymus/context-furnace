@@ -33,3 +33,17 @@
 
 - 重采（settings-mobile win32）：同桌面 v4 材质/动效体系（详见 desktop 目录同日条目）。
   自采 ≠ 已确认。
+
+## 变更记录（2026-09-08 · UI v4 M2+M3 修复）
+
+- 重采（settings-mobile win32）：逐字节不变——dialog 背景（P1-3）与观察窗/状态条/面板
+  端点（P0-1）令牌化为像素等价改写；移除的 dialog 自有采样层本就视觉无效（M3 审计
+  §3.1：backdrop 根截断，只能模糊纯色 scrim）。同批 M2 变更面（ending 幕玻璃、
+  火光透射、悬浮 specular、便签纸材质）不在本目录快照覆盖内，详见 desktop 目录
+  同日条目与 UI_CONTRACT v4.7。自采 ≠ 已确认。
+
+## 变更记录（2026-09-08 · UI v4.8 M4+M5 实现批次）
+
+- 重采（settings-mobile win32）：dialog 外缘 lensing 暗环 + 内底亮棱（M4 LG-2）、
+  设置浮层内纸面控件无变更；M5 纸纹不触及 dialog 内部（暗面玻璃）。其余交付面
+  详见 desktop 目录同日条目与 UI_CONTRACT v4.8。自采 ≠ 已确认。

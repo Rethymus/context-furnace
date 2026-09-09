@@ -87,9 +87,36 @@ test.describe('visual baselines (chromium only, frozen animations)', () => {
   });
 });
 
+// v4.8 M4 第 4 项（方案 B）：跨引擎基线固化——像素基线仍 Chromium-only（D19/D28），
+// Firefox / WebKit 以计算样式断言证明液态玻璃语汇等价成立（conic 描边、lensing
+// 棱线、旋钮弹簧注册属性在引擎间同为既定值；不断言引擎相关的颜色序列化格式）。
+test.describe('M4 liquid glass — cross-engine computed styles (UI_CONTRACT v4.8)', () => {
+  test('tool-btn conic border, lensing rims, knob spring resolve in every engine', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('cf.tutorialSeen', '1');
+    });
+    await page.goto('/');
+    const tool = page.locator('.tool-btn').first();
+    const bg = await tool.evaluate((el) => getComputedStyle(el).backgroundImage);
+    expect(bg).toContain('conic-gradient');
+    // 双层背景的 origin/clip 子句序列化在 background-origin/-clip 属性，不在 image 串内
+    const origin = await tool.evaluate((el) => getComputedStyle(el).backgroundOrigin);
+    expect(origin).toContain('padding-box');
+    expect(origin).toContain('border-box');
+    const shadow = await tool.evaluate((el) => getComputedStyle(el).boxShadow);
+    expect(shadow).toContain('inset'); // 内底棱线（lensing rim）
+
+    await page.locator(T('power-on')).click();
+    await page.waitForTimeout(1500); // 开机 1.15s
+    const transition = await page
+      .locator('.gain-pointer')
+      .evaluate((el) => getComputedStyle(el).transitionProperty);
+    expect(transition).toContain('--knob-rot');
+  });
+});
+
 test.describe('desktop full run', () => {
-  test('home → boot → tutorial → 12 cycles → Peak efficiency ending → results', async ({ page }) => {
-    test.setTimeout(180_000);
+  test('home → boot → tutorial → 12 cycles → Peak efficiency ending → results', async ({ page }) => {    test.setTimeout(180_000);
     await powerOn(page);
     await page.waitForTimeout(1500);
     await skipTutorial(page);

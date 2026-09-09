@@ -1,0 +1,3686 @@
+{
+  "meta": {
+    "generatedAt": "2026-09-09T01:40:11.251Z",
+    "base": "http://localhost:4188",
+    "viewport": "1440x900 (Desktop Chrome)",
+    "port": 4188,
+    "note": "M3 audit per UI_CONTRACT v4.5; no ?freeze params used; src/ untouched",
+    "elapsedSec": 59.9
+  },
+  "staticAudit": {
+    "files": [
+      "tokens.css",
+      "base.css",
+      "machine.css",
+      "controls.css",
+      "responsive.css",
+      "motion.css"
+    ],
+    "registeredProps": [
+      "--knob-rot"
+    ],
+    "keyframes": {
+      "title-pulse": [
+        "transform",
+        "filter"
+      ],
+      "furnace-flicker": [
+        "transform",
+        "filter"
+      ],
+      "glyph-pulse": [
+        "opacity"
+      ],
+      "fade-in": [
+        "opacity"
+      ],
+      "mount-rise": [
+        "opacity",
+        "transform"
+      ],
+      "toast-in": [
+        "opacity",
+        "transform"
+      ],
+      "sheet-in": [
+        "opacity",
+        "transform"
+      ],
+      "press-shake": [
+        "transform"
+      ],
+      "ignite-hint-pulse": [
+        "box-shadow"
+      ],
+      "mount-rise-solid": [
+        "transform"
+      ]
+    },
+    "motions": [
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow"
+        ],
+        "selector": ".tool-btn",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 222,
+        "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow"
+        ],
+        "selector": ".tool-btn:active",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 254,
+        "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "opacity"
+        ],
+        "selector": ".tool-btn::after",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 268,
+        "raw": "transition: transform var(--spring-snappy), opacity var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "opacity"
+        ],
+        "selector": ".tool-btn:active::after",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 279,
+        "raw": "transition: transform var(--press-in), opacity var(--press-in)",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "background-color",
+          "opacity"
+        ],
+        "selector": ".feed-seg",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 458,
+        "raw": "transition: background-color 0.15s ease, opacity 0.15s ease",
+        "bypass": false,
+        "flaggedProperties": [
+          "background-color"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "stroke-dashoffset"
+        ],
+        "selector": ".gauge-arc-fg",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 535,
+        "raw": "transition: stroke-dashoffset var(--spring-smooth)",
+        "bypass": false,
+        "flaggedProperties": [
+          "stroke-dashoffset"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform"
+        ],
+        "selector": ".gauge-needle",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 553,
+        "raw": "transition: transform var(--spring-smooth)",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "opacity"
+        ],
+        "selector": ".observation::before",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 591,
+        "raw": "transition: opacity var(--spring-smooth)",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".machine.boot-pulse .title-plate",
+        "media": [],
+        "inRM": false,
+        "file": "machine.css",
+        "line": 789,
+        "raw": "animation: title-pulse 0.4s ease-in-out 1",
+        "animation": "title-pulse",
+        "properties": [
+          "transform",
+          "filter"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow",
+          "background-color"
+        ],
+        "selector": ".btn",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 4,
+        "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow",
+          "background-color"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow"
+        ],
+        "selector": ".btn:active:not(:disabled)",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 22,
+        "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow"
+        ],
+        "selector": ".btn-primary:active:not(:disabled)",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 54,
+        "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "animation",
+        "selector": ".btn-primary.ignite-hint",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 63,
+        "raw": "animation: ignite-hint-pulse 1.4s ease-out infinite",
+        "animation": "ignite-hint-pulse",
+        "properties": [
+          "box-shadow"
+        ],
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform"
+        ],
+        "selector": ".cutter",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 135,
+        "raw": "transition: transform var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "none"
+        ],
+        "selector": ".cutter.dragging",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 149,
+        "raw": "transition: none",
+        "bypass": true,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "--knob-rot"
+        ],
+        "selector": ".gain-pointer",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 239,
+        "raw": "transition: --knob-rot var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow",
+          "background-color"
+        ],
+        "selector": ".gain-stop",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 261,
+        "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow",
+          "background-color"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "transform",
+          "box-shadow"
+        ],
+        "selector": ".gain-stop:active:not(:disabled)",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 286,
+        "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+        "bypass": false,
+        "flaggedProperties": [
+          "box-shadow"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "opacity"
+        ],
+        "selector": ".toast.show",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 337,
+        "raw": "transition: opacity 0.2s ease",
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "animation",
+        "selector": ".toast.show",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 337,
+        "raw": "animation: toast-in var(--spring-bouncy) both",
+        "animation": "toast-in",
+        "properties": [
+          "opacity",
+          "transform"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": true
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "color"
+        ],
+        "selector": ".plug",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 344,
+        "raw": "transition: color var(--spring-snappy)",
+        "bypass": false,
+        "flaggedProperties": [
+          "color"
+        ],
+        "compositorFriendly": false,
+        "criticalPath": true
+      },
+      {
+        "kind": "animation",
+        "selector": ".dialog-backdrop",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 363,
+        "raw": "animation: fade-in 200ms ease both",
+        "animation": "fade-in",
+        "properties": [
+          "opacity"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".dialog",
+        "media": [],
+        "inRM": false,
+        "file": "controls.css",
+        "line": 378,
+        "raw": "animation: sheet-in var(--spring-smooth) both",
+        "animation": "sheet-in",
+        "properties": [
+          "opacity",
+          "transform"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".machine.burning",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 75,
+        "raw": "animation: press-shake 480ms cubic-bezier(0.36, 0, 0.64, 1) 1",
+        "animation": "press-shake",
+        "properties": [
+          "transform"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".machine > *",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 79,
+        "raw": "animation: mount-rise var(--t-mount) var(--spring-smooth) both",
+        "animation": "mount-rise",
+        "properties": [
+          "opacity",
+          "transform"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".machine > .machine-header, .machine > .machine-panel, .machine > .ending-wrap",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 86,
+        "raw": "animation-name: mount-rise-solid",
+        "animation": "mount-rise-solid",
+        "properties": [
+          "transform"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".glyph.fade-swap",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 99,
+        "raw": "animation: fade-in 0.2s ease",
+        "animation": "fade-in",
+        "properties": [
+          "opacity"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".glyph",
+        "media": [
+          "(prefers-reduced-motion: reduce)"
+        ],
+        "inRM": true,
+        "file": "motion.css",
+        "line": 113,
+        "raw": "animation: glyph-pulse 2.4s ease-in-out infinite !important",
+        "animation": "glyph-pulse",
+        "properties": [
+          "opacity"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": ".machine.burning",
+        "media": [
+          "(prefers-reduced-motion: reduce)"
+        ],
+        "inRM": true,
+        "file": "motion.css",
+        "line": 117,
+        "raw": "animation: none !important",
+        "animation": null,
+        "properties": [
+          "none"
+        ],
+        "bypass": true,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": "[data-motion='reduced'] .glyph",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 131,
+        "raw": "animation: glyph-pulse 2.4s ease-in-out infinite !important",
+        "animation": "glyph-pulse",
+        "properties": [
+          "opacity"
+        ],
+        "bypass": false,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": "[data-motion='reduced'] .machine.burning",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 135,
+        "raw": "animation: none !important",
+        "animation": null,
+        "properties": [
+          "none"
+        ],
+        "bypass": true,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "animation",
+        "selector": "[data-freeze='1'] *, [data-freeze='1'] *::before, [data-freeze='1'] *::after",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 142,
+        "raw": "animation: none !important",
+        "animation": null,
+        "properties": [
+          "none"
+        ],
+        "bypass": true,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      },
+      {
+        "kind": "transition",
+        "properties": [
+          "none"
+        ],
+        "selector": "[data-freeze='1'] *, [data-freeze='1'] *::before, [data-freeze='1'] *::after",
+        "media": [],
+        "inRM": false,
+        "file": "motion.css",
+        "line": 142,
+        "raw": "transition: none !important",
+        "bypass": true,
+        "flaggedProperties": [],
+        "compositorFriendly": true,
+        "criticalPath": false
+      }
+    ],
+    "summary": {
+      "totalDeclarations": 33,
+      "flagged": [
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".tool-btn",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 222,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".tool-btn:active",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 254,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "background-color",
+            "opacity"
+          ],
+          "selector": ".feed-seg",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 458,
+          "raw": "transition: background-color 0.15s ease, opacity 0.15s ease",
+          "bypass": false,
+          "flaggedProperties": [
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "stroke-dashoffset"
+          ],
+          "selector": ".gauge-arc-fg",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 535,
+          "raw": "transition: stroke-dashoffset var(--spring-smooth)",
+          "bypass": false,
+          "flaggedProperties": [
+            "stroke-dashoffset"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow",
+            "background-color"
+          ],
+          "selector": ".btn",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 4,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow",
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".btn:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 22,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".btn-primary:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 54,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "animation",
+          "selector": ".btn-primary.ignite-hint",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 63,
+          "raw": "animation: ignite-hint-pulse 1.4s ease-out infinite",
+          "animation": "ignite-hint-pulse",
+          "properties": [
+            "box-shadow"
+          ],
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow",
+            "background-color"
+          ],
+          "selector": ".gain-stop",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 261,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow",
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".gain-stop:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 286,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "color"
+          ],
+          "selector": ".plug",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 344,
+          "raw": "transition: color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        }
+      ],
+      "flaggedCritical": [
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".tool-btn",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 222,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".tool-btn:active",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 254,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "background-color",
+            "opacity"
+          ],
+          "selector": ".feed-seg",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 458,
+          "raw": "transition: background-color 0.15s ease, opacity 0.15s ease",
+          "bypass": false,
+          "flaggedProperties": [
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "stroke-dashoffset"
+          ],
+          "selector": ".gauge-arc-fg",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 535,
+          "raw": "transition: stroke-dashoffset var(--spring-smooth)",
+          "bypass": false,
+          "flaggedProperties": [
+            "stroke-dashoffset"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow",
+            "background-color"
+          ],
+          "selector": ".btn",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 4,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow",
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".btn:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 22,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".btn-primary:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 54,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "animation",
+          "selector": ".btn-primary.ignite-hint",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 63,
+          "raw": "animation: ignite-hint-pulse 1.4s ease-out infinite",
+          "animation": "ignite-hint-pulse",
+          "properties": [
+            "box-shadow"
+          ],
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow",
+            "background-color"
+          ],
+          "selector": ".gain-stop",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 261,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow",
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".gain-stop:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 286,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "color"
+          ],
+          "selector": ".plug",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 344,
+          "raw": "transition: color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        }
+      ],
+      "boxShadowAnimated": [
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".tool-btn",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 222,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".tool-btn:active",
+          "media": [],
+          "inRM": false,
+          "file": "machine.css",
+          "line": 254,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow",
+            "background-color"
+          ],
+          "selector": ".btn",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 4,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow",
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".btn:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 22,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".btn-primary:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 54,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "animation",
+          "selector": ".btn-primary.ignite-hint",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 63,
+          "raw": "animation: ignite-hint-pulse 1.4s ease-out infinite",
+          "animation": "ignite-hint-pulse",
+          "properties": [
+            "box-shadow"
+          ],
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow",
+            "background-color"
+          ],
+          "selector": ".gain-stop",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 261,
+          "raw": "transition: transform var(--spring-snappy),\r\n    box-shadow var(--spring-snappy),\r\n    background-color var(--spring-snappy)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow",
+            "background-color"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        },
+        {
+          "kind": "transition",
+          "properties": [
+            "transform",
+            "box-shadow"
+          ],
+          "selector": ".gain-stop:active:not(:disabled)",
+          "media": [],
+          "inRM": false,
+          "file": "controls.css",
+          "line": 286,
+          "raw": "transition: transform var(--press-in),\r\n    box-shadow var(--press-in)",
+          "bypass": false,
+          "flaggedProperties": [
+            "box-shadow"
+          ],
+          "compositorFriendly": false,
+          "criticalPath": true
+        }
+      ]
+    }
+  },
+  "states": {
+    "home": {
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "areaPx2": 1296000
+      },
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 89,
+            "h": 36
+          },
+          "areaPx2": 3186,
+          "clippedAreaPx2": 3186,
+          "viewportPct": 0.2,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "main.machine > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 44,
+            "h": 36
+          },
+          "areaPx2": 1584,
+          "clippedAreaPx2": 1584,
+          "viewportPct": 0.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        }
+      ],
+      "count": 2,
+      "totalBlurredClippedAreaPx2": 4770,
+      "totalViewportPct": 0.4,
+      "largeSingleSurfaces": [],
+      "overlaps": [],
+      "state": "home"
+    },
+    "cycle": {
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "areaPx2": 1296000
+      },
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 135,
+            "h": 35
+          },
+          "areaPx2": 4730,
+          "clippedAreaPx2": 4730,
+          "viewportPct": 0.4,
+          "bgMinAlpha": 0.78,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 89,
+            "h": 36
+          },
+          "areaPx2": 3186,
+          "clippedAreaPx2": 3186,
+          "viewportPct": 0.2,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 44,
+            "h": 36
+          },
+          "areaPx2": 1584,
+          "clippedAreaPx2": 1584,
+          "viewportPct": 0.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "blurPx": 26,
+          "saturate": 1.35,
+          "rect": {
+            "w": 1088,
+            "h": 661
+          },
+          "areaPx2": 719100,
+          "clippedAreaPx2": 719100,
+          "viewportPct": 55.5,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 104
+          },
+          "areaPx2": 108368,
+          "clippedAreaPx2": 108368,
+          "viewportPct": 8.4,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 38
+          },
+          "areaPx2": 39596,
+          "clippedAreaPx2": 39596,
+          "viewportPct": 3.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        }
+      ],
+      "count": 6,
+      "totalBlurredClippedAreaPx2": 876564,
+      "totalViewportPct": 67.6,
+      "largeSingleSurfaces": [
+        "body > div#app > div.stage > main.machine > div.machine-panel"
+      ],
+      "overlaps": [
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "div.stage > main.machine > div.machine-panel > div.observation",
+          "overlapPx2": 108368,
+          "overlapViewportPct": 8.4
+        },
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "overlapPx2": 39596,
+          "overlapViewportPct": 3.1
+        }
+      ],
+      "state": "cycle"
+    },
+    "dialog": {
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "areaPx2": 1296000
+      },
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 135,
+            "h": 35
+          },
+          "areaPx2": 4730,
+          "clippedAreaPx2": 4730,
+          "viewportPct": 0.4,
+          "bgMinAlpha": 0.78,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 89,
+            "h": 36
+          },
+          "areaPx2": 3186,
+          "clippedAreaPx2": 3186,
+          "viewportPct": 0.2,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 44,
+            "h": 36
+          },
+          "areaPx2": 1584,
+          "clippedAreaPx2": 1584,
+          "viewportPct": 0.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "blurPx": 26,
+          "saturate": 1.35,
+          "rect": {
+            "w": 1088,
+            "h": 661
+          },
+          "areaPx2": 719100,
+          "clippedAreaPx2": 719100,
+          "viewportPct": 55.5,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 104
+          },
+          "areaPx2": 108368,
+          "clippedAreaPx2": 108368,
+          "viewportPct": 8.4,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 38
+          },
+          "areaPx2": 39596,
+          "clippedAreaPx2": 39596,
+          "viewportPct": 3.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div.dialog-backdrop",
+          "backdropFilter": "blur(6px)",
+          "blurPx": 6,
+          "saturate": null,
+          "rect": {
+            "w": 1440,
+            "h": 900
+          },
+          "areaPx2": 1296000,
+          "clippedAreaPx2": 1296000,
+          "viewportPct": 100,
+          "bgMinAlpha": 0.45,
+          "opacity": "1"
+        }
+      ],
+      "count": 7,
+      "totalBlurredClippedAreaPx2": 2172564,
+      "totalViewportPct": 167.6,
+      "largeSingleSurfaces": [
+        "body > div#app > div.stage > main.machine > div.machine-panel",
+        "body > div.dialog-backdrop"
+      ],
+      "overlaps": [
+        {
+          "a": "main.machine > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "b": "body > div.dialog-backdrop",
+          "overlapPx2": 4730,
+          "overlapViewportPct": 0.4
+        },
+        {
+          "a": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "b": "body > div.dialog-backdrop",
+          "overlapPx2": 3186,
+          "overlapViewportPct": 0.2
+        },
+        {
+          "a": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "b": "body > div.dialog-backdrop",
+          "overlapPx2": 1584,
+          "overlapViewportPct": 0.1
+        },
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "div.stage > main.machine > div.machine-panel > div.observation",
+          "overlapPx2": 108368,
+          "overlapViewportPct": 8.4
+        },
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "overlapPx2": 39596,
+          "overlapViewportPct": 3.1
+        },
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "body > div.dialog-backdrop",
+          "overlapPx2": 719100,
+          "overlapViewportPct": 55.5
+        },
+        {
+          "a": "div.stage > main.machine > div.machine-panel > div.observation",
+          "b": "body > div.dialog-backdrop",
+          "overlapPx2": 108368,
+          "overlapViewportPct": 8.4
+        },
+        {
+          "a": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "b": "body > div.dialog-backdrop",
+          "overlapPx2": 39596,
+          "overlapViewportPct": 3.1
+        }
+      ],
+      "state": "dialog"
+    },
+    "burning": {
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "areaPx2": 1296000
+      },
+      "elements": [
+        {
+          "sel": "main.machine.burning > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 135,
+            "h": 35
+          },
+          "areaPx2": 4730,
+          "clippedAreaPx2": 4730,
+          "viewportPct": 0.4,
+          "bgMinAlpha": 0.78,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 89,
+            "h": 36
+          },
+          "areaPx2": 3186,
+          "clippedAreaPx2": 3186,
+          "viewportPct": 0.2,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 44,
+            "h": 36
+          },
+          "areaPx2": 1584,
+          "clippedAreaPx2": 1584,
+          "viewportPct": 0.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine.burning > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "blurPx": 26,
+          "saturate": 1.35,
+          "rect": {
+            "w": 1088,
+            "h": 827
+          },
+          "areaPx2": 899708,
+          "clippedAreaPx2": 874973,
+          "viewportPct": 67.5,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine.burning > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 104
+          },
+          "areaPx2": 108368,
+          "clippedAreaPx2": 108368,
+          "viewportPct": 8.4,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine.burning > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 38
+          },
+          "areaPx2": 39596,
+          "clippedAreaPx2": 37789,
+          "viewportPct": 2.9,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        }
+      ],
+      "count": 6,
+      "totalBlurredClippedAreaPx2": 1030630,
+      "totalViewportPct": 79.5,
+      "largeSingleSurfaces": [
+        "body > div#app > div.stage > main.machine.burning > div.machine-panel"
+      ],
+      "overlaps": [
+        {
+          "a": "body > div#app > div.stage > main.machine.burning > div.machine-panel",
+          "b": "div.stage > main.machine.burning > div.machine-panel > div.observation",
+          "overlapPx2": 108368,
+          "overlapViewportPct": 8.4
+        },
+        {
+          "a": "body > div#app > div.stage > main.machine.burning > div.machine-panel",
+          "b": "div.stage > main.machine.burning > div.machine-panel > div.status-line",
+          "overlapPx2": 39596,
+          "overlapViewportPct": 3.1
+        }
+      ],
+      "state": "burning"
+    },
+    "toast": {
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "areaPx2": 1296000
+      },
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 135,
+            "h": 35
+          },
+          "areaPx2": 4730,
+          "clippedAreaPx2": 4730,
+          "viewportPct": 0.4,
+          "bgMinAlpha": 0.78,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 89,
+            "h": 36
+          },
+          "areaPx2": 3186,
+          "clippedAreaPx2": 3186,
+          "viewportPct": 0.2,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 44,
+            "h": 36
+          },
+          "areaPx2": 1584,
+          "clippedAreaPx2": 1584,
+          "viewportPct": 0.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "blurPx": 26,
+          "saturate": 1.35,
+          "rect": {
+            "w": 1088,
+            "h": 661
+          },
+          "areaPx2": 719100,
+          "clippedAreaPx2": 719100,
+          "viewportPct": 55.5,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 104
+          },
+          "areaPx2": 108368,
+          "clippedAreaPx2": 108368,
+          "viewportPct": 8.4,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "blurPx": 10,
+          "saturate": 1.2,
+          "rect": {
+            "w": 1042,
+            "h": 38
+          },
+          "areaPx2": 39596,
+          "clippedAreaPx2": 39596,
+          "viewportPct": 3.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div.toast.show",
+          "backdropFilter": "blur(18px) saturate(1.35)",
+          "blurPx": 18,
+          "saturate": 1.35,
+          "rect": {
+            "w": 154,
+            "h": 45
+          },
+          "areaPx2": 6944,
+          "clippedAreaPx2": 6944,
+          "viewportPct": 0.5,
+          "bgMinAlpha": 0.78,
+          "opacity": "1"
+        }
+      ],
+      "count": 7,
+      "totalBlurredClippedAreaPx2": 883508,
+      "totalViewportPct": 68.2,
+      "largeSingleSurfaces": [
+        "body > div#app > div.stage > main.machine > div.machine-panel"
+      ],
+      "overlaps": [
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "div.stage > main.machine > div.machine-panel > div.observation",
+          "overlapPx2": 108368,
+          "overlapViewportPct": 8.4
+        },
+        {
+          "a": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "b": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "overlapPx2": 39596,
+          "overlapViewportPct": 3.1
+        }
+      ],
+      "state": "toast"
+    },
+    "ending": {
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "areaPx2": 1296000
+      },
+      "elements": [
+        {
+          "sel": "main.machine.machine--ending > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 89,
+            "h": 36
+          },
+          "areaPx2": 3186,
+          "clippedAreaPx2": 3186,
+          "viewportPct": 0.2,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "main.machine.machine--ending > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "blurPx": 10,
+          "saturate": 1.35,
+          "rect": {
+            "w": 44,
+            "h": 36
+          },
+          "areaPx2": 1584,
+          "clippedAreaPx2": 1584,
+          "viewportPct": 0.1,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        },
+        {
+          "sel": "body > div#app > div.stage.stage--ending > main.machine.machine--ending > div.ending-wrap",
+          "backdropFilter": "blur(18px) saturate(1.35)",
+          "blurPx": 18,
+          "saturate": 1.35,
+          "rect": {
+            "w": 1088,
+            "h": 778
+          },
+          "areaPx2": 846464,
+          "clippedAreaPx2": 846464,
+          "viewportPct": 65.3,
+          "bgMinAlpha": 0,
+          "opacity": "1"
+        }
+      ],
+      "count": 3,
+      "totalBlurredClippedAreaPx2": 851234,
+      "totalViewportPct": 65.7,
+      "largeSingleSurfaces": [
+        "body > div#app > div.stage.stage--ending > main.machine.machine--ending > div.ending-wrap"
+      ],
+      "overlaps": [],
+      "state": "ending"
+    }
+  },
+  "backdropRoots": {
+    "home": {
+      "state": "home",
+      "note": "开机页稳态",
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage.stage--home > main.machine > div.machine-header",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "main.machine > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage.stage--home > main.machine > div.machine-header",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        }
+      ]
+    },
+    "cycle": {
+      "state": "cycle",
+      "note": "C01 稳态",
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "traps": [],
+          "notes": []
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "traps": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "issues": [
+                {
+                  "type": "ancestor-backdrop-filter",
+                  "value": "blur(26px) saturate(1.35)"
+                }
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "traps": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "issues": [
+                {
+                  "type": "ancestor-backdrop-filter",
+                  "value": "blur(26px) saturate(1.35)"
+                }
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        }
+      ]
+    },
+    "dialog": {
+      "state": "dialog",
+      "note": "设置打开稳态（动画完成后）",
+      "elements": [
+        {
+          "sel": "main.machine > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "traps": [],
+          "notes": []
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "traps": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "issues": [
+                {
+                  "type": "ancestor-backdrop-filter",
+                  "value": "blur(26px) saturate(1.35)"
+                }
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.stage > main.machine > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "traps": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "issues": [
+                {
+                  "type": "ancestor-backdrop-filter",
+                  "value": "blur(26px) saturate(1.35)"
+                }
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine > div.machine-panel",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "body > div.dialog-backdrop",
+          "backdropFilter": "blur(6px)",
+          "traps": [],
+          "notes": []
+        }
+      ]
+    },
+    "burning": {
+      "state": "burning",
+      "note": "IGNITE 反馈 250ms 处（shake 进行中）",
+      "elements": [
+        {
+          "sel": "main.machine.burning > div.machine-header.has-cycle > div.header-tools > span.cycle-plate",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            },
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "press-shake",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            },
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "press-shake",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.machine-header.has-cycle > div.header-tools > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-header.has-cycle",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            },
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "press-shake",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "body > div#app > div.stage > main.machine.burning > div.machine-panel",
+          "backdropFilter": "blur(26px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "press-shake",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.stage > main.machine.burning > div.machine-panel > div.observation",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "traps": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-panel",
+              "issues": [
+                {
+                  "type": "ancestor-backdrop-filter",
+                  "value": "blur(26px) saturate(1.35)"
+                }
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-panel",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            },
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "press-shake",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "div.stage > main.machine.burning > div.machine-panel > div.status-line",
+          "backdropFilter": "blur(10px) saturate(1.2)",
+          "traps": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-panel",
+              "issues": [
+                {
+                  "type": "ancestor-backdrop-filter",
+                  "value": "blur(26px) saturate(1.35)"
+                }
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning > div.machine-panel",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            },
+            {
+              "rel": "ancestor:body > div#app > div.stage > main.machine.burning",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "press-shake",
+              "remainingMs": -1
+            }
+          ]
+        }
+      ]
+    },
+    "ending": {
+      "state": "ending",
+      "note": "结算页稳态",
+      "elements": [
+        {
+          "sel": "main.machine.machine--ending > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage.stage--ending > main.machine.machine--ending > div.machine-header",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "main.machine.machine--ending > div.machine-header > div.header-tools > button.tool-btn",
+          "backdropFilter": "blur(10px) saturate(1.35)",
+          "traps": [],
+          "notes": [
+            {
+              "rel": "ancestor:body > div#app > div.stage.stage--ending > main.machine.machine--ending > div.machine-header",
+              "kind": "transform-animating（每帧重采样大面 blur 的开销源，非截断）",
+              "name": "mount-rise-solid",
+              "remainingMs": -1
+            }
+          ]
+        },
+        {
+          "sel": "body > div#app > div.stage.stage--ending > main.machine.machine--ending > div.ending-wrap",
+          "backdropFilter": "blur(18px) saturate(1.35)",
+          "traps": [],
+          "notes": []
+        }
+      ]
+    }
+  },
+  "transient": {
+    "dialogIn": {
+      "trigger": "settings-btn click → sheet-in(320ms)+fade-in(200ms)",
+      "frames": 9,
+      "affected": [
+        {
+          "sel": "body > div.dialog-backdrop",
+          "framesAffected": 3,
+          "ofFrames": 9,
+          "windowMs": [
+            132,
+            315
+          ],
+          "kinds": [
+            "self:opacity=0",
+            "self:opacity=0.575696",
+            "self:opacity=0.996103"
+          ]
+        }
+      ]
+    },
+    "mountRise": {
+      "trigger": "next → C05 mount（.machine > * mount-rise 220ms；含 toast-in 420ms）",
+      "frames": 13,
+      "affected": [
+        {
+          "sel": "body > div.toast",
+          "framesAffected": 1,
+          "ofFrames": 13,
+          "windowMs": [
+            177,
+            177
+          ],
+          "kinds": [
+            "self:opacity=0"
+          ]
+        },
+        {
+          "sel": "body > div.toast.show",
+          "framesAffected": 3,
+          "ofFrames": 13,
+          "windowMs": [
+            244,
+            361
+          ],
+          "kinds": [
+            "self:opacity=0",
+            "self:opacity=0.452458",
+            "self:opacity=0.862973"
+          ]
+        }
+      ]
+    }
+  },
+  "matrix": {
+    "light-baseline": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "light"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "no-preference"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": false,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "color-mix(in srgb, #d5c9ab 92%, transparent)",
+          "--glass-float-bg": "rgba(247, 242, 226, .78)",
+          "--glass-dark-bg": "rgba(38, 36, 32, .68)",
+          "--ink-soft": "#55503c",
+          "--focus-ring": "#7a5f10",
+          "--focus-width": "3px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.878431 0.839216 0.737255 / 0.92) 0%, color(srgb 0.835294 0.788235 0.670588 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.78,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(247, 242, 226, 0.78), rgba(247, 242, 226, 0.78)), conic-gradient(rgba(122, 106, 74, 0.28)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#7a5f10"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": false,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "color-mix(in srgb, #d5c9ab 92%, transparent)",
+          "--glass-float-bg": "rgba(247, 242, 226, .78)",
+          "--glass-dark-bg": "rgba(38, 36, 32, .68)",
+          "--ink-soft": "#55503c",
+          "--focus-ring": "#7a5f10",
+          "--focus-width": "3px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.878431 0.839216 0.737255 / 0.92) 0%, color(srgb 0.835294 0.788235 0.670588 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.78,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(247, 242, 226, 0.78), rgba(247, 242, 226, 0.78)), conic-gradient(rgba(122, 106, 74, 0.28)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(45, 43, 36, 0.86) 0%, rgba(38, 36, 32, 0.9) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": "blur(6px)",
+            "blurPx": 6,
+            "bgMinAlpha": 0.45,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#7a5f10"
+        }
+      },
+      "rmProbe": null
+    },
+    "reduced-transparency": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "light"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "reduce"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "no-preference"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": false,
+          "reducedTransparency": true,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "#d5c9ab",
+          "--glass-float-bg": "#f7f2e2",
+          "--glass-dark-bg": "#262420",
+          "--ink-soft": "#55503c",
+          "--focus-ring": "#7a5f10",
+          "--focus-width": "3px",
+          "--mat-blur-s": "0px",
+          "--mat-blur-m": "0px",
+          "--mat-blur-l": "0px",
+          "--scrim-blur": "0px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(224, 214, 188) 0%, rgb(213, 201, 171) 58%, rgb(200, 187, 155) 100%)"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": null,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(247, 242, 226), rgb(247, 242, 226)), conic-gradient(rgba(201, 191, 162, 0.6) 0deg, rgba(20"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(45, 43, 36) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(45, 43, 36) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": true,
+          "outline": "3px solid rgb(122, 95, 16)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#7a5f10"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": false,
+          "reducedTransparency": true,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "#d5c9ab",
+          "--glass-float-bg": "#f7f2e2",
+          "--glass-dark-bg": "#262420",
+          "--ink-soft": "#55503c",
+          "--focus-ring": "#7a5f10",
+          "--focus-width": "3px",
+          "--mat-blur-s": "0px",
+          "--mat-blur-m": "0px",
+          "--mat-blur-l": "0px",
+          "--scrim-blur": "0px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(224, 214, 188) 0%, rgb(213, 201, 171) 58%, rgb(200, 187, 155) 100%)"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": null,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(247, 242, 226), rgb(247, 242, 226)), conic-gradient(rgba(201, 191, 162, 0.6) 0deg, rgba(20"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(45, 43, 36) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(45, 43, 36) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(45, 43, 36) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0.72,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#7a5f10"
+        }
+      },
+      "rmProbe": null
+    },
+    "contrast-more": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "light"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "more"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "no-preference"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": true,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "color-mix(in srgb, #d5c9ab 92%, transparent)",
+          "--glass-float-bg": "rgba(247, 242, 226, .78)",
+          "--glass-dark-bg": "rgba(38, 36, 32, .68)",
+          "--ink-soft": "#3f3a2b",
+          "--focus-ring": "#4a3a08",
+          "--focus-width": "4px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.878431 0.839216 0.737255 / 0.92) 0%, color(srgb 0.835294 0.788235 0.670588 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.78,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(247, 242, 226, 0.78), rgba(247, 242, 226, 0.78)), conic-gradient(rgba(201, 191, 162, 0.6)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": true,
+          "outline": "4px solid rgb(74, 58, 8)",
+          "tokenFocusWidth": "4px",
+          "tokenFocusRing": "#4a3a08"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": true,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "color-mix(in srgb, #d5c9ab 92%, transparent)",
+          "--glass-float-bg": "rgba(247, 242, 226, .78)",
+          "--glass-dark-bg": "rgba(38, 36, 32, .68)",
+          "--ink-soft": "#3f3a2b",
+          "--focus-ring": "#4a3a08",
+          "--focus-width": "4px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.878431 0.839216 0.737255 / 0.92) 0%, color(srgb 0.835294 0.788235 0.670588 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.78,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(247, 242, 226, 0.78), rgba(247, 242, 226, 0.78)), conic-gradient(rgba(201, 191, 162, 0.6)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(45, 43, 36, 0.86) 0%, rgba(38, 36, 32, 0.9) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": "blur(6px)",
+            "blurPx": 6,
+            "bgMinAlpha": 0.45,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "4px",
+          "tokenFocusRing": "#4a3a08"
+        }
+      },
+      "rmProbe": null
+    },
+    "dark": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "dark"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "no-preference"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": true,
+          "contrastMore": false,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#cfc8b4",
+          "--machine": "#3a352a",
+          "--mat-thick-bg": "color-mix(in srgb, #3a352a 92%, transparent)",
+          "--glass-float-bg": "rgba(207, 200, 180, .82)",
+          "--glass-dark-bg": "rgba(28, 26, 21, .7)",
+          "--ink-soft": "#5e5744",
+          "--focus-ring": "#d4a72c",
+          "--focus-width": "3px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.270588 0.247059 0.188235 / 0.92) 0%, color(srgb 0.227451 0.207843 0.164706 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.82,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(207, 200, 180, 0.82), rgba(207, 200, 180, 0.82)), conic-gradient(rgba(0, 0, 0, 0.35) 0deg"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": true,
+          "outline": "3px solid rgb(212, 167, 44)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#d4a72c"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": true,
+          "contrastMore": false,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#cfc8b4",
+          "--machine": "#3a352a",
+          "--mat-thick-bg": "color-mix(in srgb, #3a352a 92%, transparent)",
+          "--glass-float-bg": "rgba(207, 200, 180, .82)",
+          "--glass-dark-bg": "rgba(28, 26, 21, .7)",
+          "--ink-soft": "#5e5744",
+          "--focus-ring": "#d4a72c",
+          "--focus-width": "3px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.270588 0.247059 0.188235 / 0.92) 0%, color(srgb 0.227451 0.207843 0.164706 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.82,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(207, 200, 180, 0.82), rgba(207, 200, 180, 0.82)), conic-gradient(rgba(0, 0, 0, 0.35) 0deg"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(45, 43, 36, 0.86) 0%, rgba(38, 36, 32, 0.9) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": "blur(6px)",
+            "blurPx": 6,
+            "bgMinAlpha": 0.55,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#d4a72c"
+        }
+      },
+      "rmProbe": null
+    },
+    "dark+reduced-transparency": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "dark"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "reduce"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "no-preference"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": true,
+          "contrastMore": false,
+          "reducedTransparency": true,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#cfc8b4",
+          "--machine": "#3a352a",
+          "--mat-thick-bg": "#3a352a",
+          "--glass-float-bg": "#cfc8b4",
+          "--glass-dark-bg": "#262420",
+          "--ink-soft": "#5e5744",
+          "--focus-ring": "#d4a72c",
+          "--focus-width": "3px",
+          "--mat-blur-s": "0px",
+          "--mat-blur-m": "0px",
+          "--mat-blur-l": "0px",
+          "--scrim-blur": "0px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(69, 63, 48) 0%, rgb(58, 53, 42) 58%, rgb(50, 45, 34) 100%)"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": null,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(207, 200, 180), rgb(207, 200, 180)), conic-gradient(rgba(148, 138, 114, 0.6) 0deg, rgba(14"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(51, 48, 42) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(51, 48, 42) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": true,
+          "outline": "3px solid rgb(212, 167, 44)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#d4a72c"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": true,
+          "contrastMore": false,
+          "reducedTransparency": true,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#cfc8b4",
+          "--machine": "#3a352a",
+          "--mat-thick-bg": "#3a352a",
+          "--glass-float-bg": "#cfc8b4",
+          "--glass-dark-bg": "#262420",
+          "--ink-soft": "#5e5744",
+          "--focus-ring": "#d4a72c",
+          "--focus-width": "3px",
+          "--mat-blur-s": "0px",
+          "--mat-blur-m": "0px",
+          "--mat-blur-l": "0px",
+          "--scrim-blur": "0px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(69, 63, 48) 0%, rgb(58, 53, 42) 58%, rgb(50, 45, 34) 100%)"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": null,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(207, 200, 180), rgb(207, 200, 180)), conic-gradient(rgba(148, 138, 114, 0.6) 0deg, rgba(14"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(51, 48, 42) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(51, 48, 42) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgb(51, 48, 42) 0%, rgb(38, 36, 32) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0.72,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#d4a72c"
+        }
+      },
+      "rmProbe": null
+    },
+    "dark+contrast-more": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "dark"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "more"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "no-preference"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": true,
+          "contrastMore": true,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#cfc8b4",
+          "--machine": "#3a352a",
+          "--mat-thick-bg": "color-mix(in srgb, #3a352a 92%, transparent)",
+          "--glass-float-bg": "rgba(207, 200, 180, .82)",
+          "--glass-dark-bg": "rgba(28, 26, 21, .7)",
+          "--ink-soft": "#8d8368",
+          "--focus-ring": "#e8c14f",
+          "--focus-width": "4px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.270588 0.247059 0.188235 / 0.92) 0%, color(srgb 0.227451 0.207843 0.164706 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.82,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(207, 200, 180, 0.82), rgba(207, 200, 180, 0.82)), conic-gradient(rgba(148, 138, 114, 0.6)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": true,
+          "outline": "4px solid rgb(232, 193, 79)",
+          "tokenFocusWidth": "4px",
+          "tokenFocusRing": "#e8c14f"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": true,
+          "contrastMore": true,
+          "reducedTransparency": false,
+          "reducedMotion": false
+        },
+        "tokens": {
+          "--paper": "#cfc8b4",
+          "--machine": "#3a352a",
+          "--mat-thick-bg": "color-mix(in srgb, #3a352a 92%, transparent)",
+          "--glass-float-bg": "rgba(207, 200, 180, .82)",
+          "--glass-dark-bg": "rgba(28, 26, 21, .7)",
+          "--ink-soft": "#8d8368",
+          "--focus-ring": "#e8c14f",
+          "--focus-width": "4px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.270588 0.247059 0.188235 / 0.92) 0%, color(srgb 0.227451 0.207843 0.164706 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.82,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(207, 200, 180, 0.82), rgba(207, 200, 180, 0.82)), conic-gradient(rgba(148, 138, 114, 0.6)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(45, 43, 36, 0.86) 0%, rgba(38, 36, 32, 0.9) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": "blur(6px)",
+            "blurPx": 6,
+            "bgMinAlpha": 0.55,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "4px",
+          "tokenFocusRing": "#e8c14f"
+        }
+      },
+      "rmProbe": null
+    },
+    "reduced-motion": {
+      "features": [
+        {
+          "name": "prefers-color-scheme",
+          "value": "light"
+        },
+        {
+          "name": "prefers-contrast",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-transparency",
+          "value": "no-preference"
+        },
+        {
+          "name": "prefers-reduced-motion",
+          "value": "reduce"
+        }
+      ],
+      "cycle": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": false,
+          "reducedTransparency": false,
+          "reducedMotion": true
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "color-mix(in srgb, #d5c9ab 92%, transparent)",
+          "--glass-float-bg": "rgba(247, 242, 226, .78)",
+          "--glass-dark-bg": "rgba(38, 36, 32, .68)",
+          "--ink-soft": "#55503c",
+          "--focus-ring": "#7a5f10",
+          "--focus-width": "3px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.878431 0.839216 0.737255 / 0.92) 0%, color(srgb 0.835294 0.788235 0.670588 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.78,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(247, 242, 226, 0.78), rgba(247, 242, 226, 0.78)), conic-gradient(rgba(122, 106, 74, 0.28)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": false
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": false
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": true,
+          "outline": "3px solid rgb(122, 95, 16)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#7a5f10"
+        }
+      },
+      "dialog": {
+        "media": {
+          "darkScheme": false,
+          "contrastMore": false,
+          "reducedTransparency": false,
+          "reducedMotion": true
+        },
+        "tokens": {
+          "--paper": "#f7f2e2",
+          "--machine": "#d5c9ab",
+          "--mat-thick-bg": "color-mix(in srgb, #d5c9ab 92%, transparent)",
+          "--glass-float-bg": "rgba(247, 242, 226, .78)",
+          "--glass-dark-bg": "rgba(38, 36, 32, .68)",
+          "--ink-soft": "#55503c",
+          "--focus-ring": "#7a5f10",
+          "--focus-width": "3px",
+          "--mat-blur-s": "10px",
+          "--mat-blur-m": "18px",
+          "--mat-blur-l": "26px",
+          "--scrim-blur": "6px"
+        },
+        "surfaces": [
+          {
+            "sel": ".machine-panel",
+            "present": true,
+            "backdropFilter": "blur(26px) saturate(1.35)",
+            "blurPx": 26,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(color(srgb 0.878431 0.839216 0.737255 / 0.92) 0%, color(srgb 0.835294 0.788235 0.670588 / 0.92"
+          },
+          {
+            "sel": ".cycle-plate",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0.78,
+            "backgroundImage": null
+          },
+          {
+            "sel": ".tool-btn",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.35)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(247, 242, 226, 0.78), rgba(247, 242, 226, 0.78)), conic-gradient(rgba(122, 106, 74, 0.28)"
+          },
+          {
+            "sel": ".observation",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(35, 33, 27, 0.8) 0%, rgba(25, 24, 19, 0.86) 100%)"
+          },
+          {
+            "sel": ".status-line",
+            "present": true,
+            "backdropFilter": "blur(10px) saturate(1.2)",
+            "blurPx": 10,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(38, 36, 32, 0.72) 0%, rgba(29, 27, 22, 0.78) 100%)"
+          },
+          {
+            "sel": ".dialog",
+            "present": true,
+            "backdropFilter": null,
+            "blurPx": null,
+            "bgMinAlpha": 0,
+            "backgroundImage": "linear-gradient(rgba(45, 43, 36, 0.86) 0%, rgba(38, 36, 32, 0.9) 100%)"
+          },
+          {
+            "sel": ".dialog-backdrop",
+            "present": true,
+            "backdropFilter": "blur(6px)",
+            "blurPx": 6,
+            "bgMinAlpha": 0.45,
+            "backgroundImage": null
+          }
+        ],
+        "focus": {
+          "selector": "section.panel.panel-extract > div > div.track > button.cutter.cutter-left",
+          "focusVisible": false,
+          "outline": "3px none rgb(0, 0, 0)",
+          "tokenFocusWidth": "3px",
+          "tokenFocusRing": "#7a5f10"
+        }
+      },
+      "rmProbe": {
+        "selector": ".btn-primary",
+        "transitionDuration": "1e-05s",
+        "transitionProperty": "transform, box-shadow, background-color"
+      }
+    }
+  },
+  "frames": {
+    "mode": "headed",
+    "memory": {
+      "usedJSHeapMB": 2.8,
+      "totalJSHeapMB": 5.4,
+      "limitMB": 4192
+    },
+    "hardwareConcurrency": 12,
+    "devicePixelRatio": 1.0000000298023224,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "stats": {
+      "frames": 290,
+      "meanMs": 6.9,
+      "medianMs": 6.1,
+      "p95Ms": 6.5,
+      "maxMs": 115.2,
+      "over20msPct": 1,
+      "over34msPct": 1
+    }
+  }
+}

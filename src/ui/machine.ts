@@ -642,6 +642,8 @@ export class MachineController {
     round.cycle.textContent = t('cycle.display', { nn: String(this.state.cycle).padStart(2, '0') });
     const loadKey = this.state.act === 1 ? 'load.normal' : this.state.act === 2 ? 'load.high' : 'load.overdrive';
     round.loadLine.textContent = `${t('load.label')}: ${t(loadKey)}`;
+    // v4.8 M5 IL-3：Act 铭牌蚀刻的状态钩子（读 GameState，纯渲染，行为零变更）
+    round.machineEl.dataset.act = String(this.state.act);
     // §13 E：插头自 Cycle 09 起出现（无提示）
     round.plug.style.display = this.state.cycle >= 9 ? '' : 'none';
   }
@@ -685,6 +687,8 @@ export class MachineController {
     const round = this.round;
     if (!round) return;
     round.flame.style.opacity = String(Math.max(0, Math.min(100, this.state.heat)) / 100);
+    // v4.8 M5 IL-1：余烬床强度与火焰同一 heat 连续映射（machine.css --ember-level）
+    round.furnaceCard.style.setProperty('--ember-level', String(Math.max(0, Math.min(100, this.state.heat)) / 100));
     round.flame.style.animation = '';
     if (!this.reduced && this.state.heat > 0) {
       round.flame.style.animation = 'furnace-flicker 1.6s ease-in-out infinite';
@@ -746,11 +750,13 @@ export class MachineController {
     window.setTimeout(() => {
       round.heatGauge.set(heatIntermediate);
       round.flame.style.opacity = String(Math.max(0, heatIntermediate) / 100);
+      round.furnaceCard.style.setProperty('--ember-level', String(Math.max(0, heatIntermediate) / 100)); // IL-1
     }, FEEDBACK_SINK_MS);
 
     window.setTimeout(() => {
       round.heatGauge.set(this.state.heat); // 300–600ms HEAT 上升
       round.flame.style.opacity = String(this.state.heat / 100);
+      round.furnaceCard.style.setProperty('--ember-level', String(this.state.heat / 100)); // IL-1
       if (!this.reduced) {
         round.flame.style.animation = 'furnace-flicker 0.4s ease-in-out 3';
       }
