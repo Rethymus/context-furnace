@@ -17,6 +17,8 @@
 > **v1.2.2（2026-09-09，居中双保险，同轮用户指示）**：§16-1 网格表格再外套 `<div align="center">`，与表格 `align="center"` 构成双保险（前者覆盖剥离 table align 的渲染器，后者覆盖 GitHub 生产表格行为）。经 Markdown API 验证双层标记均生还 sanitizer；Dashy 线上同款网格（table align + td align + 图注）实测 center=564=内容区中心、三图中心严格对称。全部截图与 GIF 所在容器核对：头部块（boot 图 / 徽章 / gameplay GIF）在 `<div align="center">` 内，Languages 的 switch GIF 在 `<p align="center">` 内——均为 Astro / Shields / Oh My Zsh / Sniffnet 等热门仓库的主流居中写法。
 >
 > **v1.2.3（2026-09-09，图廊去表格化，用户人工指示）**：§16-1 图廊由「双列表格」改造为「**居中段落 + 百分比宽度 `<img>`**」——`<p align="center">` 内四张 `width="47%"` 图片自动两两成行（Sniffnet 画廊范式），随内容宽自适应、任何渲染器下天然居中，彻底摆脱 GitHub 表格 `width:max-content` 收缩/贴左行为。可见图注（`<sub>`）取消：sanitizer 剥离 style，纯段落流中逐图图注无法与图片对位；语言与周期信息并入 alt 文本（§17）。媒体清单、采集状态、语言对应关系（§11/§15/P5）不变。
+>
+> **v1.2.4（2026-09-09，图廊行级图注版式，用户人工指示）**：§16-1 图廊定稿为「**行级居中图注 + 单行 48.8% 双图**」——每组图片上方一行居中加粗图注（`<b>A</b> · <b>B</b>`），图片行由单个 `<p align="center">` 内两张 `width="48.8%"` 图片构成（合计 97.6%，行宽近满、两侧边距 ≈1%，行内两图中心连线关于内容中线严格对称）。相对 v1.2.3 的 47% 方案：边距从 ~2.4% 收窄至 ~1%，消除与左对齐章节标题之间的缩进观感；恢复可见图注（行级居中，规避逐图对位问题）。图注术语与 CONTENT_SPEC 一致。
 
 ---
 
@@ -325,64 +327,30 @@ Duration: ≤ 7.5 s              Size: ≤ 4 MB
 
 ## 16. Screenshots / Controls / Languages 章节写法（v1.2 逐字）
 
-### 16-1. Screenshots 图廊（取代 v1.1 的 H3 竖排块；**居中段落 + 百分比宽度 `<img>`**，v1.2.3；可见图注取消，语言与周期信息并入 alt 文本——§17）
+### 16-1. Screenshots 图廊（取代 v1.1 的 H3 竖排块；**行级居中图注 + 单行 48.8% 双图**，v1.2.4）
+
+版式结构（每行图片组）：居中加粗图注行（`<b>A</b> · <b>B</b>` 对应该行两张图）→ 单个 `<p align="center">` 内两张 `width="48.8%"` 图片（同一行、单个空格分隔）。48.8% × 2 = 97.6%，图片行几乎占满内容宽、两侧边距 ≈1%，行内两图中心连线关于内容中线严格对称；图注按行居中，规避逐图图注对位问题。
 
 英文（README.md）：
 
 ```markdown
 ## Screenshots
 
-<p align="center">
-  <img
-    src="./docs/media/readme/machine-zh.png"
-    alt="Context Furnace running in Simplified Chinese at Cycle 04: cut track, gain stops, heat and fidelity gauges"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/machine-en.png"
-    alt="Context Furnace running in English at Cycle 08: cut track, gain stops, heat and fidelity gauges"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/result-en.png"
-    alt="Context Furnace round result in English at Cycle 06: machine message and next-input button"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/settings-en.png"
-    alt="Context Furnace settings panel in English: language, sound, volume, motion, tutorial replay"
-    width="47%"
-  />
-</p>
+<p align="center"><b>Simplified Chinese</b> · <b>English</b></p>
+<p align="center"><img src="./docs/media/readme/machine-zh.png" alt="Context Furnace running in Simplified Chinese at Cycle 04: cut track, gain stops, heat and fidelity gauges" width="48.8%"> <img src="./docs/media/readme/machine-en.png" alt="Context Furnace running in English at Cycle 08: cut track, gain stops, heat and fidelity gauges" width="48.8%"></p>
+<p align="center"><b>Round result</b> · <b>Settings</b></p>
+<p align="center"><img src="./docs/media/readme/result-en.png" alt="Context Furnace round result in English at Cycle 06: machine message and next-input button" width="48.8%"> <img src="./docs/media/readme/settings-en.png" alt="Context Furnace settings panel in English: language, sound, volume, motion, tutorial replay" width="48.8%"></p>
 ```
 
-中文（README.zh-CN.md，第三、四张换成本语言截图）：
+中文（README.zh-CN.md，第二组换成本语言截图与图注）：
 
 ```markdown
 ## 游戏截图
 
-<p align="center">
-  <img
-    src="./docs/media/readme/machine-zh.png"
-    alt="以简体中文运行的《断章取火器》（周期 04）：裁切轨道、增益卡位、炉温与保真度仪表"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/machine-en.png"
-    alt="以英文运行的 Context Furnace（周期 08）：裁切轨道、增益卡位、炉温与保真度仪表"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/result-zh.png"
-    alt="《断章取火器》入炉结果（周期 06）：机器消息与「下一份」按钮"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/settings-zh.png"
-    alt="《断章取火器》设置面板：语言、声音、音量、动效、重播教学"
-    width="47%"
-  />
-</p>
+<p align="center"><b>简体中文</b> · <b>English</b></p>
+<p align="center"><img src="./docs/media/readme/machine-zh.png" alt="以简体中文运行的《断章取火器》（周期 04）：裁切轨道、增益卡位、炉温与保真度仪表" width="48.8%"> <img src="./docs/media/readme/machine-en.png" alt="以英文运行的 Context Furnace（周期 08）：裁切轨道、增益卡位、炉温与保真度仪表" width="48.8%"></p>
+<p align="center"><b>入炉结果</b> · <b>设置</b></p>
+<p align="center"><img src="./docs/media/readme/result-zh.png" alt="《断章取火器》入炉结果（周期 06）：机器消息与「下一份」按钮" width="48.8%"> <img src="./docs/media/readme/settings-zh.png" alt="《断章取火器》设置面板：语言、声音、音量、动效、重播教学" width="48.8%"></p>
 ```
 
 ### 16-2. Controls 表格（取代 v1.1 的 bullet 版；文案事实不变，仅改排版）

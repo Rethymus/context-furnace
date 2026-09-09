@@ -60,28 +60,10 @@
 
 ## 游戏截图
 
-<p align="center">
-  <img
-    src="./docs/media/readme/machine-zh.png"
-    alt="以简体中文运行的《断章取火器》（周期 04）：裁切轨道、增益卡位、炉温与保真度仪表"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/machine-en.png"
-    alt="以英文运行的 Context Furnace（周期 08）：裁切轨道、增益卡位、炉温与保真度仪表"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/result-zh.png"
-    alt="《断章取火器》入炉结果（周期 06）：机器消息与「下一份」按钮"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/settings-zh.png"
-    alt="《断章取火器》设置面板：语言、声音、音量、动效、重播教学"
-    width="47%"
-  />
-</p>
+<p align="center"><b>简体中文</b> · <b>English</b></p>
+<p align="center"><img src="./docs/media/readme/machine-zh.png" alt="以简体中文运行的《断章取火器》（周期 04）：裁切轨道、增益卡位、炉温与保真度仪表" width="48.8%"> <img src="./docs/media/readme/machine-en.png" alt="以英文运行的 Context Furnace（周期 08）：裁切轨道、增益卡位、炉温与保真度仪表" width="48.8%"></p>
+<p align="center"><b>入炉结果</b> · <b>设置</b></p>
+<p align="center"><img src="./docs/media/readme/result-zh.png" alt="《断章取火器》入炉结果（周期 06）：机器消息与「下一份」按钮" width="48.8%"> <img src="./docs/media/readme/settings-zh.png" alt="《断章取火器》设置面板：语言、声音、音量、动效、重播教学" width="48.8%"></p>
 
 ## 操作
 

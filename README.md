@@ -60,28 +60,10 @@ Each cycle gives the machine a new text feed. Select a continuous section, adjus
 
 ## Screenshots
 
-<p align="center">
-  <img
-    src="./docs/media/readme/machine-zh.png"
-    alt="Context Furnace running in Simplified Chinese at Cycle 04: cut track, gain stops, heat and fidelity gauges"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/machine-en.png"
-    alt="Context Furnace running in English at Cycle 08: cut track, gain stops, heat and fidelity gauges"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/result-en.png"
-    alt="Context Furnace round result in English at Cycle 06: machine message and next-input button"
-    width="47%"
-  />
-  <img
-    src="./docs/media/readme/settings-en.png"
-    alt="Context Furnace settings panel in English: language, sound, volume, motion, tutorial replay"
-    width="47%"
-  />
-</p>
+<p align="center"><b>Simplified Chinese</b> · <b>English</b></p>
+<p align="center"><img src="./docs/media/readme/machine-zh.png" alt="Context Furnace running in Simplified Chinese at Cycle 04: cut track, gain stops, heat and fidelity gauges" width="48.8%"> <img src="./docs/media/readme/machine-en.png" alt="Context Furnace running in English at Cycle 08: cut track, gain stops, heat and fidelity gauges" width="48.8%"></p>
+<p align="center"><b>Round result</b> · <b>Settings</b></p>
+<p align="center"><img src="./docs/media/readme/result-en.png" alt="Context Furnace round result in English at Cycle 06: machine message and next-input button" width="48.8%"> <img src="./docs/media/readme/settings-en.png" alt="Context Furnace settings panel in English: language, sound, volume, motion, tutorial replay" width="48.8%"></p>
 
 ## Controls
 
