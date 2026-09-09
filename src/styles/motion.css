@@ -109,6 +109,127 @@
   animation: fade-in 0.2s ease; /* D25：形状替换 200ms 淡入 */
 }
 
+/* ── v5.0 M7 插画动画词汇表（mw-*）：transform/opacity/dashoffset 三属性族，
+   不触布局、不进 e2e 时序断言；RM 与 freeze 由文件尾全局规则统一关断 ── */
+@keyframes mw-rise {
+  0% { opacity: 0; transform: translateY(2px); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+@keyframes mw-march {
+  to { stroke-dashoffset: -18; } /* 5+4=9 周期 ×2，循环无缝 */
+}
+
+@keyframes mw-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes mw-flicker {
+  0%, 100% { opacity: 1; }
+  38% { opacity: 0.72; }
+  55% { opacity: 0.92; }
+  74% { opacity: 0.66; }
+}
+
+@keyframes mw-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@keyframes mw-tilt {
+  0%, 100% { transform: rotate(0.6deg); }
+  50% { transform: rotate(-0.6deg); }
+}
+
+/* G4 印章入场：每周期新 <svg> 插入即重放（周期整体转场由既有 mount-rise 承载） */
+@keyframes mw-enter {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+.card-seal svg {
+  animation: mw-enter 0.14s ease-out;
+}
+
+.card-seal .mw-rise {
+  animation: mw-rise 2.6s ease-in-out infinite;
+}
+
+.card-seal .mw-rise ~ .mw-rise {
+  animation-delay: 1.3s;
+}
+
+.card-seal .mw-march {
+  animation: mw-march 1.8s linear infinite;
+  stroke-dasharray: 5 4;
+}
+
+.card-seal .mw-pulse {
+  animation: mw-pulse 3.2s ease-in-out infinite;
+}
+
+.card-seal .mw-flicker {
+  animation: mw-flicker 4s linear infinite;
+}
+
+.card-seal .mw-flicker ~ .mw-flicker {
+  animation-delay: 1.6s;
+}
+
+.card-seal .mw-tilt {
+  animation: mw-tilt 5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.home-plate .mw-drift {
+  animation: mw-drift 7s ease-in-out infinite;
+}
+
+.home-plate .mw-drift ~ .mw-drift {
+  animation-delay: -3.2s;
+}
+
+.furnace-interior .mw-pulse {
+  animation: mw-pulse 4s ease-in-out infinite;
+}
+
+.furnace-interior .mw-pulse ~ .mw-pulse {
+  animation-delay: 1.3s;
+}
+
+.furnace-interior .mw-pulse ~ .mw-pulse ~ .mw-pulse {
+  animation-delay: 2.6s;
+}
+
+/* H2 待机版画点亮：POWER ON 后 470ms（纸卡脉冲同拍）由 .plate-lit 切换；
+   RM/freeze 下无过渡、即时态（亮度差异仍在，状态不依赖动画） */
+.home-plate {
+  filter: brightness(0.72) saturate(0.85);
+  transition: filter 0.5s var(--spring-smooth);
+}
+
+.home-plate.plate-lit {
+  filter: none;
+}
+
+/* G5 炉门辉光：BURNING 950ms 反馈窗内观察窗内缘一次暖光脉冲（一次性，
+   与 M2 火光透射同窗不同层——彼为底部透射，此为内缘辉光） */
+.machine.burning .observation::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: door-glow 0.9s ease-in-out 1;
+}
+
+@keyframes door-glow {
+  0%, 100% { box-shadow: inset 0 0 0 0 rgba(228, 128, 52, 0); }
+  45% { box-shadow: inset 0 0 14px 2px rgba(228, 128, 52, 0.35); }
+}
+
 /* 减少动效（系统偏好或设置覆盖）：动画/过渡全部退化为即时状态切换，
    仅保留 glyph 的 opacity pulse（§10/D24 的 RM 表达） */
 @media (prefers-reduced-motion: reduce) {

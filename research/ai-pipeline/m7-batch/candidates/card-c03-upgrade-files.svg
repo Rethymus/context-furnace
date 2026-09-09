@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <rect x="1" y="1" width="94" height="94" rx="8" fill="#e4decb"/>
+  <rect x="6" y="6" width="84" height="84" rx="5" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 文件夹（带页签） -->
+  <path fill="#26231c" d="M16 66V34l12-4v4h10v32z"/>
+  <!-- 夹内文件（保留） -->
+  <path fill="#b6ab94" d="M22 38h22v24H22z"/>
+  <path fill="none" stroke="#26231c" stroke-width="1.5" d="M26 44h14M26 50h14M26 56h10"/>
+  <!-- 插件齿轮：与文件夹脱开间隙（需重装） -->
+  <circle cx="68" cy="62" r="9" fill="none" stroke="#26231c" stroke-width="2.5"/>
+  <path fill="none" stroke="#26231c" stroke-width="3" stroke-linecap="round" d="M68 49v-4M68 79v-4M55 62h4M81 62h-4M59 53l3 3M80 71l-3-3M59 71l3-3M80 53l-3 3"/>
+  <circle cx="68" cy="62" r="3" fill="#26231c"/>
+  <!-- 升级上行虚线箭头 -->
+  <path class="mw-march" fill="none" stroke="#b44622" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 4" d="M34 30V16"/>
+  <path fill="none" stroke="#b44622" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M28 21l6-6 6 6"/>
+</svg>

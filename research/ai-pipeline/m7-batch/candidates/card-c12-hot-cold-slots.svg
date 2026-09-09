@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <rect x="1" y="1" width="94" height="94" rx="8" fill="#e4decb"/>
+  <rect x="6" y="6" width="84" height="84" rx="5" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 双槽位：左加热 A 槽 / 右冷却 B 槽（零字形） -->
+  <path fill="#26231c" d="M16 30h26v44H16z"/>
+  <path fill="#26231c" d="M54 30h26v44H54z"/>
+  <!-- 左槽：开口 + 内热浪三叠 -->
+  <rect x="21" y="35" width="16" height="8" fill="#e4decb"/>
+  <path class="mw-rise" fill="none" stroke="#b44622" stroke-width="2" stroke-linecap="round" d="M25 64q2-4 0-8t2-8M31 64q2-4 0-8t2-8"/>
+  <!-- 右槽：开口 + 冷凝/裂纹线（teal 语义锚：冷） -->
+  <rect x="59" y="35" width="16" height="8" fill="#e4decb"/>
+  <path fill="none" stroke="#2c625a" stroke-width="2" stroke-linecap="round" d="M63 64v-14M69 64v-14"/>
+  <path fill="none" stroke="#2c625a" stroke-width="1.5" stroke-linecap="round" d="M61 54l4-4M71 54l-4-4"/>
+  <!-- 左槽样本常在（热样本被照看）；右槽静置 -->
+  <rect x="24" y="45" width="10" height="8" rx="1" fill="#e48034"/>
+  <!-- 底座 -->
+  <path fill="none" stroke="#26231c" stroke-width="2.5" stroke-linecap="round" d="M12 78h72"/>
+</svg>

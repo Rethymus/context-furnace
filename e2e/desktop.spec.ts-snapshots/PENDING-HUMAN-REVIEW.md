@@ -77,3 +77,14 @@
 - Linux（CI）基线：像素内容将随本批变化，需 `.github/workflows/update-baselines.yml`
   手动触发生成（D28），machine 高度两平台同为 842（尺寸不变，仅内容 diff）。
 - 行为/文案/数值/几何断言零改动。自采 ≠ 已确认。
+
+## 变更记录（2026-09-09 · UI v5.0 M7 全程插画与微动效）
+
+- 变更面 home-zh / home-en / cycle4-zh / cycle8-en / cycle12-zh 五张：
+  home 待机版画（冷炉木刻，tableau clamp 140px@900）；FEED 纸卡浮动落款印章
+  （12 卡各一幅、随周期切换）；观察窗炉膛内景（火焰层之下暗剪影）。
+  result-peak / result-stable 重生成后字节不变（结局页无 M7 元素，实证）。
+- 确定性：mw-* 插画动画在 freeze 下全局关断（motion.css D29 规则），
+  双拍 --repeat-each=2 共 10/10 像素稳定。
+- Linux（CI）基线：内容变更面同上五张，需 update-baselines.yml 手动触发（D28）。
+- 行为/文案/数值零改动。自采 ≠ 已确认。

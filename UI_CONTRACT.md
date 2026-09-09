@@ -76,6 +76,7 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 | M4 液态玻璃语汇 | 控件激活态边缘 specular 高光、按压液感（cap 高光位移）、旋钮卡位定位感（微过冲调参）、跨引擎基线固化 | **已交付（2026-09-08 所有者批复 K3，见 v4.8）** |
 | M5 插画与沉浸语汇 | IL-1 炉膛余烬床、IL-2 台面工业印记、IL-3 Act 铭牌蚀刻、IL-4 结局幕插画层、IL-5 纸带纤维纹理（非叙事、CSS/SVG-only、零新文本） | **已交付（2026-09-08 所有者批复 K2 全项，草案 `UI_CONTRACT_M5_DRAFT.md`，见 v4.8）** |
 | M6 结局版画（LLM 直写 SVG） | 五结局木刻版画板（模型直写矢量、子色板闸门、aria-hidden 零文本），生成方式与研究依据见 `AI_ILLUSTRATION_RESEARCH.md` 与 `research/ai-pipeline/` | **已交付（2026-09-09 所有者授权「授权你 LLM 直写 SVG」+「授权执行」，见 v4.9）** |
+| M7 全程插画与微动效（LLM 直写 SVG 第二批） | 12 卡面印章（浮动落款）+ home 待机版画（boot 点亮）+ 观察窗炉膛内景 + mw-* 动画词汇表（K5 追加：插画动画化，CSS-SVG 而非 GIF），人工预览门后集成，见 v5.0 与 `UI_CONTRACT_M7_DRAFT.md` | **已交付（2026-09-09 所有者批复 K1–K5：预览门「可以」+「还需要加入动画或者gif」）** |
 
 ## v4.6 可验证性
 
@@ -275,6 +276,42 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
   重生成（D28）；两平台 machine 高度同为 842（尺寸不变、仅内容 diff）。
 - 生成端方法与替代路线（云端文生图 API / 本地 diffusers）、候选库走查记录
   与批量闸门脚本：`research/ai-pipeline/`（研究资产，不进生产 bundle）。
+
+## v5.0 M7 实现批次（2026-09-09，人工预览门通过 + K5 追加批复后交付）
+
+依据：`UI_CONTRACT_M7_DRAFT.md`（配方 H1/H2/G1/G3/G4/G5 + K1–K5 批复记录 + 否决表）。
+授权链：M6 管线既立 → 四项范围批复（K1–K4）→ 候选库 14/14 过闸门 → 实机 DOM 注入
+预览（拼贴单 + 合成图）→ 所有者「可以」→ K5 追加「还需要加入动画或者gif」→ 裁定
+**CSS 动画化 SVG**（游戏内不引入 GIF：位图、无 RM 关断、破坏矢量色板体系；GIF 形态
+仅 README 展示面，PRESENTATION_SPEC 管辖）→ 集成。行为/文案/数值零改动。
+
+### 交付内容
+
+1. **14 幅 LLM 直写 SVG**：12 枚卡面印章（96×96 纸上墨刻、单点红语义焦点、
+   C12 冷槽 teal 锚、零字形）+ home 待机版画（320×200 暗底浅纹，与五结局同族
+   第六幅）+ 炉膛内景（480×120 超暗剪影，slice 铺观察窗）。gzip 合计 ≈4.9 KB。
+2. **挂载**：印章为 **浮动落款**（`float:right` 置于正文 `<p>` 之前——Range 行盒
+   实测绝对定位版必与正文盒相交，浮动版 zh+en 字形级零遮挡）；内景 `prepend`
+   进 `.observation`（z-index:-1，层于 M2 火光透射与火焰之下，负序不出
+   backdrop-filter 层叠上下文）；待机版画挂 home-body（tableau clamp 复用 M6 预算）。
+3. **微动效包（K3+K5）**：mw-* 词汇表六循环词 + 两一次性词（mw-enter 印章入场
+   140ms / door-glow 炉门辉光 0.9s）；H2 版画点亮（plate-lit@470ms 与纸卡脉冲
+   同拍，filter 过渡 0.5s）；G4 收敛——周期转场本由 M1 mount-rise 承载
+   （loadRound 全量重建），仅加印章入场避免双重运动。全部 CSS-only、
+   transform/opacity/dashoffset 三属性族、RM 与 freeze 全局关断。
+4. **余烬联动**：`.embers` 基态 0.5、`.machine.burning` 增亮至 1（与 M2 火光
+   同窗的光语汇；原草案的 --ember-level 直连简化为 burning 态类驱动——
+   可见行为等价于反馈窗时刻）。
+
+### 验证与基线
+
+- 几何实测：home machine 842 / docScroll 900 零滚动（版画 140×88）；cycle
+  machine 739、无水平溢出；H2 前 false 后 true。
+- `tests/material.test.ts` 44 → 50 条断言。
+- 基线变更面精确命中 home×2 + cycle×3；result×2 重生成后**字节不变**（实证
+  结局页无 M7 元素）；确定性双拍 10/10（freeze 下 mw-* 全静止帧可复现）。
+- Linux（CI）基线：内容变更面同上，需 `update-baselines.yml` 手动触发（D28）。
+- `npm run verify` 12 项全绿；bundle CSS+JS gzip ≈35.9 KB / 250 KB。
 
 
 ## 1. Art Direction（概念图提炼）

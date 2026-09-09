@@ -472,6 +472,81 @@ describe('v4 M6 ending woodcuts', () => {
   });
 });
 
+// ── v5.0 M7 全程插画与微动效（2026-09-09 所有者批复 K1–K5；LLM 直写 SVG 第二批）──
+describe('v5 M7 illustrations & micro-motion', () => {
+  const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+  const motion = readFileSync(join(ROOT, 'src', 'styles', 'motion.css'), 'utf8');
+  const sealsBlock = mts.split('const CARD_SEALS')[1]?.split('];')[0] ?? '';
+  const homeBlock = mts.split('const HOME_STANDBY')[1]?.split(';\r\n')[0] ?? mts.split('const HOME_STANDBY')[1]?.split(';\n')[0] ?? '';
+  const interiorBlock = mts.split('const FURNACE_INTERIOR')[1]?.split(';\r\n')[0] ?? mts.split('const FURNACE_INTERIOR')[1]?.split(';\n')[0] ?? '';
+  const allArt = sealsBlock + homeBlock + interiorBlock;
+
+  it('twelve card seals + home standby + furnace interior are embedded', () => {
+    expect((sealsBlock.match(/<svg/g) ?? []).length).toBe(12);
+    expect((sealsBlock.match(/viewBox="0 0 96 96"/g) ?? []).length).toBe(12);
+    expect(homeBlock).toContain('viewBox="0 0 320 200"');
+    expect(interiorBlock).toContain('viewBox="0 0 480 120"');
+  });
+
+  it('mounts are aria-hidden; seal floats in feed body and swaps per cycle', () => {
+    expect(mts).toContain("homePlate.className = 'home-plate'");
+    expect(mts).toContain("homePlate.setAttribute('aria-hidden', 'true')");
+    expect(mts).toContain("cardSeal.className = 'card-seal'");
+    expect(mts).toContain("cardSeal.setAttribute('aria-hidden', 'true')");
+    expect(mts).toContain('feedPanel.body.prepend(cardSeal)'); // 浮动落款：文字环绕
+    expect(mts).toContain("interior.className = 'furnace-interior'");
+    expect(mts).toContain('observation.root.prepend(interior)'); // 火焰层之下
+    expect(mts).toContain('CARD_SEALS[this.state.cycle - 1] ??');
+    // H2 点亮钩子挂在 470ms 纸卡脉冲同拍
+    expect(mts).toContain("querySelector<HTMLElement>('.home-plate')?.classList.add('plate-lit')");
+  });
+
+  it('illustrations carry zero text nodes', () => {
+    expect(allArt).not.toContain('<text');
+    expect(allArt).not.toContain('<tspan');
+  });
+
+  it('fills stay inside the art sub-palette; teal confined to C12 seal', () => {
+    const ART = new Set([
+      '#17150f', '#26231c', '#38342a', '#55503f', '#8d8368', '#d8d0ba',
+      '#b6ab94', '#d5c9ab', '#f7f2e2', '#22201a', '#262420', '#e4decb',
+      '#a43a2f', '#c0503f', '#e48034', '#b44622', '#7c2a20',
+      '#0d0c09', '#b3ac97', '#2c625a',
+    ]);
+    const used = allArt.match(/#[0-9a-fA-F]{6}\b/g) ?? [];
+    expect([...new Set(used.filter((c) => !ART.has(c.toLowerCase())))]).toEqual([]);
+    const entries = sealsBlock.split("',");
+    const tealOffenders = entries.filter((e) => e.toLowerCase().includes('#2c625a') && !e.includes('C12'));
+    expect(tealOffenders).toEqual([]);
+  });
+
+  it('mw-* animation vocabulary drives the illustrations; freeze/RM covered by global kill-switch', () => {
+    for (const kf of ['mw-rise', 'mw-march', 'mw-pulse', 'mw-flicker', 'mw-drift', 'mw-tilt', 'mw-enter', 'door-glow']) {
+      expect(motion).toContain(`@keyframes ${kf}`);
+    }
+    // 类已在 SVG 内（候选库 animate 注入）
+    for (const cls of ['mw-rise', 'mw-march', 'mw-pulse', 'mw-flicker', 'mw-drift', 'mw-tilt']) {
+      expect(allArt).toContain(`class="${cls}"`);
+    }
+    // H2 冷态/点亮与 G5 辉光
+    expect(motion).toContain('.home-plate.plate-lit');
+    expect(motion).toContain('.machine.burning .observation::after');
+    // freeze 全局关断（D29）不因新词汇表面失效
+    expect(motion).toContain("[data-freeze='1'] *");
+  });
+
+  it('layout budgets locked: home tableau sizing + seal float + interior layering', () => {
+    const mach = readFileSync(join(ROOT, 'src', 'styles', 'machine.css'), 'utf8');
+    const plateCss = mach.split('.home-plate {')[1]?.split('}')[0] ?? '';
+    expect(plateCss).toContain('clamp(140px, calc(100svh * 1.5 - 1220px), 300px)');
+    const sealCss = mach.split('.card-seal {')[1]?.split('}')[0] ?? '';
+    expect(sealCss).toContain('float: right');
+    const intCss = mach.split('.furnace-interior {')[1]?.split('}')[0] ?? '';
+    expect(intCss).toContain('z-index: -1');
+    expect(mach).toContain('.machine.burning .furnace-interior .embers');
+  });
+});
+
 // ── v4.6 防硬化回归：styles/*.css 的 hex 白名单（新增裸 hex 须显式入册并审对比度） ──
 describe('v4 hex allowlist (anti-hardening)', () => {
   const ALLOWLIST = new Set([

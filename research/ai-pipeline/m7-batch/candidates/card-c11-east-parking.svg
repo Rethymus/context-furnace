@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <rect x="1" y="1" width="94" height="94" rx="8" fill="#e4decb"/>
+  <rect x="6" y="6" width="84" height="84" rx="5" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 分区图：左大区（车位多）与右东区（车位少），中缝道路 -->
+  <path fill="none" stroke="#26231c" stroke-width="2.5" d="M14 26h30v44H14zM50 26h32v44H50z"/>
+  <path fill="none" stroke="#26231c" stroke-width="2" stroke-dasharray="4 4" d="M47 22v52"/>
+  <!-- 左区：五个车位，仅一个占用 -->
+  <path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M19 34v28M28 34v28M37 34v28M14 44h30M14 56h30"/>
+  <rect x="20" y="46" width="7" height="8" fill="#26231c"/>
+  <!-- 东区（右）：两个车位全满 -->
+  <path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M56 34v28M76 34v28M50 44h32M50 56h32"/>
+  <rect x="57" y="46" width="8" height="8" fill="#26231c"/>
+  <rect x="66" y="46" width="8" height="8" fill="#26231c"/>
+  <!-- 东区上方投诉标记 ×2（更频繁），左区 0 -->
+  <rect class="mw-flicker" x="56" y="30" width="9" height="7" rx="2" fill="#b44622"/>
+  <path fill="none" stroke="#b44622" stroke-width="1.5" d="M58 37l-1 3 3-3"/>
+  <rect class="mw-flicker" x="70" y="30" width="9" height="7" rx="2" fill="#b44622"/>
+  <path fill="none" stroke="#b44622" stroke-width="1.5" d="M72 37l-1 3 3-3"/>
+</svg>

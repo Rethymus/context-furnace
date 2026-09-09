@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" preserveAspectRatio="xMidYMid slice">
+  <path fill="#0d0c09" d="M0 0h480v120H0z"/>
+  <!-- 后墙砖缝：短横线随机排布 -->
+  <path fill="none" stroke="#17150f" stroke-width="2" d="M36 18h44M120 12h38M210 20h46M320 14h40M400 22h42M70 32h36M170 34h44M280 30h38M380 36h44M30 46h40M130 48h44M240 44h40M350 48h44"/>
+  <!-- 炉壁透视：左右斜收 -->
+  <path fill="none" stroke="#17150f" stroke-width="3" d="M0 8l64 34M480 8l-64 34"/>
+  <path fill="none" stroke="#17150f" stroke-width="2" d="M0 26l52 28M480 26l-52 28"/>
+  <!-- 烟道口（顶中） -->
+  <path fill="#17150f" d="M204 0h72v14H204z"/>
+  <path fill="none" stroke="#38342a" stroke-width="2" d="M204 14h72"/>
+  <!-- 炉排：横杠 + 支柱 -->
+  <path fill="none" stroke="#38342a" stroke-width="4" d="M40 84h400"/>
+  <path fill="none" stroke="#17150f" stroke-width="5" d="M64 84v18M128 84v12M192 84v18M256 84v12M320 84v18M384 84v12"/>
+  <!-- 炉排缝隙（透光缝，火层之下） -->
+  <path fill="none" stroke="#17150f" stroke-width="3" d="M88 90h28M152 90h28M216 90h28M280 90h28M344 90h28"/>
+  <!-- 灰堆 -->
+  <path fill="#17150f" d="M120 116q60-22 120 0t120 0v4H120z"/>
+  <!-- 余烬点（集成时由 ember level 变量控制透明度） -->
+  <g class="embers">
+    <circle class="mw-pulse" cx="180" cy="110" r="2.5" fill="#7c2a20"/>
+    <circle class="mw-pulse" cx="248" cy="112" r="2" fill="#b44622"/>
+    <circle class="mw-pulse" cx="300" cy="110" r="2.5" fill="#7c2a20"/>
+  </g>
+  <!-- 前沿炉唇 -->
+  <path fill="none" stroke="#38342a" stroke-width="3" d="M0 116h480"/>
+</svg>

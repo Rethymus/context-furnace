@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <rect x="1" y="1" width="94" height="94" rx="8" fill="#e4decb"/>
+  <rect x="6" y="6" width="84" height="84" rx="5" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 教学楼剪影：主体 + 坡顶 + 侧翼 -->
+  <path fill="#26231c" d="M20 78V40l14-10 14 10v38z"/>
+  <path fill="#26231c" d="M48 78V50h24v28z"/>
+  <path fill="none" stroke="#26231c" stroke-width="2.5" stroke-linecap="round" d="M16 78h64"/>
+  <!-- 主楼窗阵 2×3：仅一扇亮（自愿参加），其余墨色填充 -->
+  <rect class="mw-flicker" x="27" y="46" width="8" height="9" fill="#e48034"/>
+  <rect x="39" y="46" width="8" height="9" fill="#e4decb" stroke="#26231c" stroke-width="1.5"/>
+  <rect x="27" y="60" width="8" height="9" fill="#e4decb" stroke="#26231c" stroke-width="1.5"/>
+  <rect x="39" y="60" width="8" height="9" fill="#e4decb" stroke="#26231c" stroke-width="1.5"/>
+  <!-- 侧翼窗（暗） -->
+  <rect x="54" y="56" width="6" height="7" fill="#26231c"/>
+  <rect x="64" y="56" width="6" height="7" fill="#26231c"/>
+  <!-- 月牙（晚自习时刻） -->
+  <path fill="none" stroke="#b3ac97" stroke-width="3" stroke-linecap="round" d="M74 22a9 9 0 1 1-9-12"/>
+  <!-- 门 -->
+  <rect x="43" y="70" width="10" height="8" fill="#26231c"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <rect x="1" y="1" width="94" height="94" rx="8" fill="#e4decb"/>
+  <rect x="6" y="6" width="84" height="84" rx="5" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 日历：挂环 + 板 + 3×3 日期格 -->
+  <path fill="none" stroke="#26231c" stroke-width="2.5" d="M24 24h48v52H24z"/>
+  <path fill="none" stroke="#26231c" stroke-width="2.5" stroke-linecap="round" d="M40 18v8M56 18v8"/>
+  <path fill="#26231c" d="M24 24h48v8H24z"/>
+  <path fill="none" stroke="#26231c" stroke-width="1.5" d="M40 32v44M56 32v44M24 46h48M24 60h48"/>
+  <!-- 已过的格：淡墨填充 -->
+  <rect x="25" y="33" width="14" height="12" fill="#b6ab94"/>
+  <rect x="25" y="47" width="14" height="14" fill="#b6ab94"/>
+  <!-- 硬币：正滚过下一格（发放时间调整，非消失） -->
+  <circle cx="48" cy="67" r="7" fill="#b44622"/>
+  <circle cx="48" cy="67" r="3" fill="#e4decb"/>
+  <!-- 滚动线 -->
+  <path class="mw-pulse" fill="none" stroke="#26231c" stroke-width="1.5" stroke-linecap="round" d="M34 64q-3 3 0 6"/>
+</svg>

@@ -1,0 +1,100 @@
+{
+  "card-c01-coffee-memory.svg": {
+    "rawBytes": 1192,
+    "gzipBytes": 369,
+    "elements": 11,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c02-evening-study.svg": {
+    "rawBytes": 1303,
+    "gzipBytes": 347,
+    "elements": 9,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c03-upgrade-files.svg": {
+    "rawBytes": 1147,
+    "gzipBytes": 393,
+    "elements": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c04-bonus-calendar.svg": {
+    "rawBytes": 1083,
+    "gzipBytes": 341,
+    "elements": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c05-night-noise.svg": {
+    "rawBytes": 1271,
+    "gzipBytes": 400,
+    "elements": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c06-material-price.svg": {
+    "rawBytes": 1001,
+    "gzipBytes": 348,
+    "elements": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c07-harder-test.svg": {
+    "rawBytes": 895,
+    "gzipBytes": 344,
+    "elements": 8,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c08-alarm-log.svg": {
+    "rawBytes": 1286,
+    "gzipBytes": 344,
+    "elements": 12,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c09-two-groups.svg": {
+    "rawBytes": 1065,
+    "gzipBytes": 367,
+    "elements": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c10-complaint-decay.svg": {
+    "rawBytes": 1237,
+    "gzipBytes": 359,
+    "elements": 11,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c11-east-parking.svg": {
+    "rawBytes": 1391,
+    "gzipBytes": 370,
+    "elements": 12,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "card-c12-hot-cold-slots.svg": {
+    "rawBytes": 1233,
+    "gzipBytes": 355,
+    "elements": 10,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "home-standby.svg": {
+    "rawBytes": 1837,
+    "gzipBytes": 453,
+    "elements": 18,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "furnace-interior.svg": {
+    "rawBytes": 1630,
+    "gzipBytes": 458,
+    "elements": 14,
+    "offPalette": [],
+    "verdict": "PASS"
+  }
+}

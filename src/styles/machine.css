@@ -895,6 +895,70 @@
   height: auto;
 }
 
+/* ── v5.0 M7 插画层（2026-09-09 所有者批复 K1–K5；LLM 直写 SVG，候选库 m7-batch）── */
+
+/* H1 待机版画：冷炉语义，与结局版画同族第六幅。尺寸复用 M6 满屏 tableau 预算
+   （home 亦为 842 精确满屏构图，slack 实测约 100px 级；140px 底值保零滚动）。
+   冷态 filter 由 motion.css H2 规则驱动（plate-lit 过渡点亮） */
+.home-plate {
+  width: min(300px, 78vw);
+  width: clamp(140px, calc(100svh * 1.5 - 1220px), 300px);
+  margin: 16px auto 0;
+  flex: 0 0 auto;
+  border: 1px solid rgba(216, 208, 186, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.home-plate svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* G3 卡面印章：FEED 纸卡「落款角章」——浮动于正文流内（置于正文 <p> 之前，
+   文字环绕其左下，任何语言长度/伪长文都不产生遮挡；不占焦点序） */
+.card-seal {
+  float: right;
+  margin: 2px 2px 6px 12px;
+  width: 64px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(28, 30, 25, 0.25);
+  pointer-events: none;
+}
+
+.card-seal svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* G1 炉膛内景：观察窗玻璃底之上的深度背景层。z-index:-1 落于火光透射（::before）
+   与火焰字形之下（.observation 自带 backdrop-filter 已成层叠上下文，负序不出域）。
+   余烬组基态半隐、BURNING 反馈窗内增亮（与 M2 火光同窗的光语汇） */
+.furnace-interior {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.furnace-interior svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.furnace-interior .embers {
+  opacity: 0.5;
+  transition: opacity var(--spring-smooth);
+}
+
+.machine.burning .furnace-interior .embers {
+  opacity: 1;
+}
+
 .ending-banner h2 {
   font-size: clamp(26px, 3.2vw, 34px);
   font-family: var(--font-title);

@@ -39,6 +39,41 @@ const ENDING_WOODCUTS: Record<'a' | 'b' | 'c' | 'd' | 'e', string> = {
   'e': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><path fill="#0d0c09" d="M0 0h320v200H0z"/><path stroke="#17150f" stroke-width="2" d="M0 168h320"/><path stroke="#17150f" stroke-width="1.2" d="M0 176h320"/><g transform="rotate(8 190 100)"><path fill="none" stroke="#38342a" stroke-linecap="round" stroke-width="5" d="M28 118q34-10 62 2 26 10 52-4"/><path fill="none" stroke="#55503f" stroke-linecap="round" stroke-width="1.5" d="M28 118q10-3 20-2m-20 2q8 4 18 4"/><path stroke="#55503f" stroke-linecap="round" stroke-width="1.5" d="m142 116 6-4m-4 6 7 2"/><rect width="52" height="38" x="150" y="82" fill="#38342a" rx="10"/><rect width="52" height="6" x="150" y="82" fill="#55503f" rx="3"/><path stroke="#262420" stroke-width="2" d="M158 116h36"/><rect width="7" height="22" x="164" y="62" fill="#55503f" rx="2"/><rect width="7" height="22" x="182" y="62" fill="#55503f" rx="2"/><path fill="#262420" d="M146 96q6-4 8 0v10q-4 4-8 0z"/></g><circle cx="252" cy="48" r="3" fill="#17150f" stroke="#262420" stroke-width="1.5"/><circle cx="266" cy="48" r="3" fill="#17150f" stroke="#262420" stroke-width="1.5"/><circle cx="196" cy="150" r="2.2" fill="#b44622"/><circle cx="196" cy="150" r="4.5" fill="#b44622" opacity=".25"/></svg>',
 };
 
+
+// v5.0 M7 插画常量（2026-09-09 所有者批复 K1–K5；候选库 m7-batch 闸门 PASS 后入库）。
+// 全部 LLM 直写 SVG：零文本节点、色板 ⊆ 美术子色板（C12 teal 语义锚）、mw-* 动画类由 motion.css 驱动
+const HOME_STANDBY = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><path fill="#26231c" d="M0 0h320v200H0z"/><path fill="none" stroke="#38342a" stroke-width="2" d="M12 168h296"/><path fill="#38342a" d="M96 168V64h128v104z"/><path fill="none" stroke="#8d8368" stroke-width="2.5" d="M96 64h128"/><path fill="#26231c" d="M150 64V34h20v30z"/><path fill="none" stroke="#8d8368" stroke-width="2" d="M146 34h28"/><path fill="#38342a" d="M104 168v-14h12v14zm100 0v-14h12v14z"/><path fill="#17150f" d="M132 92h56v52h-56z"/><path fill="none" stroke="#8d8368" stroke-width="2.5" d="M132 92h56v52h-56z"/><path fill="none" stroke="#55503f" stroke-width="1.5" d="M138 100h44m-44 36h44"/><path fill="none" stroke="#d8d0ba" stroke-linecap="round" stroke-width="3" d="M186 108h8"/><circle cx="160" cy="150" r="3" fill="#d8d0ba"/><path fill="#55503f" d="M140 158h40v4h-40z"/><path fill="none" stroke="#38342a" stroke-linecap="round" stroke-width="2" d="M28 84h24m-32 16h18m-6 16h14m222-32h24m-10 16h18m-26 16h14" class="mw-drift"/><path fill="none" stroke="#8d8368" stroke-width="2.5" d="M242 168v-16h16v16"/><path fill="none" stroke="#8d8368" stroke-width="2" d="M245 156h10"/><path fill="none" stroke="#55503f" stroke-linecap="round" stroke-width="2.5" d="m60 168 8-14m0 0h12"/><circle cx="74" cy="154" r="2" fill="#55503f"/></svg>';
+
+const FURNACE_INTERIOR = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 480 120"><path fill="#0d0c09" d="M0 0h480v120H0z"/><path fill="none" stroke="#17150f" stroke-width="2" d="M36 18h44m40-6h38m52 8h46m64-6h40m40 8h42M70 32h36m64 2h44m66-4h38m62 6h44M30 46h40m60 2h44m66-4h40m70 4h44"/><path fill="none" stroke="#17150f" stroke-width="3" d="m0 8 64 34M480 8l-64 34"/><path fill="none" stroke="#17150f" stroke-width="2" d="m0 26 52 28m428-28-52 28"/><path fill="#17150f" d="M204 0h72v14h-72z"/><path fill="none" stroke="#38342a" stroke-width="2" d="M204 14h72"/><path fill="none" stroke="#38342a" stroke-width="4" d="M40 84h400"/><path fill="none" stroke="#17150f" stroke-width="5" d="M64 84v18m64-18v12m64-12v18m64-18v12m64-12v18m64-18v12"/><path fill="none" stroke="#17150f" stroke-width="3" d="M88 90h28m36 0h28m36 0h28m36 0h28m36 0h28"/><path fill="#17150f" d="M120 116q60-22 120 0t120 0v4H120z"/><g class="embers"><circle cx="180" cy="110" r="2.5" fill="#7c2a20" class="mw-pulse"/><circle cx="248" cy="112" r="2" fill="#b44622" class="mw-pulse"/><circle cx="300" cy="110" r="2.5" fill="#7c2a20" class="mw-pulse"/></g><path fill="none" stroke="#38342a" stroke-width="3" d="M0 116h480"/></svg>';
+
+// 每周期一张卡（C01→C12 固定顺序），印章按 cycle 取用
+const CARD_SEALS: readonly string[] = [
+  // C01 咖啡记忆
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M28 56h34l-3 16H31z"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M24 76h42"/><path fill="none" stroke="#26231c" stroke-width="2" d="M62 60q7 2 6 7-1 4-7 4"/><path fill="none" stroke="#b6ab94" stroke-width="2" d="M30 58h30"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="3" d="M38 50q-3-6 1-11m9 11q-3-7 2-12" class="mw-rise"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="m52 36 8-9 7 4 9-12"/><circle cx="76" cy="19" r="4" fill="#b44622"/><circle cx="60" cy="27" r="3" fill="#26231c"/><circle cx="67" cy="31" r="3" fill="#26231c"/></svg>',
+  // C02 晚自习
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M20 78V40l14-10 14 10v38zm28 0V50h24v28z"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M16 78h64"/><path fill="#e48034" d="M27 46h8v9h-8z" class="mw-flicker"/><path fill="#e4decb" stroke="#26231c" stroke-width="1.5" d="M39 46h8v9h-8zM27 60h8v9h-8zm12 0h8v9h-8z"/><path fill="#26231c" d="M54 56h6v7h-6zm10 0h6v7h-6z"/><path fill="none" stroke="#b3ac97" stroke-linecap="round" stroke-width="3" d="M74 22a9 9 0 1 1-9-12"/><path fill="#26231c" d="M43 70h10v8H43z"/></svg>',
+  // C03 升级插件
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M16 66V34l12-4v4h10v32z"/><path fill="#b6ab94" d="M22 38h22v24H22z"/><path fill="none" stroke="#26231c" stroke-width="1.5" d="M26 44h14m-14 6h14m-14 6h10"/><circle cx="68" cy="62" r="9" fill="none" stroke="#26231c" stroke-width="2.5"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="3" d="M68 49v-4m0 34v-4M55 62h4m22 0h-4m-18-9 3 3m18 15-3-3m-18 3 3-3m18-15-3 3"/><circle cx="68" cy="62" r="3" fill="#26231c"/><path fill="none" stroke="#b44622" stroke-dasharray="4 4" stroke-linecap="round" stroke-width="2.5" d="M34 30V16" class="mw-march"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m28 21 6-6 6 6"/></svg>',
+  // C04 奖金日历
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="none" stroke="#26231c" stroke-width="2.5" d="M24 24h48v52H24z"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M40 18v8m16-8v8"/><path fill="#26231c" d="M24 24h48v8H24z"/><path fill="none" stroke="#26231c" stroke-width="1.5" d="M40 32v44m16-44v44M24 46h48M24 60h48"/><path fill="#b6ab94" d="M25 33h14v12H25zm0 14h14v14H25z"/><circle cx="48" cy="67" r="7" fill="#b44622"/><circle cx="48" cy="67" r="3" fill="#e4decb"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="1.5" d="M34 64q-3 3 0 6" class="mw-pulse"/></svg>',
+  // C05 深夜噪声
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#262420" d="M10 10h76v18H10z"/><circle cx="74" cy="19" r="4" fill="#e4decb"/><circle cx="70" cy="17" r="3.5" fill="#262420"/><path fill="#26231c" d="M12 78V48l10-6 10 6v30zm24 0V52h16v26zm22 0V44l12-8 12 8v34z"/><path fill="#e4decb" stroke="#b44622" stroke-width="2" d="M41 57h7v8h-7z" class="mw-flicker"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-width="2" d="M52 58q4 3 0 6m4-9q7 5 0 12" class="mw-pulse"/><path fill="#262420" d="M17 53h6v7h-6zm9 0h6v7h-6zm37-3h6v7h-6zm10 0h6v7h-6z"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M10 78h76"/></svg>',
+  // C06 原料涨价
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M22 80V64h20v16z"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M26 69h12m-12 5h12"/><path fill="#26231c" d="M46 80V58h20v22z"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M50 64h12m-12 6h12m-12 6h8"/><path fill="#26231c" d="M34 58V42h18v16z"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M38 48h10m-10 5h7"/><path fill="none" stroke="#b44622" stroke-dasharray="5 4" stroke-linecap="round" stroke-width="2.5" d="m24 34 20-14 14 6 18-14" class="mw-march"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M68 18h8v8"/></svg>',
+  // C07 难度分降
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M14 80V66h16V52h16V38h16V24h18v56z"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M18 72h8m8-14h8m8-14h8m8-14h10"/><path fill="none" stroke="#b44622" stroke-dasharray="4 3" stroke-linecap="round" stroke-width="2" d="M76 28q-10 2-16 10T44 48" class="mw-march"/><circle cx="41" cy="51" r="5" fill="#b44622"/><circle cx="24" cy="80" r="4" fill="#26231c"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2" d="M24 74v-8"/></svg>',
+  // C08 高温报警
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><circle cx="30" cy="68" r="9" fill="#26231c"/><rect width="8" height="46" x="26" y="18" fill="none" stroke="#26231c" stroke-width="2.5" rx="4"/><path fill="#26231c" d="M28.5 56h3v11h-3z"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-width="2.5" d="M22 30h16" class="mw-pulse"/><circle cx="30" cy="30" r="2.5" fill="#b44622"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M48 44h36"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M48 52v4m12-4v4m12-4v4m12-4v4"/><path fill="none" stroke="#26231c" stroke-width="1.5" d="M48 58h36"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M48 64v4m12-4v4m12-4v4m12-4v4"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M18 80h60"/></svg>',
+  // C09 两组误差
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M46 30h4v44h-4z"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="3" d="m16 34 64-6" class="mw-tilt"/><circle cx="48" cy="32" r="4" fill="#b44622"/><path fill="none" stroke="#26231c" stroke-width="1.5" d="m20 35-4 14h16l-4-14m48-6-4 14h16l-4-14"/><path fill="#26231c" d="M14 50h20l-4 6H18zm56-6h20l-4 6H74zm-54 2V36h3v10zm6 0v-8h3v8zm6 0v-9h3v9z"/><path fill="#b44622" d="M72 40v-9h3v9z"/><path fill="#26231c" d="M78 40v-8h3v8zm6 0v-7h3v7z"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M34 78h28"/></svg>',
+  // C10 投诉回落
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M20 20v56h58"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 64q6-2 10-24t10-16 10 12 10 20 12 10"/><circle cx="40" cy="24" r="4.5" fill="#b44622" class="mw-pulse"/><path fill="none" stroke="#b44622" stroke-dasharray="3 3" stroke-width="1.5" d="M40 28v20"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M30 76v4m10-4v4m10-4v4m12-4v4m12-4v4"/><circle cx="30" cy="82" r="1.5" fill="#26231c"/><circle cx="40" cy="82" r="1.5" fill="#26231c"/><circle cx="50" cy="82" r="1.5" fill="#26231c"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="1.5" d="M62 62h14"/></svg>',
+  // C11 东区车位
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="none" stroke="#26231c" stroke-width="2.5" d="M14 26h30v44H14zm36 0h32v44H50z"/><path fill="none" stroke="#26231c" stroke-dasharray="4 4" stroke-width="2" d="M47 22v52"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M19 34v28m9-28v28m9-28v28M14 44h30M14 56h30"/><path fill="#26231c" d="M20 46h7v8h-7z"/><path fill="none" stroke="#b6ab94" stroke-width="1.5" d="M56 34v28m20-28v28M50 44h32M50 56h32"/><path fill="#26231c" d="M57 46h8v8h-8zm9 0h8v8h-8z"/><rect width="9" height="7" x="56" y="30" fill="#b44622" class="mw-flicker" rx="2"/><path fill="none" stroke="#b44622" stroke-width="1.5" d="m58 37-1 3 3-3"/><rect width="9" height="7" x="70" y="30" fill="#b44622" class="mw-flicker" rx="2"/><path fill="none" stroke="#b44622" stroke-width="1.5" d="m72 37-1 3 3-3"/></svg>',
+  // C12 冷热双槽
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M16 30h26v44H16zm38 0h26v44H54z"/><path fill="#e4decb" d="M21 35h16v8H21z"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-width="2" d="M25 64q2-4 0-8t2-8m4 16q2-4 0-8t2-8" class="mw-rise"/><path fill="#e4decb" d="M59 35h16v8H59z"/><path fill="none" stroke="#2c625a" stroke-linecap="round" stroke-width="2" d="M63 64V50m6 14V50"/><path fill="none" stroke="#2c625a" stroke-linecap="round" stroke-width="1.5" d="m61 54 4-4m6 4-4-4"/><rect width="10" height="8" x="24" y="45" fill="#e48034" rx="1"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M12 78h72"/></svg>',
+];
+
 // §2.2 开机动画 1.15s；§8.3 反馈动画 950ms（时序集中管理）
 const BOOT_TOTAL_MS = 1150;
 const BOOT_RELAY_MS = 120;
@@ -161,6 +196,13 @@ export class MachineController {
     bootLine.className = 'boot-line caps';
     bootLine.dataset.testid = 'boot-line';
     homeBody.appendChild(bootLine);
+
+    // v5.0 M7 H1 待机版画（aria-hidden 纯视觉；冷炉语义，与结局版画同族）
+    const homePlate = document.createElement('div');
+    homePlate.className = 'home-plate';
+    homePlate.setAttribute('aria-hidden', 'true');
+    homePlate.innerHTML = HOME_STANDBY;
+    homeBody.appendChild(homePlate);
     machine.appendChild(homeBody);
 
     stage.appendChild(machine);
@@ -233,6 +275,8 @@ export class MachineController {
     window.setTimeout(() => {
       const card = root.querySelector<HTMLElement>('main.machine');
       if (card) card.classList.add('boot-pulse');
+      // v5.0 M7 H2：待机版画随开机点亮（RM/freeze 下无过渡、即时态）
+      root.querySelector<HTMLElement>('.home-plate')?.classList.add('plate-lit');
     }, BOOT_SWEEP_DONE_MS);
     window.setTimeout(() => {
       const card = root.querySelector<HTMLElement>('main.machine');
@@ -502,6 +546,12 @@ export class MachineController {
     feedText.className = 'feed-text reading';
     feedText.dataset.testid = 'feed';
     feedPanel.body.appendChild(feedText);
+
+    // v5.0 M7 G3 卡面印章（落款角章，aria-hidden；每周期随卡切换 innerHTML）
+    const cardSeal = document.createElement('div');
+    cardSeal.className = 'card-seal';
+    cardSeal.setAttribute('aria-hidden', 'true');
+    feedPanel.body.prepend(cardSeal); // 浮动落款：文字环绕印章（在正文 <p> 之前）
     colMain.appendChild(feedPanel.wrap);
 
     // EXTRACT（左列·面板上直接承载）
@@ -560,6 +610,14 @@ export class MachineController {
     // OBSERVATION + 炉口视窗（ROUND_BURNING 状态沟通）
     const observation = createObservation(() => this.reduced);
     darkPanel.appendChild(observation.root);
+
+    // v5.0 M7 G1 炉膛内景（观察窗静态深度背景，火焰层之下，aria-hidden）
+    const interior = document.createElement('div');
+    interior.className = 'furnace-interior';
+    interior.setAttribute('aria-motion', '');
+    interior.setAttribute('aria-hidden', 'true');
+    interior.innerHTML = FURNACE_INTERIOR;
+    observation.root.prepend(interior);
     const furnaceCard = document.createElement('div');
     furnaceCard.className = 'furnace-card';
     furnaceCard.dataset.testid = 'furnace-card';
@@ -656,6 +714,11 @@ export class MachineController {
     round.loadLine.textContent = `${t('load.label')}: ${t(loadKey)}`;
     // v4.8 M5 IL-3：Act 铭牌蚀刻的状态钩子（读 GameState，纯渲染，行为零变更）
     round.machineEl.dataset.act = String(this.state.act);
+
+    // v5.0 M7 G3/G4：印章随卡切换（周期转场由既有 mount-rise 整体承载（loadRound 全量重建），
+    // 新 <svg> 入场自带 mw-enter 一次性揭示，不加第二层正文动画避免双重运动）
+    const sealEl = round.machineEl.querySelector<HTMLElement>('.card-seal');
+    if (sealEl) sealEl.innerHTML = CARD_SEALS[this.state.cycle - 1] ?? '';
     // §13 E：插头自 Cycle 09 起出现（无提示）
     round.plug.style.display = this.state.cycle >= 9 ? '' : 'none';
   }
