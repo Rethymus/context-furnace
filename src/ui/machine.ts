@@ -946,6 +946,48 @@ export class MachineController {
     this.renderEndingScreen(ending);
   }
 
+  // v5.2 R2-1A 烧制印章：终局状态确定性生成的火漆纹章（纯视觉零文本，路线图
+  // R2-1A 方案 A）。个人化编码——焰高 ∝ peakHeat（D10）、内环拍数 = 完成轮数
+  // （D4 分母）、蜡缘刻口 ∝ totalCutRatio（D4 累积器）、五结局各母题
+  // （A 无焰余烬 / B 碎焰 / C 稳焰 / D 高焰 / E 拔头）。同局必同章
+  // （纯函数、无随机）；切多烧高则章重，是本局的「火漆签名」。
+  private burnSeal(state: GameState, ending: 'A' | 'B' | 'C' | 'D' | 'E'): string {
+    const cx = 48, cy = 48;
+    const p = (n: number): string => String(Math.round(n * 10) / 10);
+    const tick = (deg: number, r0: number, r1: number, color: string, w: number): string => {
+      const a = ((deg - 90) * Math.PI) / 180;
+      return `<path fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" d="M${p(cx + r0 * Math.cos(a))} ${p(cy + r0 * Math.sin(a))}L${p(cx + r1 * Math.cos(a))} ${p(cy + r1 * Math.sin(a))}"/>`;
+    };
+    // 蜡体 + 锯缘（22 齿）+ 刻口（∝总切除，最多 14）
+    let edge = '';
+    for (let i = 0; i < 22; i++) edge += tick(i * (360 / 22), 41, 45, '#7c2a20', 2.5);
+    const notches = Math.max(0, Math.min(14, Math.round(state.totalCutRatio * 8)));
+    for (let i = 0; i < notches; i++) edge += tick(i * (360 / 14), 38, 45, '#7c2a20', 3.5);
+    // 内环拍数（∝完成轮数）
+    const beats = Math.max(4, Math.min(12, state.roundsCompleted));
+    let ring = '';
+    for (let i = 0; i < beats; i++) ring += tick(i * (360 / beats), 30, 33.5, '#f7f2e2', 1.6);
+    // 焰（高 ∝ peakHeat）：B 双碎焰，C 稳焰，D 高焰；A/E 无焰
+    const flame = (fx: number, h: number): string => {
+      const base = cy + 14;
+      return `<path fill="none" stroke="#f7f2e2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M${p(fx)} ${p(base)}C${p(fx - 6)} ${p(base - h * 0.45)},${p(fx - 3)} ${p(base - h * 0.85)},${p(fx)} ${p(base - h)}C${p(fx + 3)} ${p(base - h * 0.85)},${p(fx + 6)} ${p(base - h * 0.45)},${p(fx)} ${p(base)}Z"/>`;
+    };
+    const fh = Math.max(8, Math.min(24, 8 + state.peakHeat * 0.15));
+    let emblem = '';
+    if (ending === 'A') {
+      emblem = `<path fill="none" stroke="#f7f2e2" stroke-width="2" stroke-linecap="round" d="M34 60h28"/><path fill="#f7f2e2" d="M38 60q10-9 20 0z"/><circle cx="48" cy="58" r="2" fill="#e48034"/>`;
+    } else if (ending === 'B') {
+      emblem = flame(cx - 6, fh * 0.7) + flame(cx + 6, fh * 0.7);
+    } else if (ending === 'C') {
+      emblem = flame(cx, fh);
+    } else if (ending === 'D') {
+      emblem = flame(cx, fh) + `<path fill="none" stroke="#e48034" stroke-width="1.8" stroke-linecap="round" d="M${p(cx)} ${p(cy + 14)}C${p(cx - 3)} ${p(cy + 14 - fh * 0.55)},${p(cx)} ${p(cy + 14 - fh * 0.8)},${p(cx)} ${p(cy + 12 - fh)}"/>`;
+    } else {
+      emblem = `<rect x="40" y="40" width="16" height="14" rx="3" fill="none" stroke="#f7f2e2" stroke-width="2.4"/><path fill="none" stroke="#f7f2e2" stroke-width="2.4" stroke-linecap="round" d="M44 40v-8M52 40v-8M48 54q0 8 8 8h6"/><path fill="none" stroke="#f7f2e2" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 4" d="M68 62h5"/>`;
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="${cx}" cy="${cy}" r="43" fill="#b44622"/>${edge}<circle cx="${cx}" cy="${cy}" r="36" fill="none" stroke="#7c2a20" stroke-width="1.5"/>${ring}${emblem}</svg>`;
+  }
+
   private renderEndingScreen(ending: 'A' | 'B' | 'C' | 'D' | 'E'): void {
     const root = this.root;
     if (!root) return;
@@ -991,6 +1033,17 @@ export class MachineController {
 
     const resultState: GameState = { ...this.state, heat: ending === 'E' ? 0 : this.state.heat };
     renderResults(endWrap, resultState, { onRestart: () => this.restart() });
+
+    // v5.2 R2-1A：烧制印章盖于结算纸卡右上（aria-hidden 纯视觉；取终局前的
+    // 原始状态——E 的仪表归零不影响印章对 peakHeat/切除的记录）
+    const resultCard = endWrap.querySelector<HTMLElement>('.result-card');
+    if (resultCard) {
+      const seal = document.createElement('span');
+      seal.className = 'burn-seal';
+      seal.setAttribute('aria-hidden', 'true');
+      seal.innerHTML = this.burnSeal(this.state, ending);
+      resultCard.appendChild(seal);
+    }
     this.applyHomeTextsRef = () => {
       const list = machine.querySelectorAll<HTMLElement>('.result-list li > span:first-child');
       const keys: Array<Parameters<typeof t>[0]> = [

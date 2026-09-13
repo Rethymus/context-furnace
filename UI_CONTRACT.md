@@ -78,6 +78,7 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 | M6 结局版画（LLM 直写 SVG） | 五结局木刻版画板（模型直写矢量、子色板闸门、aria-hidden 零文本），生成方式与研究依据见 `AI_ILLUSTRATION_RESEARCH.md` 与 `research/ai-pipeline/` | **已交付（2026-09-09 所有者授权「授权你 LLM 直写 SVG」+「授权执行」，见 v4.9）** |
 | M7 全程插画与微动效（LLM 直写 SVG 第二批） | 12 卡面印章（浮动落款）+ home 待机版画（boot 点亮）+ 观察窗炉膛内景 + mw-* 动画词汇表（K5 追加：插画动画化，CSS-SVG 而非 GIF），人工预览门后集成，见 v5.0 与 `UI_CONTRACT_M7_DRAFT.md` | **已交付（2026-09-09 所有者批复 K1–K5：预览门「可以」+「还需要加入动画或者gif」）** |
 | M8 教学手册化 + 验收补强 | 四幅步进图解（教学便签手册版式、随 §3 步进切换）+ zoom sweep（100%/150% 布局验收项闭合），见 v5.1 | **已交付（2026-09-13 所有者「请继续迭代」续批，依据路线图近期序列）** |
+| R2-1A 烧制印章 | 结算纸卡火漆纹章（burnSeal 确定性生成：焰高∝peakHeat/环拍=轮数/刻口∝切除、五结局母题、纯视觉零文本），见 v5.2 | **已交付（2026-09-13 续批）；方案 B 分享文本仍待 CONTENT_SPEC 裁决** |
 
 ## v4.6 可验证性
 
@@ -345,6 +346,35 @@ POWER ON 与 IGNITE 完整在视口内、教学→周期流程可用。6 passed�
 本地 WebKit 计时器饥饿连续四次全量各倒一个不同测试（隔离与 CI 均绿）：
 workers 本地 8+ → 限 4、retries 对齐 CI=1、axe 长流程时限 120s→300s
 （runner 预算，不弱化断言；commit 1aae552）。
+
+## v5.2 R2-1A 烧制印章（2026-09-13，路线图 R2-1 方案 A 续批）
+
+授权依据：路线图近期序列 + 所有者「请继续迭代」（同 M8）。方案 A = 纯视觉
+零文本印章；**分享文本（方案 B，动 CONTENT_SPEC）仍未获批、未实现**。
+
+### 交付内容
+
+1. **burnSeal(state, ending) 确定性生成器**（machine.ts 内私有纯函数，无随机）：
+   火漆锯缘蜡体 + 三重个人化编码——焰高 ∝ peakHeat（D10）、内环拍数 =
+   roundsCompleted（D4 分母）、蜡缘刻口 ∝ totalCutRatio（D4 累积器，≤14）；
+   五结局母题：A 无焰余烬 / B 碎焰 / C 稳焰 / D 高焰（焰心 ember）/ E 拔头
+   （插头 + 断线）。色板：#b44622 / #7c2a20 / #f7f2e2 / #e48034（全在册）。
+2. **落章**：结算纸卡右下角 72px、rotate(-8deg)，aria-hidden、
+   pointer-events:none；一次性 seal-stamp 落章动效（240ms，RM/freeze 关断）。
+   落位实测：结果列表为整行盒（右上必压数值）→ 右下角部与列表/按钮
+   Range 盒级零遮挡（5 行 + 2 按钮全无交集）。
+3. **同局必同章**：取 ending 前原始 state（E 的仪表归零不影响印章记录）；
+   「切多烧高则章重」——本局的火漆签名，可截图传播（社交张力维度落点）。
+
+### 验证与基线
+
+- material.test 53 → 57 条（确定性无随机/挂载于 renderResults 后/五母题/
+  零文本/蜡色板/CSS 锁）；实机 B/C 两结局母题差异化实证
+  （`shots/m8-review/seal-ending-b/c.png`）。
+- win32 基线重采：result-peak / result-stable（印章入镜）——变更面仅此两张；
+  其余 8 张不变。确定性随 freeze 关断保证（seal-stamp 一次性动画关断后
+  为静止帧）。Linux 基线待 update-baselines.yml（D28）。
+- 移动端（390×844）与 zoom sweep 由既有套件复验。
 
 
 ## 1. Art Direction（概念图提炼）

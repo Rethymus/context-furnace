@@ -897,6 +897,38 @@
 
 /* ── v5.0 M7 插画层（2026-09-09 所有者批复 K1–K5；LLM 直写 SVG，候选库 m7-batch）── */
 
+/* v5.2 R2-1A 烧制印章：火漆纹章盖于结算纸卡右下角（burnSeal 确定性生成，
+   aria-hidden 纯视觉）。落位取右下：实测结果列表为整行盒（右上必压数值），
+   按钮行居中、两侧角部为自由空间。盖印动效 = 一次性落章（scale 1.25→1 +
+   透明度，240ms 弹性；RM/freeze 由 motion.css 全局关断） */
+.burn-seal {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  width: 72px;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 2px 4px rgba(28, 30, 25, 0.35));
+  pointer-events: none;
+  animation: seal-stamp 0.24s var(--spring-snappy) 1;
+}
+
+.burn-seal svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes seal-stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-8deg) scale(1.25);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-8deg) scale(1);
+  }
+}
+
 /* H1 待机版画：冷炉语义，与结局版画同族第六幅。尺寸复用 M6 满屏 tableau 预算
    （home 亦为 842 精确满屏构图，slack 实测约 100px 级；140px 底值保零滚动）。
    冷态 filter 由 motion.css H2 规则驱动（plate-lit 过渡点亮） */
@@ -1002,6 +1034,7 @@
 
 /* 结果纸卡（概念板 08 的纸感承载；v4.8 M5 IL-5 纸纹同 .panel:not(.on-dark)） */
 .result-card {
+  position: relative; /* v5.2 烧制印章的定位宿主 */
   background-image:
     repeating-linear-gradient(24deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 6px),
     repeating-linear-gradient(116deg, var(--paper-grain) 0 1px, rgba(84, 74, 52, 0) 1px 7px);

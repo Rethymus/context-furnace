@@ -577,6 +577,47 @@ describe('v5.1 M8 tutorial manual figures', () => {
   });
 });
 
+// ── v5.2 R2-1A 烧制印章（2026-09-13「请继续迭代」续批；路线图 R2-1 方案 A：
+//    纯视觉零文本、终局状态确定性生成）──
+describe('v5.2 burn seal', () => {
+  const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+  const sealFn = mts.split('private burnSeal')[1]?.split('private renderEndingScreen')[0] ?? '';
+
+  it('seal is generated deterministically from ending state (no randomness)', () => {
+    expect(mts).toContain('private burnSeal(state: GameState, ending');
+    expect(sealFn).not.toContain('Math.random');
+    expect(sealFn).toContain('state.peakHeat'); // 焰高编码
+    expect(sealFn).toContain('state.roundsCompleted'); // 环拍编码
+    expect(sealFn).toContain('state.totalCutRatio'); // 刻口编码
+  });
+
+  it('seal mounts on the result card after renderResults, aria-hidden, all five endings motif', () => {
+    expect(mts).toContain("seal.className = 'burn-seal'");
+    expect(mts).toContain("seal.setAttribute('aria-hidden', 'true')");
+    expect(mts).toContain('this.burnSeal(this.state, ending)');
+    expect(mts.indexOf('renderResults(endWrap')).toBeLessThan(mts.indexOf("seal.className = 'burn-seal'"));
+    for (const e of ["'A'", "'B'", "'C'", "'D'"]) expect(sealFn).toContain(`ending === ${e}`);
+    expect(sealFn).toContain('M44 40v-8M52 40v-8'); // E 插头纹样（else 分支）
+  });
+
+  it('seal is zero-text and stays in the wax sub-palette', () => {
+    expect(sealFn).not.toContain('<text');
+    expect(sealFn).not.toContain('<tspan');
+    const PALETTE = new Set(['#b44622', '#7c2a20', '#f7f2e2', '#e48034']);
+    const used = sealFn.match(/#[0-9a-fA-F]{6}\b/g) ?? [];
+    expect([...new Set(used.filter((c) => !PALETTE.has(c.toLowerCase())))]).toEqual([]);
+  });
+
+  it('seal CSS locked: stamp one-shot animation (RM/freeze via global kill-switch)', () => {
+    const mach = readFileSync(join(ROOT, 'src', 'styles', 'machine.css'), 'utf8');
+    const sealCss = mach.split('.burn-seal {')[1]?.split('}')[0] ?? '';
+    expect(sealCss).toContain('position: absolute');
+    expect(sealCss).toContain('rotate(-8deg)');
+    expect(mach).toContain('@keyframes seal-stamp');
+    expect(mach.split('.result-card {')[1]?.split('}')[0] ?? '').toContain('position: relative');
+  });
+});
+
 // ── v4.6 防硬化回归：styles/*.css 的 hex 白名单（新增裸 hex 须显式入册并审对比度） ──
 describe('v4 hex allowlist (anti-hardening)', () => {
   const ALLOWLIST = new Set([
