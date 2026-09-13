@@ -734,6 +734,10 @@ export class MachineController {
     round.loadLine.textContent = `${t('load.label')}: ${t(loadKey)}`;
     // v4.8 M5 IL-3：Act 铭牌蚀刻的状态钩子（读 GameState，纯渲染，行为零变更）
     round.machineEl.dataset.act = String(this.state.act);
+    // v5.3 M10 台面使用痕迹的分桶钩子（读 GameState；early=1-4 / mid=5-8 / late=9-12，
+    // 分桶边界与既有基线快照的周期取样对齐：cycle4 保持素台、8/12 递增痕迹）
+    round.machineEl.dataset.cycleBucket =
+      this.state.cycle <= 4 ? 'early' : this.state.cycle <= 8 ? 'mid' : 'late';
 
     // v5.0 M7 G3/G4：印章随卡切换（周期转场由既有 mount-rise 整体承载（loadRound 全量重建），
     // 新 <svg> 入场自带 mw-enter 一次性揭示，不加第二层正文动画避免双重运动）

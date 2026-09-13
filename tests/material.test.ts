@@ -577,6 +577,42 @@ describe('v5.1 M8 tutorial manual figures', () => {
   });
 });
 
+// ── v5.3 M9 纸渐老 + M10 台面痕迹 + R1-4 forced-colors（2026-09-13 续批）──
+describe('v5.3 desk narrative & forced-colors', () => {
+  const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+  const mach = readFileSync(join(ROOT, 'src', 'styles', 'machine.css'), 'utf8');
+
+  it('cycle bucket hook reads GameState with baseline-aligned thresholds', () => {
+    expect(mts).toContain('dataset.cycleBucket');
+    expect(mts).toContain("this.state.cycle <= 4 ? 'early' : this.state.cycle <= 8 ? 'mid' : 'late'");
+  });
+
+  it('paper ages by act (act1 untouched; act2 fold; act3 crease+scorch), CM collapses', () => {
+    expect(mach).toContain(".machine[data-act='2'] .panel-feed::after");
+    expect(mach).toContain(".machine[data-act='3'] .panel-output::after");
+    // act1 无选择器（素纸）
+    expect(mach).not.toContain(".machine[data-act='1'] .panel-feed::after");
+    expect(mach).toContain('@media (prefers-contrast: more)');
+    expect(mach).toContain('.machine[data-act] .panel-feed::after');
+  });
+
+  it('desk wear accumulates by bucket via :has() with graceful fallback', () => {
+    expect(mach).toContain(".stage:has(.machine[data-cycle-bucket='mid'])::after");
+    expect(mach).toContain(".stage:has(.machine[data-cycle-bucket='late'])::after");
+    // early 无痕迹规则；不支持 :has 时选择器不匹配 → 素台
+    expect(mach).not.toContain("data-cycle-bucket='early'");
+    expect(mach).toContain('.stage:has(.machine[data-cycle-bucket])::after'); // CM 塌缩
+  });
+
+  it('forced-colors: imagery plates get CanvasText boundary, decorative layers off', () => {
+    expect(mach).toContain('@media (forced-colors: active)');
+    const fc = mach.split('@media (forced-colors: active)')[1]?.split('@media')[0] ?? '';
+    expect(fc).toContain('outline: 1px solid CanvasText');
+    expect(fc).toContain('.stage--ending::after');
+    expect(fc).toContain('display: none');
+  });
+});
+
 // ── v5.2 R2-1A 烧制印章（2026-09-13「请继续迭代」续批；路线图 R2-1 方案 A：
 //    纯视觉零文本、终局状态确定性生成）──
 describe('v5.2 burn seal', () => {

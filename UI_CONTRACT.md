@@ -79,6 +79,7 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 | M7 全程插画与微动效（LLM 直写 SVG 第二批） | 12 卡面印章（浮动落款）+ home 待机版画（boot 点亮）+ 观察窗炉膛内景 + mw-* 动画词汇表（K5 追加：插画动画化，CSS-SVG 而非 GIF），人工预览门后集成，见 v5.0 与 `UI_CONTRACT_M7_DRAFT.md` | **已交付（2026-09-09 所有者批复 K1–K5：预览门「可以」+「还需要加入动画或者gif」）** |
 | M8 教学手册化 + 验收补强 | 四幅步进图解（教学便签手册版式、随 §3 步进切换）+ zoom sweep（100%/150% 布局验收项闭合），见 v5.1 | **已交付（2026-09-13 所有者「请继续迭代」续批，依据路线图近期序列）** |
 | R2-1A 烧制印章 | 结算纸卡火漆纹章（burnSeal 确定性生成：焰高∝peakHeat/环拍=轮数/刻口∝切除、五结局母题、纯视觉零文本），见 v5.2 | **已交付（2026-09-13 续批）；方案 B 分享文本仍待 CONTENT_SPEC 裁决** |
+| M9+M10 台面叙事 + forced-colors | 纸随 Act 渐老（折痕/角污/焦色）+ 台面痕迹随周期分桶累积（咖啡环/铅笔屑）+ Windows 高对比支持，见 v5.3 | **已交付（2026-09-13 续批）** |
 
 ## v4.6 可验证性
 
@@ -376,8 +377,38 @@ workers 本地 8+ → 限 4、retries 对齐 CI=1、axe 长流程时限 120s→3
   为静止帧）。Linux 基线待 update-baselines.yml（D28）。
 - 移动端（390×844）与 zoom sweep 由既有套件复验。
 
+## v5.3 M9+M10 台面叙事 + forced-colors（2026-09-13，路线图 R1-2/R1-3/R1-4 续批）
 
-## 1. Art Direction（概念图提炼）
+授权依据：路线图中期序列 + 所有者「请继续迭代」（同前两批）。
+
+### 交付内容
+
+1. **M9 纸随 Act 渐老**（构想 #9）：原料/成品纸卡 `::after` 确定性痕迹层——
+   Act1 素纸不变；Act2 一道折痕 + 右上角污；Act3 折痕加深 + 斜向第二折 +
+   右下焦色（heat 族 α=0.1）。纯 CSS 渐变（与 IL-5 同一跨引擎决定，不用
+   SVG 噪点滤镜）；读既有 data-act 钩子；CM 塌缩 transparent。
+2. **M10 台面使用痕迹**（构想 #7）：`.stage::after`（:has 门控，不支持则
+   素台优雅降级）——early(1-4) 素台；mid(5-8) 咖啡环×2 + 铅笔屑；
+   late(9-12) 加第二渍与更密屑点。分桶钩子 `data-cycle-bucket` 读
+   GameState（阈值 4/8 与基线取样周期对齐）；CM 塌缩。
+3. **R1-4 forced-colors**（Windows 高对比，此前零覆盖）：插画容器
+   （ending-plate/home-plate/card-seal/burn-seal/tutorial-figure）补
+   CanvasText 描边保边界可辨；台面痕迹/结局意象层（纯装饰）显式关闭；
+   文字对比交系统调色板。
+
+### 力度校准与基线（集成期取证）
+
+- 初版 α（0.05–0.08）在实机截图中不可感知 → 全面 ×2~2.5（0.1–0.2），
+  复检可见且克制（`shots/m8-review/wear-cycle8-v2.png`）。
+- 快照机制取证：`--update-snapshots` 默认只重写比较失败的快照——低于
+  回归阈值（YIQ 0.2）的装饰像素差不触发重写（阈值机制本意）。以
+  `--update-snapshots=all` 强制重采；落盘变更面 = cycle8-en + cycle12-zh
+  （折痕/痕迹入镜）+ cycle4-zh（新层叠上下文的合成抖动，逐像素实测
+  maxD≤6/通道 ≤2，感知为零）；其余 7 张字节不变。Linux 待 D28 触发。
+- material.test 57 → 61 条（分桶钩子/act 素纸断言/:has 优雅降级/
+  CM 塌缩/forced-colors 块）。
+
+
 
 暖灰泥色（putty）明亮台面；居中**深炭黑大圆角面板**承载全部工作区；面板内衬白纸卡；
 红（HEAT）/绿（FIDELITY）弧形仪表；红色为主行动色；GAIN 恢复旋钮形态（带 0–3 卡位）；

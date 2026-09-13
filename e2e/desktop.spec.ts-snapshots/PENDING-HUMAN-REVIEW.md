@@ -88,3 +88,14 @@
   双拍 --repeat-each=2 共 10/10 像素稳定。
 - Linux（CI）基线：内容变更面同上五张，需 update-baselines.yml 手动触发（D28）。
 - 行为/文案/数值零改动。自采 ≠ 已确认。
+
+## 变更记录（2026-09-13 · UI v5.3 台面叙事 + forced-colors）
+
+- 变更面：cycle8-en / cycle12-zh（M9 纸渐老 + M10 台面痕迹入镜）与
+  cycle4-zh（.stage 新层叠上下文的合成抖动，逐像素 maxD≤6、通道 ≤2，
+  感知为零；强制重采 `--update-snapshots=all` 所致——低于回归阈值的
+  装饰像素差不触发默认重写，机制取证见 UI_CONTRACT v5.3）。
+  其余 7 张字节不变。M8 教学图解不在像素基线集内。
+- M10 痕迹层绘于 .stage（machine 元素截图框之外），基线不覆盖；
+  实机全帧截图 `shots/m8-review/wear-cycle8-v2.png`。
+- 行为/文案/数值零改动。自采 ≠ 已确认。

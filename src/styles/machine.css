@@ -1167,3 +1167,115 @@
   max-width: 680px;
   margin: 0 auto;
 }
+
+/* ── v5.3 M9 纸随 Act 渐老（路线图 R1-2 / 研究稿构想 #9）：原料/成品纸卡的
+   使用痕迹随幕次递增——机器对纸带做的事，纸带记得。纯 CSS 渐变（不用 SVG
+   噪点滤镜，与 M5 IL-5 同一跨引擎决定）；读 data-act 钩子，act1 素纸不变；
+   确定性静态层，RM 无涉；CM 下塌缩 transparent（与 IL 族同规） ── */
+.machine[data-act='2'] .panel-feed::after,
+.machine[data-act='2'] .panel-output::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  /* Act2：一道横向折痕 + 右上角轻微污色 */
+  background:
+    linear-gradient(180deg, rgba(84, 74, 52, 0) 0 37%, rgba(84, 74, 52, 0.16) 38%, rgba(84, 74, 52, 0.07) 39%, rgba(84, 74, 52, 0) 40%),
+    radial-gradient(150px 90px at 100% 0%, rgba(84, 74, 52, 0.13), rgba(84, 74, 52, 0) 70%);
+}
+
+.machine[data-act='3'] .panel-feed::after,
+.machine[data-act='3'] .panel-output::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  /* Act3：折痕加深 + 斜向第二折 + 右下焦色（heat 族极低 α，过载幕次的纸） */
+  background:
+    linear-gradient(180deg, rgba(84, 74, 52, 0) 0 37%, rgba(84, 74, 52, 0.19) 38%, rgba(84, 74, 52, 0.08) 39%, rgba(84, 74, 52, 0) 40%),
+    linear-gradient(63deg, rgba(84, 74, 52, 0) 0 64%, rgba(84, 74, 52, 0.13) 64.7%, rgba(84, 74, 52, 0) 66%),
+    radial-gradient(220px 150px at 100% 100%, rgba(164, 58, 47, 0.1), rgba(164, 58, 47, 0) 72%),
+    radial-gradient(150px 90px at 100% 0%, rgba(84, 74, 52, 0.15), rgba(84, 74, 52, 0) 70%);
+}
+
+.panel-feed,
+.panel-output {
+  position: relative; /* 纸卡渐老层的定位宿主 */
+}
+
+@media (prefers-contrast: more) {
+  .machine[data-act] .panel-feed::after,
+  .machine[data-act] .panel-output::after {
+    background: none;
+    content: none;
+  }
+}
+
+/* ── v5.3 M10 台面使用痕迹（路线图 R1-3 / 研究稿构想 #7）：工位随周期
+   确定性累积的痕迹——early 素台；mid 咖啡环 + 铅笔屑；late 再加第二渍与
+   更密屑点。分桶边界对齐基线取样（cycle4 素台 / 8 / 12）。:has 不支持时
+   规则不匹配 → 素台，优雅降级；CM 下塌缩 ── */
+.stage {
+  position: relative;
+  z-index: 0; /* 自成 stacking context：痕迹层负 z 序位于台面渐变之上、内容之下 */
+}
+
+.stage:has(.machine[data-cycle-bucket='mid'])::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 79% 10%, rgba(84, 74, 52, 0) 0 12px, rgba(84, 74, 52, 0.18) 13px 14.5px, rgba(84, 74, 52, 0) 15.5px),
+    radial-gradient(circle at 12% 84%, rgba(84, 74, 52, 0) 0 9px, rgba(84, 74, 52, 0.14) 10px 11px, rgba(84, 74, 52, 0) 12px),
+    radial-gradient(1.6px 1.6px at 22% 12%, rgba(58, 50, 36, 0.35) 0 60%, rgba(58, 50, 36, 0) 100%),
+    radial-gradient(1.4px 1.4px at 24.5% 13.5%, rgba(58, 50, 36, 0.28) 0 60%, rgba(58, 50, 36, 0) 100%),
+    radial-gradient(1.6px 1.6px at 88% 78%, rgba(58, 50, 36, 0.3) 0 60%, rgba(58, 50, 36, 0) 100%);
+}
+
+.stage:has(.machine[data-cycle-bucket='late'])::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 79% 10%, rgba(84, 74, 52, 0) 0 12px, rgba(84, 74, 52, 0.2) 13px 14.5px, rgba(84, 74, 52, 0) 15.5px),
+    radial-gradient(circle at 12% 84%, rgba(84, 74, 52, 0) 0 9px, rgba(84, 74, 52, 0.16) 10px 11px, rgba(84, 74, 52, 0) 12px),
+    radial-gradient(ellipse 60px 34px at 8% 38%, rgba(84, 74, 52, 0.11), rgba(84, 74, 52, 0) 70%),
+    radial-gradient(1.6px 1.6px at 22% 12%, rgba(58, 50, 36, 0.4) 0 60%, rgba(58, 50, 36, 0) 100%),
+    radial-gradient(1.4px 1.4px at 24.5% 13.5%, rgba(58, 50, 36, 0.32) 0 60%, rgba(58, 50, 36, 0) 100%),
+    radial-gradient(1.6px 1.6px at 21% 15%, rgba(58, 50, 36, 0.3) 0 60%, rgba(58, 50, 36, 0) 100%),
+    radial-gradient(1.6px 1.6px at 88% 78%, rgba(58, 50, 36, 0.36) 0 60%, rgba(58, 50, 36, 0) 100%),
+    radial-gradient(1.4px 1.4px at 86% 80.5%, rgba(58, 50, 36, 0.28) 0 60%, rgba(58, 50, 36, 0) 100%);
+}
+
+@media (prefers-contrast: more) {
+  .stage:has(.machine[data-cycle-bucket])::after {
+    background: none;
+    content: none;
+  }
+}
+
+/* ── v5.3 R1-4 forced-colors（Windows 高对比）：系统调色板强制替换下，
+   装饰性渐变/痕迹层交由 UA 处置；插画容器补 CanvasText 描边保边界可辨，
+   台面痕迹层（纯装饰）显式关闭。文字对比由系统调色板接管 ── */
+@media (forced-colors: active) {
+  .ending-plate,
+  .home-plate,
+  .card-seal,
+  .burn-seal,
+  .tutorial-figure {
+    outline: 1px solid CanvasText;
+    outline-offset: 2px;
+  }
+
+  .stage:has(.machine[data-cycle-bucket])::after,
+  .stage--ending::after,
+  .stage--ending::before {
+    display: none;
+  }
+}
