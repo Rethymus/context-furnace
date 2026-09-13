@@ -1,0 +1,26 @@
+{
+  "step-1-left-cutter": {
+    "rawBytes": 1230,
+    "gzipBytes": 306,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "step-2-right-cutter": {
+    "rawBytes": 1220,
+    "gzipBytes": 307,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "step-3-output": {
+    "rawBytes": 1159,
+    "gzipBytes": 302,
+    "offPalette": [],
+    "verdict": "PASS"
+  },
+  "step-4-ignite": {
+    "rawBytes": 1079,
+    "gzipBytes": 313,
+    "offPalette": [],
+    "verdict": "PASS"
+  }
+}

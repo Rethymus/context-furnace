@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72">
+  <!-- 手册步骤图解 3/4：OUTPUT 成品实时跟随（选区漏入成品槽） -->
+  <path fill="none" stroke="#55503f" stroke-width="1" stroke-dasharray="3 3" d="M60 8v20"/>
+  <!-- 段带三段（已收拢的选区） -->
+  <rect x="18" y="10" width="26" height="14" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="47" y="10" width="26" height="14" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="76" y="10" width="26" height="14" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 漏斗：三段汇入一线 -->
+  <path fill="none" stroke="#26231c" stroke-width="2" stroke-linecap="round" d="M31 28v8m58-8v8M31 36h58"/>
+  <path fill="none" stroke="#26231c" stroke-width="2" stroke-linecap="round" d="M60 36v12m0 0-5-5m5 5 5-5"/>
+  <!-- 成品槽：纸卡托 + 成品行（红点起头） -->
+  <rect x="20" y="52" width="80" height="14" rx="3" fill="none" stroke="#26231c" stroke-width="2"/>
+  <circle cx="28" cy="59" r="3" fill="#b44622"/>
+  <path fill="none" stroke="#55503f" stroke-width="2" stroke-linecap="round" d="M36 59h54"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72">
+  <!-- 手册步骤图解 4/4：IGNITE 入炉（按键 + 焰） -->
+  <path fill="none" stroke="#55503f" stroke-width="1" stroke-dasharray="3 3" d="M60 8v16"/>
+  <!-- 入炉箭头 -->
+  <path fill="none" stroke="#26231c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M60 26v14m0 0-6-6m6 6 6-6"/>
+  <!-- 炉口：拱形炉膛 -->
+  <path fill="none" stroke="#26231c" stroke-width="2.5" d="M26 66V50a34 16 0 0 1 68 0v16"/>
+  <path fill="none" stroke="#55503f" stroke-width="2" stroke-linecap="round" d="M34 66h52"/>
+  <!-- 焰：三瓣，中瓣红焦点 -->
+  <path fill="none" stroke="#b44622" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M60 58q-7-8 0-16 7 8 0 16z"/>
+  <path fill="none" stroke="#e48034" stroke-width="2" stroke-linecap="round" d="M47 60q-4-6 1-11M73 60q4-6-1-11"/>
+  <!-- 按键环（IGNITE 可随时按下） -->
+  <circle cx="97" cy="24" r="9" fill="none" stroke="#26231c" stroke-width="2.5"/>
+  <circle cx="97" cy="24" r="3" fill="#b44622"/>
+</svg>

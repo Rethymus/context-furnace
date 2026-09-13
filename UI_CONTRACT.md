@@ -77,6 +77,7 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
 | M5 插画与沉浸语汇 | IL-1 炉膛余烬床、IL-2 台面工业印记、IL-3 Act 铭牌蚀刻、IL-4 结局幕插画层、IL-5 纸带纤维纹理（非叙事、CSS/SVG-only、零新文本） | **已交付（2026-09-08 所有者批复 K2 全项，草案 `UI_CONTRACT_M5_DRAFT.md`，见 v4.8）** |
 | M6 结局版画（LLM 直写 SVG） | 五结局木刻版画板（模型直写矢量、子色板闸门、aria-hidden 零文本），生成方式与研究依据见 `AI_ILLUSTRATION_RESEARCH.md` 与 `research/ai-pipeline/` | **已交付（2026-09-09 所有者授权「授权你 LLM 直写 SVG」+「授权执行」，见 v4.9）** |
 | M7 全程插画与微动效（LLM 直写 SVG 第二批） | 12 卡面印章（浮动落款）+ home 待机版画（boot 点亮）+ 观察窗炉膛内景 + mw-* 动画词汇表（K5 追加：插画动画化，CSS-SVG 而非 GIF），人工预览门后集成，见 v5.0 与 `UI_CONTRACT_M7_DRAFT.md` | **已交付（2026-09-09 所有者批复 K1–K5：预览门「可以」+「还需要加入动画或者gif」）** |
+| M8 教学手册化 + 验收补强 | 四幅步进图解（教学便签手册版式、随 §3 步进切换）+ zoom sweep（100%/150% 布局验收项闭合），见 v5.1 | **已交付（2026-09-13 所有者「请继续迭代」续批，依据路线图近期序列）** |
 
 ## v4.6 可验证性
 
@@ -312,6 +313,38 @@ background: 暗调半透明(≤0.9); backdrop-filter: blur(10–18px) saturate(1
   结局页无 M7 元素）；确定性双拍 10/10（freeze 下 mw-* 全静止帧可复现）。
 - Linux（CI）基线：内容变更面同上，需 `update-baselines.yml` 手动触发（D28）。
 - `npm run verify` 12 项全绿；bundle CSS+JS gzip ≈35.9 KB / 250 KB。
+
+## v5.1 M8 实现批次 + 验收补强（2026-09-13，所有者「请继续迭代」续批）
+
+授权依据：路线图（`PROJECT_ROADMAP.md`，commit 86021ee）建议的近期序列 +
+所有者同日「请继续迭代，目标仍未完成」——按建议序列继续执行 R1-1（M8）与
+验收补强项。R0-2（README 媒体追新，动 PRESENTATION_SPEC）未获批，仍未动。
+
+### M8 教学手册化（路线图 R1-1 / 研究稿构想 #8）
+
+1. **四幅步进图解**（TUTORIAL_FIGURES 入 machine.ts；LLM 直写 120×72 透明底
+   墨线，闸门 m8-batch 4/4 PASS，gzip 合计 ≈1.2 KB）：Step1 左刀右移 /
+   Step2 右刀左移 / Step3 OUTPUT 跟随 / Step4 IGNITE 入炉；技术手册引线风，
+   单点红焦点；§3 冻结文案零改动。
+2. **挂载与换图**：`.tutorial-note` 内 `图解 | 步进点 | 提示文字` 版式
+   （aria-hidden）；`showTutorialStep` 按 `TUTORIAL_FIGURES[step]` 切换
+   innerHTML（新 <svg> 复用 mw-enter 一次性入场，RM/freeze 关断）。
+3. **基线影响：零**（教学页不在像素基线集内）；material.test 50 → 53 条
+   （嵌入/挂载/换图/零文本/墨线子色板/CSS 锁）；实机截图自检
+   `shots/m8-review/tutorial-step0/1.png`（图解随步进切换已实证）。
+
+### 验收补强：zoom sweep（路线图外、原目标验收清单内）
+
+原验收项「100%/150% 布局」此前无 e2e 覆盖（伪长文只覆盖文字长度）。
+新增 `layout.spec.ts` zoom sweep：150% 缩放 ≈ CSS 视口线性 ÷1.5
+（1440×900 → 960×600），断言三桌面引擎 × 两档：首页/周期界面无水平滚动、
+POWER ON 与 IGNITE 完整在视口内、教学→周期流程可用。6 passed。
+
+### 顺带的测试基建治理（同日取证）
+
+本地 WebKit 计时器饥饿连续四次全量各倒一个不同测试（隔离与 CI 均绿）：
+workers 本地 8+ → 限 4、retries 对齐 CI=1、axe 长流程时限 120s→300s
+（runner 预算，不弱化断言；commit 1aae552）。
 
 
 ## 1. Art Direction（概念图提炼）

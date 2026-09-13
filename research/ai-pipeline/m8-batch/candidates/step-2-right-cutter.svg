@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72">
+  <!-- 手册步骤图解 2/4：右裁刀左移收拢选区（镜像构图） -->
+  <path fill="none" stroke="#55503f" stroke-width="1" stroke-dasharray="3 3" d="M106 14v44M60 10v52"/>
+  <!-- 段带：前段墨框，末段淡墨（将切除） -->
+  <rect x="14" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="28" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="42" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="56" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="70" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="84" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="98" y="26" width="8" height="20" rx="2" fill="#b6ab94"/>
+  <!-- 右裁刀：刀体 + 左移箭头 -->
+  <path fill="#26231c" d="M104 22h6v28l-3 4h-6l3-4z"/>
+  <path fill="none" stroke="#b44622" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M100 16H84m0 0 6-5m-6 5 6 5"/>
+</svg>

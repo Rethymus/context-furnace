@@ -74,6 +74,20 @@ const CARD_SEALS: readonly string[] = [
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="94" height="94" x="1" y="1" fill="#e4decb" rx="8"/><rect width="84" height="84" x="6" y="6" fill="none" stroke="#26231c" stroke-width="2" rx="5"/><path fill="#26231c" d="M16 30h26v44H16zm38 0h26v44H54z"/><path fill="#e4decb" d="M21 35h16v8H21z"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-width="2" d="M25 64q2-4 0-8t2-8m4 16q2-4 0-8t2-8" class="mw-rise"/><path fill="#e4decb" d="M59 35h16v8H59z"/><path fill="none" stroke="#2c625a" stroke-linecap="round" stroke-width="2" d="M63 64V50m6 14V50"/><path fill="none" stroke="#2c625a" stroke-linecap="round" stroke-width="1.5" d="m61 54 4-4m6 4-4-4"/><rect width="10" height="8" x="24" y="45" fill="#e48034" rx="1"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2.5" d="M12 78h72"/></svg>',
 ];
 
+
+// v5.1 M8 教学手册图解（2026-09-13 所有者「请继续迭代」续批；LLM 直写 SVG，
+// 闸门 m8-batch 4/4 PASS；零文本、色板 ⊆ 墨线子色板；随 §3 步进切换）
+const TUTORIAL_FIGURES: readonly string[] = [
+  // Step1 左刀右移
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72"><path fill="none" stroke="#55503f" stroke-dasharray="3 3" d="M14 14v44m46-48v52"/><rect width="12" height="20" x="14" y="26" fill="#b6ab94" rx="2"/><rect width="12" height="20" x="28" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="42" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="56" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="70" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="84" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="8" height="20" x="98" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><path fill="#26231c" d="M10 22h6l3 4v20l-3 4h-6z"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 16h16m0 0-6-5m6 5-6 5"/></svg>',
+  // Step2 右刀左移
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72"><path fill="none" stroke="#55503f" stroke-dasharray="3 3" d="M106 14v44M60 10v52"/><rect width="12" height="20" x="14" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="28" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="42" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="56" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="70" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="12" height="20" x="84" y="26" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="8" height="20" x="98" y="26" fill="#b6ab94" rx="2"/><path fill="#26231c" d="M104 22h6v28l-3 4h-6l3-4z"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M100 16H84m0 0 6-5m-6 5 6 5"/></svg>',
+  // Step3 OUTPUT 跟随
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72"><path fill="none" stroke="#55503f" stroke-dasharray="3 3" d="M60 8v20"/><rect width="26" height="14" x="18" y="10" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="26" height="14" x="47" y="10" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><rect width="26" height="14" x="76" y="10" fill="none" stroke="#26231c" stroke-width="2" rx="2"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-width="2" d="M31 28v8m58-8v8m-58 0h58m-29 0v12m0 0-5-5m5 5 5-5"/><rect width="80" height="14" x="20" y="52" fill="none" stroke="#26231c" stroke-width="2" rx="3"/><circle cx="28" cy="59" r="3" fill="#b44622"/><path fill="none" stroke="#55503f" stroke-linecap="round" stroke-width="2" d="M36 59h54"/></svg>',
+  // Step4 IGNITE 入炉
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72"><path fill="none" stroke="#55503f" stroke-dasharray="3 3" d="M60 8v16"/><path fill="none" stroke="#26231c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M60 26v14m0 0-6-6m6 6 6-6"/><path fill="none" stroke="#26231c" stroke-width="2.5" d="M26 66V50a34 16 0 0 1 68 0v16"/><path fill="none" stroke="#55503f" stroke-linecap="round" stroke-width="2" d="M34 66h52"/><path fill="none" stroke="#b44622" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M60 58q-7-8 0-16 7 8 0 16"/><path fill="none" stroke="#e48034" stroke-linecap="round" stroke-width="2" d="M47 60q-4-6 1-11m25 11q4-6-1-11"/><circle cx="97" cy="24" r="9" fill="none" stroke="#26231c" stroke-width="2.5"/><circle cx="97" cy="24" r="3" fill="#b44622"/></svg>',
+];
+
 // §2.2 开机动画 1.15s；§8.3 反馈动画 950ms（时序集中管理）
 const BOOT_TOTAL_MS = 1150;
 const BOOT_RELAY_MS = 120;
@@ -375,7 +389,11 @@ export class MachineController {
     }
     const hintText = document.createElement('span');
     hintText.className = 'tutorial-note-text';
-    hint.append(dots, hintText);
+    // v5.1 M8 手册图解（aria-hidden 纯视觉；随步进切换 innerHTML）
+    const tutorialFigure = document.createElement('span');
+    tutorialFigure.className = 'tutorial-figure';
+    tutorialFigure.setAttribute('aria-hidden', 'true');
+    hint.append(tutorialFigure, dots, hintText);
     panelWrap.appendChild(hint);
 
     stage.appendChild(machine);
@@ -433,6 +451,8 @@ export class MachineController {
     const hints = [t('tutorial.step1'), t('tutorial.step2'), t('tutorial.step3'), t('tutorial.step4')];
     const note = els.hint.querySelector('.tutorial-note-text');
     if (note) note.textContent = hints[this.tutorialStep] ?? '';
+    const fig = els.hint.querySelector<HTMLElement>('.tutorial-figure');
+    if (fig) fig.innerHTML = TUTORIAL_FIGURES[this.tutorialStep] ?? '';
     const dots = els.hint.querySelectorAll('.tutorial-dot');
     dots.forEach((d, i) => d.classList.toggle('on', i <= this.tutorialStep));
     this.tutorialTrack?.setHighlighted(this.tutorialStep === 0 ? 0 : this.tutorialStep === 1 ? 1 : null);

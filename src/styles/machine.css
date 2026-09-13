@@ -1077,6 +1077,21 @@
   color: var(--ink);
 }
 
+/* v5.1 M8 手册图解：便签内步进示意图（墨线透明底，随 §3 步进切换；
+   aria-hidden 纯视觉；一次性入场 mw-enter 复用，RM/freeze 关断） */
+.tutorial-figure {
+  display: inline-flex;
+  width: 96px;
+  flex: 0 0 auto;
+}
+
+.tutorial-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: mw-enter 0.14s ease-out;
+}
+
 .tutorial-dots {
   display: inline-flex;
   gap: 6px;

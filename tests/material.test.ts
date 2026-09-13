@@ -547,6 +547,36 @@ describe('v5 M7 illustrations & micro-motion', () => {
   });
 });
 
+// ── v5.1 M8 教学手册图解（2026-09-13「请继续迭代」续批；§3 步进视觉对应）──
+describe('v5.1 M8 tutorial manual figures', () => {
+  const mts = readFileSync(join(ROOT, 'src', 'ui', 'machine.ts'), 'utf8');
+  const figsBlock = mts.split('const TUTORIAL_FIGURES')[1]?.split('];')[0] ?? '';
+
+  it('four step figures embedded, mounted in the note, swapped per step', () => {
+    expect((figsBlock.match(/<svg/g) ?? []).length).toBe(4);
+    expect((figsBlock.match(/viewBox="0 0 120 72"/g) ?? []).length).toBe(4);
+    expect(mts).toContain("tutorialFigure.className = 'tutorial-figure'");
+    expect(mts).toContain("tutorialFigure.setAttribute('aria-hidden', 'true')");
+    expect(mts).toContain('hint.append(tutorialFigure, dots, hintText)'); // 图解 | 步进点 | 文字
+    expect(mts).toContain("TUTORIAL_FIGURES[this.tutorialStep] ?? ''");
+  });
+
+  it('figures carry zero text nodes and stay in the ink sub-palette', () => {
+    expect(figsBlock).not.toContain('<text');
+    expect(figsBlock).not.toContain('<tspan');
+    const PALETTE = new Set(['#26231c', '#55503f', '#b6ab94', '#b44622', '#e48034']);
+    const used = figsBlock.match(/#[0-9a-fA-F]{6}\b/g) ?? [];
+    expect([...new Set(used.filter((c) => !PALETTE.has(c.toLowerCase())))]).toEqual([]);
+  });
+
+  it('figure CSS present; entrance reuses mw-enter (RM/freeze covered)', () => {
+    const mach = readFileSync(join(ROOT, 'src', 'styles', 'machine.css'), 'utf8');
+    const figCss = mach.split('.tutorial-figure {')[1]?.split('}')[0] ?? '';
+    expect(figCss).toContain('width: 96px');
+    expect(mach.split('.tutorial-figure svg {')[1] ?? '').toContain('animation: mw-enter 0.14s ease-out');
+  });
+});
+
 // ── v4.6 防硬化回归：styles/*.css 的 hex 白名单（新增裸 hex 须显式入册并审对比度） ──
 describe('v4 hex allowlist (anti-hardening)', () => {
   const ALLOWLIST = new Set([

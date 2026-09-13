@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72">
+  <!-- 手册步骤图解 1/4：左裁刀右移切除首段（引线标注风，墨线于纸面） -->
+  <path fill="none" stroke="#55503f" stroke-width="1" stroke-dasharray="3 3" d="M14 14v44M60 10v52"/>
+  <!-- 段带：8 段，首段淡墨（待切除） -->
+  <rect x="14" y="26" width="12" height="20" rx="2" fill="#b6ab94"/>
+  <rect x="28" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="42" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="56" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="70" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="84" y="26" width="12" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <rect x="98" y="26" width="8" height="20" rx="2" fill="none" stroke="#26231c" stroke-width="2"/>
+  <!-- 左裁刀：刀体 + 右移箭头 -->
+  <path fill="#26231c" d="M10 22h6l3 4v20l-3 4h-6z"/>
+  <path fill="none" stroke="#b44622" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M20 16h16m0 0-6-5m6 5-6 5"/>
+</svg>
