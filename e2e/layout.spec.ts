@@ -77,6 +77,45 @@ test.describe('layout geometry (UI_CONTRACT v3 §5)', () => {
   });
 });
 
+test.describe('layout geometry — zoom sweep (acceptance: 100% / 150%)', () => {
+  test.beforeEach(async ({}, testInfo) => {
+    test.skip(testInfo.project.name.startsWith('mobile'), 'zoom sweep is desktop acceptance');
+  });
+
+  // 150% 浏览器缩放 ≈ CSS 视口线性 ÷1.5（1440×900 → 960×600）：
+  // 布局以 CSS px 表达，此为标准 zoom-sweep 等价做法。
+  for (const [label, width, height] of [
+    ['100% (1440×900)', 1440, 900],
+    ['150% (960×600)', 960, 600],
+  ] as const) {
+    test(`no horizontal scroll & controls usable at ${label}`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await powerOn(page);
+      // 首页：无水平滚动、POWER ON 在视口内
+      expect(await page.evaluate(() => document.scrollingElement?.scrollWidth ?? 0))
+        .toBeLessThanOrEqual(await page.evaluate(() => window.innerWidth));
+      const power = await page.locator(T('power-on')).boundingBox();
+      const vp = page.viewportSize()!;
+      expect(power!.y + power!.height).toBeLessThanOrEqual(vp.height);
+      const tutorialVisible = await page
+        .locator(T('tutorial-hint'))
+        .waitFor({ state: 'visible', timeout: 8000 })
+        .then(() => true)
+        .catch(() => false);
+      if (tutorialVisible) {
+        await skipTutorial(page);
+      }
+      await expect(page.locator(T('cycle-display'))).toBeVisible({ timeout: 10_000 });
+      // 周期界面：无水平滚动、IGNITE 完整在视口内
+      expect(await page.evaluate(() => document.scrollingElement?.scrollWidth ?? 0))
+        .toBeLessThanOrEqual(await page.evaluate(() => window.innerWidth));
+      const ignite = await page.locator(T('ignite')).boundingBox();
+      expect(ignite!.y + ignite!.height).toBeLessThanOrEqual(vp.height);
+      expect(ignite!.x + ignite!.width).toBeLessThanOrEqual(vp.width);
+    });
+  }
+});
+
 test.describe('layout geometry — mobile 360px (via mobile projects)', () => {
   test.beforeEach(async ({}, testInfo) => {
     test.skip(!testInfo.project.name.startsWith('mobile'), 'mobile geometry on mobile projects');
