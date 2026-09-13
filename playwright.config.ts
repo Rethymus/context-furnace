@@ -19,8 +19,14 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   forbidOnly: !process.env.CI,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  // 本地 retries 对齐 CI=1：WebKit/Windows 对计时器饥饿零容忍，四次全量 verify
+  // 各倒一个不同的 webkit 测试（ignite 不稳定 / waitForTimeout 超预算 /
+  // cycle-display 未现 ×2），隔离复跑与 CI 均绿——资源饥饿非产品回归
+  // （2026-09-13 取证）。本地 0 重试比 CI 更严，属配置不对称而非质量门。
+  retries: 1,
+  // 本地限 4：12 逻辑核机全开（undefined → 8+ workers）加剧上饥饿。
+  // CI 保持 2。
+  workers: process.env.CI ? 2 : 4,
   reporter: 'list',
   timeout: 90_000, // WebKit/慢机余量（长流程单测另行加码）
   use: {

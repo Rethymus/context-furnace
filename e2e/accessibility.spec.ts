@@ -69,7 +69,10 @@ test.describe('accessibility', () => {
   });
 
   test('settings and results: axe clean', async ({ page }) => {
-    test.setTimeout(120_000);
+    // 测试基建余量（2026-09-13）：11 轮走查 + 三次 axe 扫描在本地 webkit 实测 ~108s，
+    // 并行负载下两次击穿 120s（隔离复跑与 Linux CI 均绿 → 非产品回归，余量不足）。
+    // 300s 只放宽 runner 预算，不弱化任何 axe/走查断言。
+    test.setTimeout(300_000);
     await powerOn(page);
     await page.waitForTimeout(1500);
     await skipTutorial(page);
